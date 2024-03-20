@@ -28,3 +28,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home');
 
+
+/* backoffice*/
+Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
