@@ -160,8 +160,13 @@
 						<li><a href="settings.html" title=""><i class="icofont-gear"></i> Setting</a></li>
 						<li><a href="privacy-n-policy.html" title=""><i class="icofont-notepad"></i> Privacy</a></li>
 						<li><a class="dark-mod" href="#" title=""><i class="icofont-moon"></i> Dark Mode</a></li>
-						<li class="logout"><a href="sign-in.html" title=""><i class="icofont-power"></i> Logout</a></li>
+						<li class="logout"><a  href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();" title=""><i class="icofont-power"></i> Logout</a></li>
 					</ul>
+		<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+           @csrf
+       </form>
 				</li>
 			</ul>
 		</div>

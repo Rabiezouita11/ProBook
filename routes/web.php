@@ -26,8 +26,8 @@ Auth::routes();
 
 /* frontoffice*/
 
-Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');
 
 
 /* backoffice*/
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware('role:admin');

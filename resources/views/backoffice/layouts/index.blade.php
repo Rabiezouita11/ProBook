@@ -44,9 +44,14 @@
 					<li><a title="" href="#"><i class="icofont-question-circle"></i>Help</a></li>
 					<li><a title="" href="#"><i class="icofont-gear"></i>Setting</a></li>
 					<li><a class="dark-mod" title="" href="#"><i class="icofont-moon"></i>Dark Mode</a></li>
-					<li><a title="" href="login-register.html" class="logout"><i class="icofont-logout"></i>Logout</a></li>
+					<li><a title="" href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();" class="logout"><i class="icofont-logout"></i>Logout</a></li>
 				</ul>
 			</div>
+			<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+           @csrf
+       </form>
 			<div class="res-search">
 				<span><i>
 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></i></span>
@@ -122,7 +127,13 @@
 						<li><a href="settings.html" title=""><i class="icofont-gear"></i> Setting</a></li>
 						<li><a href="privacy-n-policy.html" title=""><i class="icofont-notepad"></i> Privacy</a></li>
 						<li><a class="dark-mod" title="" href="#"><i class="icofont-moon"></i> Dark Mode</a></li>
-						<li class="logout"><a href="sign-in.html" title=""><i class="icofont-power"></i> Logout</a></li>
+						<li   class="logout"><a  href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"  title=""><i class="icofont-power"></i> Logout</a></li>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+           @csrf
+       </form>
 					</ul>
 				</li>
 			</ul>
