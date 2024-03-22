@@ -7,20 +7,20 @@
     <title>Xmee | Login and Register Form Html Templates</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/favicon.png">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/template_Authentification/css/bootstrap-rtl.min.css">
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="/template_Authentification/css/fontawesome-all.min.css">
-    <!-- Vegas CSS -->
-    <link rel="stylesheet" href="/template_Authentification/css/vegas.min.css">
-    <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="/template_Authentification/font/flaticon.css">
-    <!-- Google Web Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/template_Authentification/style.css">
+ <!-- Favicon -->
+ <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/favicon.png">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="/template_Authentification/css/bootstrap.min.css">
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="/template_Authentification/css/fontawesome-all.min.css">
+	<!-- Vegas CSS -->
+	<link rel="stylesheet" href="/template_Authentification/css/vegas.min.css">
+	<!-- Flaticon CSS -->
+	<link rel="stylesheet" href="/template_Authentification/font/flaticon.css">
+	<!-- Google Web Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/template_Authentification/style.css">
 </head>
 
 <body>
@@ -138,18 +138,17 @@
             </div>
         </div>
     </section>
-    <!-- jquery-->
-    <script src="/template_Authentification/js/jquery-3.5.0.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="/template_Authentification/js/bootstrap.min.js"></script>
-    <!-- Imagesloaded js -->
-    <script src="/template_Authentification/js/imagesloaded.pkgd.min.js"></script>  
-     <!-- Vegas js -->
-     <script src="/template_Authentification/js/vegas.min.js"></script>  
-    <!-- Validator js -->
-    <script src="/template_Authentification/js/validator.min.js"></script>
-    <!-- Custom Js -->
-    <script src="/template_Authentification/js/main.js"></script>
+	<script src="/template_Authentification/js/jquery-3.5.0.min.js"></script>
+	<!-- Bootstrap js -->
+	<script src="/template_Authentification/js/bootstrap.min.js"></script>
+	<!-- Imagesloaded js -->
+	<script src="/template_Authentification/js/imagesloaded.pkgd.min.js"></script>
+	<!-- Vegas js -->
+	<script src="/template_Authentification/js/vegas.min.js"></script>
+	<!-- Validator js -->
+	<script src="/template_Authentification/js/validator.min.js"></script>
+	<!-- Custom Js -->
+	<script src="/template_Authentification/js/main.js"></script>
 
 </body>
 
