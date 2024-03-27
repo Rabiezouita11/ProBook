@@ -19,39 +19,39 @@
                                             <th> nom Utilisateur</th>
                                             <th>Email</th>
                                             <th>Blocked</th>
-                                           
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($utilisateurs as $utilisateur)
-                                        <tr>
-                                            <td>
-                                                <figure>
-                                                    @if($utilisateur->image)
-                                                        <img src="{{ asset('users/' . $utilisateur->image) }}" alt="{{ $utilisateur->name }}">
-                                                    @else
-                                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($utilisateur->name) }}&background=104d93&color=fff" alt="{{ $utilisateur->name }}">
-                                                    @endif
-                                                </figure>
-                                                <h5>{{$utilisateur->name}}</h5>
-                                            </td>
-                                            <td>{{$utilisateur->email}}</td>
-                                            
-                                            <td>
-                                                <div class="switch-btn">
-                                                    <input type="checkbox" hidden="hidden" id="switch{{ $utilisateur->id }}" @if($utilisateur->blocked) checked @endif onclick="toggleBlock({{ $utilisateur->id }})">
-                                                    <label class="switch" for="switch{{ $utilisateur->id }}"></label>
-                                                </div>
-                                            </td>
-                                            
-                                            
-                                        </tr>
-                                    @endforeach
+                                        @if($utilisateurs->isEmpty())
+                                            <tr>
+                                                <td colspan="3" class="text-center">No data available</td>
+                                            </tr>
+                                        @else
+                                            @foreach($utilisateurs as $utilisateur)
+                                                <tr>
+                                                    <td>
+                                                        <figure>
+                                                            @if($utilisateur->image)
+                                                                <img src="{{ asset('users/' . $utilisateur->image) }}" alt="{{ $utilisateur->name }}">
+                                                            @else
+                                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($utilisateur->name) }}&background=104d93&color=fff" alt="{{ $utilisateur->name }}">
+                                                            @endif
+                                                        </figure>
+                                                        <h5>{{$utilisateur->name}}</h5>
+                                                    </td>
+                                                    <td>{{$utilisateur->email}}</td>
+                                                    <td>
+                                                        <div class="switch-btn">
+                                                            <input type="checkbox" hidden="hidden" id="switch{{ $utilisateur->id }}" @if($utilisateur->blocked) checked @endif onclick="toggleBlock({{ $utilisateur->id }})">
+                                                            <label class="switch" for="switch{{ $utilisateur->id }}"></label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
-                                   
-                                  
-
                                 </table>
+                                
                                 {{ $utilisateurs->links('vendor.pagination.default') }}
                             </div>
                         </div>
@@ -90,26 +90,33 @@
         });
     }
 
+    // Function to display toast notifications
     function showToast(type, message) {
-        // Example toast implementation, you can use a library like Toastify.js or customize this function
-        // This is a basic implementation using Bootstrap classes
-        const toast = document.createElement('div');
-        toast.classList.add('toast', `toast-${type}`, 'show', 'fw-bold');
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'assertive');
-        toast.setAttribute('aria-atomic', 'true');
-        toast.style.width = '400px'; // Set custom width
-        toast.style.maxHeight = '100px'; // Set custom max height
-        toast.style.overflow = 'auto'; // Allow scrolling if needed
-        toast.innerHTML = `
-            <div class="toast-body">
-                ${message}
-            </div>
-        `;
-        document.body.appendChild(toast);
-        $(toast).toast('show');
+        toastr.options = {
+            closeButton: true, // Add a close button
+            progressBar: true, // Show a progress bar
+            showMethod: 'slideDown', // Animation in
+            hideMethod: 'slideUp', // Animation out
+            timeOut: 5000, // Time before auto-dismiss
+        };
+
+        switch (type) {
+            case 'info':
+                toastr.info(message);
+                break;
+            case 'success':
+                toastr.success(message);
+                var audio = new Audio('audio.mp3');
+                audio.play();
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+        }
     }
 </script>
-
 
 @endsection

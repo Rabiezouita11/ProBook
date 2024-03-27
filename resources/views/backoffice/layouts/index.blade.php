@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="/backoffice/css/color.css">
 	<link rel="stylesheet" href="/backoffice/css/responsive.css">
 	<link href="/backoffice/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
 
 </head>
 
@@ -503,6 +504,7 @@
 	<script src="/backoffice/js/main.min.js"></script>
 	<script src="/backoffice/js/vivus.min.js"></script>
 	<script src="/backoffice/js/script.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 	<script src="/backoffice/plugins/apex/apexcharts.min.js"></script>
 	<script src="/backoffice/js/graphs-scripts.js"></script>
