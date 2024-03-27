@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserBlockedNotification;
 use App\Models\abonnements;
 use App\Models\Commentaire;
 use App\Models\jaime_commentaires;
 use App\Models\jaime_publications;
 use App\Models\Publication;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 
 class AdminController extends Controller
 {
@@ -54,11 +56,18 @@ public function toggleBlock($id)
     $user = User::findOrFail($id);
     $user->blocked = !$user->blocked; // Toggle the blocked status
     $user->save();
-    $message = $user->blocked ? "User '{$user->name}' blocked successfully." : "User '{$user->name}' unblocked successfully.";
+    $action = $user->blocked ? 'blocked' : 'unblocked';
+    $message = "User '{$user->name}' has been successfully {$action}.";
 
+    // Send email notification to the user
+    Queue::push(function ($job) use ($user, $action) {
+        Mail::to($user->email)->send(new UserBlockedNotification($user, $action));
+        $job->delete();
+    });
     // Return JSON response with the message
     return response()->json(['message' => $message]);
 }
+
 
 
 }
