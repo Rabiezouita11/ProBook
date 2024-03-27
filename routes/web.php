@@ -33,6 +33,8 @@ Route::get('/enter_verification_code', [App\Http\Controllers\ClientController::c
 
 Route::post('/verify/code', [App\Http\Controllers\ClientController::class, 'verify'])->name('verify.code');
 
+Route::post('/resend/code', [VerificationController::class, 'resend'])->name('resend.code');
+
 /* frontoffice*/
 
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');

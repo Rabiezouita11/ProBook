@@ -49,5 +49,16 @@ class ClientController extends Controller
             ]);
         }
     }
+    public function resend(Request $request)
+    {
+        // Logic to resend verification code
+        // You can send an email with the verification code to the user's email address
+        
+        // For demonstration purposes, let's assume the code is resent successfully
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Verification code resent successfully!',
+        ]);
+    }
     
 }
