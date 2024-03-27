@@ -29,11 +29,13 @@ Auth::routes();
 
 Route::get('/enter_verification_code', [App\Http\Controllers\ClientController::class, 'enter_verification_code'])->name('enter_verification_code');
 
-/* butoon  pour valider email*/
+/* button   envoyer code pour valider email*/
 
 Route::post('/verify/code', [App\Http\Controllers\ClientController::class, 'verify'])->name('verify.code');
 
-Route::post('/resend/code', [VerificationController::class, 'resend'])->name('resend.code');
+/* button  pour renvoyer code  email*/
+
+Route::post('/resend/code', [App\Http\Controllers\ClientController::class, 'resend'])->name('resend.code');
 
 /* frontoffice*/
 

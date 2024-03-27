@@ -28,7 +28,7 @@ class RedirectIfAuthenticated
 
             // Check if the user's email is verified
             if (!$user->email_verified && $user->role == 'utilisateur') {
-                return redirect('/verify-email');
+                return redirect('/verify/code');
             }
 
             // Redirect the user based on their role

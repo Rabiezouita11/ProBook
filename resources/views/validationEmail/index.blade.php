@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="/template_Authentification/style.css">
     <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body>
@@ -90,12 +92,16 @@
     $.ajax({
         type: 'POST',
         url: '/resend/code', // Route to resend verification code
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include the CSRF token in the request headers
+        },
         dataType: 'json',
         success: function(response) {
             showToast('success', response.message);
         },
         error: function(xhr, status, error) {
-            showToast('error', 'An error occurred while processing your request. Please try again later.');
+            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+            showToast('error', errorMessage);
         }
     });
 }
