@@ -106,34 +106,48 @@
     });
 }
 
-        function verifyEmail() {
-            // Perform AJAX request to verify the email
-           
-          
-
-            $.ajax({
-                type: 'POST',
-                url: '/verify/code',
-                data: $('#verificationForm').serialize(), // Assuming your form has an ID of 'verificationForm'
-                dataType: 'json',
-                success: function(response) {
-                    // Check the status of the response
-                    if (response.status === 'success') {
-                        // Show success toastr message
-                        showToast('success', response.message);
-                        // Redirect to the home page or perform any other action
-                        window.location.href = '/home';
-                    } else {
-                        // Show error toastr message
-                        showToast('error', response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Show error toastr message
-                    showToast('error', 'An error occurred while processing your request. Please try again later.');
-                }
-            });
+function verifyEmail() {
+    // Perform AJAX request to verify the email
+    $.ajax({
+        type: 'POST',
+        url: '/verify/code',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include the CSRF token in the request headers
+        },
+        data: $('#verificationForm').serialize(), // Assuming your form has an ID of 'verificationForm'
+        dataType: 'json',
+        success: function(response) {
+            // Check the status of the response
+            if (response.status === 'success') {
+                // Show success toastr message
+                showToast('success', response.message);
+                // Redirect to the home page or perform any other action
+                window.location.href = '/home';
+            } 
+        },
+        error: function(xhr, status, error) {
+            // Show error toastr message
+            if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.verification_code) {
+                var errorMessage = xhr.responseJSON.errors.verification_code[0];
+                showToast('error', errorMessage);
+            } else {
+                var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+                showToast('error', errorMessage);
+            }
         }
+    });
+}
+
+// Bind the verifyEmail function to the form submission event
+$('#verificationForm').submit(function(event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    verifyEmail(); // Call the verifyEmail function
+});
+
+// Bind the verifyEmail function to the click event of the "Verify" button
+$('#verificationForm').find('.fxt-btn-fill').click(verifyEmail);
+
+
 
         function showToast(type, message) {
             toastr.options = {

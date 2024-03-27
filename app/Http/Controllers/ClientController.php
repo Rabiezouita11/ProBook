@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationCodeMail;
+use Illuminate\Support\Carbon;
 
 class ClientController extends Controller
 {
@@ -49,28 +50,28 @@ class ClientController extends Controller
             // Verification code does not match
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid verification code. Please try again.',
-            ]);
+                'errors' => ['verification_code' => ['Invalid verification code. Please try again.']],
+            ], 422);
         }
     }
     public function resend(Request $request)
     {
+        $waitTime = 60; // Wait time in seconds
+    $currentTime = Carbon::now();
         // Check if the user has already requested to resend the code recently
-        if ($request->session()->has('code_resend_time')) {
-            // Calculate the time elapsed since the last resend request
-            $currentTime = now();
-            $lastResendTime = $request->session()->get('code_resend_time');
-            $timeElapsed = $currentTime->diffInSeconds($lastResendTime);
+        if (session()->has('code_resend_time')) {
+            $lastResendTime = session('code_resend_time');
+            $secondsSinceLastResend = $currentTime->diffInSeconds($lastResendTime);
     
-            // If less than 60 seconds have elapsed, return an error response
-            if ($timeElapsed < 60) {
+            // Check if the time elapsed since the last resend is less than the desired interval
+            if ($secondsSinceLastResend < $waitTime) {
+                $remainingTime = $waitTime - $secondsSinceLastResend;
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Please wait for 60 seconds before resending the code again.'
-                ], 429); // 429 indicates "Too Many Requests" status code
+                    'message' => 'Please wait for ' . $remainingTime . ' seconds before resending the code again.'
+                ], 429); // Return 429 status code for too many requests
             }
         }
-    
         // If the time elapsed is more than 60 seconds or it's the first request, proceed with resending the code
         $verificationCode = Str::random(6); // Generate a new verification code
         $user = auth()->user();
@@ -83,7 +84,10 @@ class ClientController extends Controller
         $request->session()->put('code_resend_time', now());
     
         // Send the verification code via email (queue it for asynchronous processing if needed)
-    
+        Queue::push(function ($job) use ($user,  $verificationCode) {
+            Mail::to($user->email)->send(new VerificationCodeMail($user, $verificationCode));
+            $job->delete();
+        });
         return response()->json([
             'status' => 'success',
             'message' => 'Verification code resent successfully!',
