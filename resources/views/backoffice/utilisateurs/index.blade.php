@@ -106,7 +106,7 @@
                 break;
             case 'success':
                 toastr.success(message);
-                var audio = new Audio('audio.mp3');
+                var audio = new Audio('audio.wav');
                 audio.play();
                 break;
             case 'warning':
