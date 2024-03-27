@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,14 @@ use Illuminate\Support\Facades\Route;
 /* authentification*/
 Auth::routes();
 
+/* page affiche pour valider email*/
+
+Route::get('/enter_verification_code', [App\Http\Controllers\ClientController::class, 'enter_verification_code'])->name('enter_verification_code');
+
+/* butoon  pour valider email*/
+
+Route::post('/verify/code', [App\Http\Controllers\ClientController::class, 'verify'])->name('verify.code');
+
 /* frontoffice*/
 
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');
@@ -37,5 +46,6 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->na
 /* shwo page utilisateurs admin*/
 Route::get('/utilisateurs', [App\Http\Controllers\AdminController::class, 'showPageUtilisateurs'])->name('showPageUtilisateurs');
 /* button bloquer debloquer utilisateurs admin*/
-
 Route::post('/users/{id}/toggle-block', [App\Http\Controllers\AdminController::class, 'toggleBlock'])->name('users.toggleBlock');
+
+

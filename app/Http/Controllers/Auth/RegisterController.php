@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\VerificationCodeMail;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Queue;
 
 class RegisterController extends Controller
 {
@@ -83,6 +87,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+      $verificationCode = Str::random(6); // Generate a random verification code
+
       $imageName = null;
       if (isset($data['image'])) {
         // Check if the 'public/users' folder exists, if not, create it
@@ -95,13 +101,22 @@ class RegisterController extends Controller
         $data['image']->move($uploadPath, $imageName); // Move uploaded file to 'public/users' folder
     }
 
-        return User::create([
+            $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'role' => 'utilisateur', 
             'password' => Hash::make($data['password']),
             'image' => $imageName, // Save the filename in the 'image' column
+            'email_verified' => false, // Set email verification status to false
+            'verification_code' => $verificationCode, // Save the verification code
 
         ]);
+        Queue::push(function ($job) use ($user,  $verificationCode) {
+          Mail::to($user->email)->send(new VerificationCodeMail($user, $verificationCode));
+          $job->delete();
+      });
+       
+        return $user;
+
     }
 }

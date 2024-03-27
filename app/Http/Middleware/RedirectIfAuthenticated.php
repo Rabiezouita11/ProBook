@@ -20,11 +20,18 @@ class RedirectIfAuthenticated
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
 
-            if ($user->blocked) {
+            // Check if the user's account is blocked
+            if ($user->blocked && $user->role == 'utilisateur') {
                 Auth::logout();
                 return redirect('/login')->with('error', 'Your account is blocked.');
             }
 
+            // Check if the user's email is verified
+            if (!$user->email_verified && $user->role == 'utilisateur') {
+                return redirect('/verify-email');
+            }
+
+            // Redirect the user based on their role
             switch ($user->role) {
                 case 'admin':
                     return redirect('/admin');
