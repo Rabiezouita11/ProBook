@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class RegisterController extends Controller
 {
@@ -68,6 +69,8 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'role' => ['required', 'string', 'max:255'],
+            'image' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'], // Add validation rules for the image
+
 
         ]);
     }
@@ -80,11 +83,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+      $imageName = null;
+      if (isset($data['image'])) {
+        // Check if the 'public/users' folder exists, if not, create it
+        $uploadPath = public_path('users');
+        if (!File::isDirectory($uploadPath)) {
+            File::makeDirectory($uploadPath, 0777, true, true);
+        }
+
+        $imageName = time() . '.' . $data['image']->extension(); // Generate unique filename
+        $data['image']->move($uploadPath, $imageName); // Move uploaded file to 'public/users' folder
+    }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'role' => 'utilisateur', 
             'password' => Hash::make($data['password']),
+            'image' => $imageName, // Save the filename in the 'image' column
+
         ]);
     }
 }

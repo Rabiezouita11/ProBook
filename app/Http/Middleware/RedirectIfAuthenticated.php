@@ -15,23 +15,29 @@ class RedirectIfAuthenticated
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $guard = null) {
+    public function handle($request, Closure $next, $guard = null)
+    {
         if (Auth::guard($guard)->check()) {
-          $role = Auth::user()->role; 
-      
-          switch ($role) {
-            case 'admin':
-               return redirect('/admin');
-               break;
-            case 'utilisateur':
-               return redirect('/home');
-               break; 
-      
-            default:
-               return redirect('/home'); 
-               break;
-          }
+            $user = Auth::user();
+
+            if ($user->blocked) {
+                Auth::logout();
+                return redirect('/login')->with('error', 'Your account is blocked.');
+            }
+
+            switch ($user->role) {
+                case 'admin':
+                    return redirect('/admin');
+                    break;
+                case 'utilisateur':
+                    return redirect('/home');
+                    break;
+                default:
+                    return redirect('/home');
+                    break;
+            }
         }
+
         return $next($request);
-      }
+    }
 }

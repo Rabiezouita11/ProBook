@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="panel-content">
-				<h4 class="main-title">Dashboard</h4>
+				<h4 class="main-title">Welcome To ProBook</h4>
 				<div class="row merged20 mb-4">
 					<div class="col-lg-4 col-md-4 col-sm-4">
 						<div class="d-widget soft-red">

@@ -43,6 +43,7 @@
                         <a href="{{route('register')}}" class="switcher-text1">Register</a>
                     </div>
                 </div>
+        
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">                        
                         <div class="fxt-header">
@@ -55,7 +56,11 @@
                             <div class="fxt-transformY-50 fxt-transition-delay-2">     
                                 <p>Log in to continue in our website</p>
                             </div>
-                           
+                            @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
                     <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="form-group">                                                

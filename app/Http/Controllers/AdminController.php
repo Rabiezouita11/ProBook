@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-      /**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -40,10 +40,25 @@ class AdminController extends Controller
             'userCount' => $userCount,
         ]);
     }
+    public function showPageUtilisateurs()
+{
+    // Retrieve users with role 'utilisateur' with pagination
+    $utilisateurs = User::where('role', 'utilisateur')->paginate(6); // Change 10 to the number of users per page you desire
+
+    return view('backoffice.utilisateurs.index', ['utilisateurs' => $utilisateurs]);
+}
 
 
+public function toggleBlock($id)
+{
+    $user = User::findOrFail($id);
+    $user->blocked = !$user->blocked; // Toggle the blocked status
+    $user->save();
+    $message = $user->blocked ? "User '{$user->name}' blocked successfully." : "User '{$user->name}' unblocked successfully.";
 
-
+    // Return JSON response with the message
+    return response()->json(['message' => $message]);
+}
 
 
 }

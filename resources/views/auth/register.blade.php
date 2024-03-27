@@ -7,20 +7,20 @@
     <title>Xmee | Login and Register Form Html Templates</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
- <!-- Favicon -->
- <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/favicon.png">
-	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="/template_Authentification/css/bootstrap.min.css">
-	<!-- Fontawesome CSS -->
-	<link rel="stylesheet" href="/template_Authentification/css/fontawesome-all.min.css">
-	<!-- Vegas CSS -->
-	<link rel="stylesheet" href="/template_Authentification/css/vegas.min.css">
-	<!-- Flaticon CSS -->
-	<link rel="stylesheet" href="/template_Authentification/font/flaticon.css">
-	<!-- Google Web Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
-	<!-- Custom CSS -->
-	<link rel="stylesheet" href="/template_Authentification/style.css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/favicon.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/template_Authentification/css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="/template_Authentification/css/fontawesome-all.min.css">
+    <!-- Vegas CSS -->
+    <link rel="stylesheet" href="/template_Authentification/css/vegas.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="/template_Authentification/font/flaticon.css">
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/template_Authentification/style.css">
 </head>
 
 <body>
@@ -33,74 +33,96 @@
             <div class='line2'></div>
             <div class='line3'></div>
         </div>
-    </div>      
+    </div>
     <section class="fxt-template-animation fxt-template-layout29">
         <div class="container-fluid">
             <div class="row">
-                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/template_Authentification/img/figure/bg29-l-1.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-2.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-3.jpg"}]}'>                  
+                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide"
+                    data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/template_Authentification/img/figure/bg29-l-1.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-2.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-3.jpg"}]}'>
                     <div class="fxt-page-switcher">
                         <a href="{{route('login')}}" class="switcher-text1">Login</a>
                         <a href="{{route('register')}}" class="switcher-text1 active">Register</a>
                     </div>
                 </div>
                 <div class="col-md-6 col-12 fxt-bg-color">
-                    <div class="fxt-content">                        
+                    <div class="fxt-content">
                         <div class="fxt-header">
-                            <a href="{{route('login')}}" class="fxt-logo"><img src="/template_Authentification/img/logo-29.png" alt="Logo"></a>                            
+                            <a href="{{route('login')}}" class="fxt-logo"><img
+                                    src="/template_Authentification/img/logo-29.png" alt="Logo"></a>
                         </div>
                         <div class="fxt-form">
-                            <div class="fxt-transformY-50 fxt-transition-delay-1">   
-                                <h2>Register</h2>   
+                            <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                <h2>Register</h2>
                             </div>
-                            <div class="fxt-transformY-50 fxt-transition-delay-2">     
+                            <div class="fxt-transformY-50 fxt-transition-delay-2">
                                 <p>Create an account free and enjoy it</p>
                             </div>
-                            <form method="POST" action="{{ route('register') }}">
-                        @csrf                              
-                          <div class="form-group">                                                
-                                    <div class="fxt-transformY-50 fxt-transition-delay-1">                                                
-                                        <input id="name" type="text" class="form-control  @error('name') is-invalid @enderror" placeholder="Name" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <input id="name" type="text"
+                                            class="form-control  @error('name') is-invalid @enderror" placeholder="Name"
+                                            name="name" value="{{ old('name') }}" required autocomplete="name"
+                                            autofocus>
 
-@error('name')
-    <span class="invalid-feedback" role="alert">
-        <strong>{{ $message }}</strong>
-    </span>
-@enderror
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                         <i class="flaticon-user"></i>
                                     </div>
                                 </div>
-                                <div class="form-group">                                                
-                                    <div class="fxt-transformY-50 fxt-transition-delay-1">                                                
-      
-                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Address" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                        <input id="email" type="email"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            placeholder="Email Address" name="email" value="{{ old('email') }}" required
+                                            autocomplete="email">
+
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                         <i class="flaticon-envelope"></i>
                                     </div>
                                 </div>
-                                <div class="form-group">                                                
-                                    <div class="fxt-transformY-50 fxt-transition-delay-2">                                                
-                                        
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" name="password" required autocomplete="new-password">
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                                        @error('image')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-2">
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                        <input id="password" type="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            placeholder="Password" name="password" required autocomplete="new-password">
+
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                         <i class="flaticon-padlock"></i>
                                     </div>
                                 </div>
-                                <div class="form-group">                                                
-                                    <div class="fxt-transformY-50 fxt-transition-delay-2">                                                
-                                        
-                                        
-                                        <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
-                              
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-2">
+
+
+                                        <input id="password-confirm" type="password" class="form-control"
+                                            placeholder="Confirm Password" name="password_confirmation" required
+                                            autocomplete="new-password">
+
                                         <i class="flaticon-padlock"></i>
                                     </div>
                                 </div>
@@ -109,8 +131,8 @@
                                         <button type="submit" class="fxt-btn-fill">Register</button>
                                     </div>
                                 </div>
-                            </form>                            
-                        </div> 
+                            </form>
+                        </div>
                         <div class="fxt-footer">
                             <div class="fxt-transformY-50 fxt-transition-delay-8">
                                 <h3>Or Login With:</h3>
@@ -134,21 +156,21 @@
                             </ul>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     </section>
-	<script src="/template_Authentification/js/jquery-3.5.0.min.js"></script>
-	<!-- Bootstrap js -->
-	<script src="/template_Authentification/js/bootstrap.min.js"></script>
-	<!-- Imagesloaded js -->
-	<script src="/template_Authentification/js/imagesloaded.pkgd.min.js"></script>
-	<!-- Vegas js -->
-	<script src="/template_Authentification/js/vegas.min.js"></script>
-	<!-- Validator js -->
-	<script src="/template_Authentification/js/validator.min.js"></script>
-	<!-- Custom Js -->
-	<script src="/template_Authentification/js/main.js"></script>
+    <script src="/template_Authentification/js/jquery-3.5.0.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="/template_Authentification/js/bootstrap.min.js"></script>
+    <!-- Imagesloaded js -->
+    <script src="/template_Authentification/js/imagesloaded.pkgd.min.js"></script>
+    <!-- Vegas js -->
+    <script src="/template_Authentification/js/vegas.min.js"></script>
+    <!-- Validator js -->
+    <script src="/template_Authentification/js/validator.min.js"></script>
+    <!-- Custom Js -->
+    <script src="/template_Authentification/js/main.js"></script>
 
 </body>
 

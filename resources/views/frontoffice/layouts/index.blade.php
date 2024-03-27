@@ -25,7 +25,7 @@
 	<div class="responsive-header">
 		<div class="logo res"><img src="/frontoffice/images/logo.png" alt=""><span>Socimo</span></div>
 		<div class="user-avatar mobile">
-			<a href="profile.html" title="View Profile"><img alt="" src="/frontoffice/images/resources/user.jpg"></a>
+			<a href="profile.html" title="View Profile"><img alt="" src="{{ asset('users/' . Auth::user()->image) }}"></a>
 			<div class="name">
 				<h4>Danial Cardos</h4>
 				<span>Ontario, Canada</span>
@@ -105,9 +105,13 @@
 				<li>
 					<div class="user-dp">
 						<a href="profile-page2.html" title="">
-							<img alt="" src="/frontoffice/images/resources/user.jpg">
+						@if (Auth::user()->image)
+						<img alt="" src="{{ asset('users/' . Auth::user()->image) }}">
+                            @else
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=104d93&color=fff" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;">
+                            @endif
 							<div class="name">
-								<h4>Danial Cardos</h4>
+								<h4>{{Auth::user()->name}}</h4>
 							</div>
 						</a>	
 					</div>

@@ -30,4 +30,12 @@ Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->na
 
 
 /* backoffice*/
+
+/* shwo page dashboard admin*/
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+
+/* shwo page utilisateurs admin*/
+Route::get('/utilisateurs', [App\Http\Controllers\AdminController::class, 'showPageUtilisateurs'])->name('showPageUtilisateurs');
+/* button bloquer debloquer utilisateurs admin*/
+
+Route::post('/users/{id}/toggle-block', [App\Http\Controllers\AdminController::class, 'toggleBlock'])->name('users.toggleBlock');

@@ -28,6 +28,11 @@ class LoginController extends Controller
      */
     public function redirectTo() {
         $role = Auth::user()->role; 
+        $user = Auth::user();
+
+        if ($user->blocked) {
+          return '/blocked'; // Redirect to a page indicating the user is blocked
+      }
         switch ($role) {
           case 'admin':
             return '/admin';
