@@ -80,7 +80,7 @@
 						<a href="profile-page2.html" title="">
 							<img src="/backoffice/images/resources/user.jpg" alt="">
 							<div class="name">
-								<h4>Danial Cardos</h4>
+								<h4>{{ auth()->user()->name }}</h4>
 							</div>
 						</a>	
 					</div>
