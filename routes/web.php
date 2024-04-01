@@ -44,12 +44,24 @@ Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->na
 
 /* backoffice*/
 
-/* shwo page dashboard admin*/
+/* show page dashboard admin*/
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
-/* shwo page utilisateurs admin*/
+/* show page utilisateurs admin*/
 Route::get('/utilisateurs', [App\Http\Controllers\AdminController::class, 'showPageUtilisateurs'])->name('showPageUtilisateurs');
 /* button bloquer debloquer utilisateurs admin*/
 Route::post('/users/{id}/toggle-block', [App\Http\Controllers\AdminController::class, 'toggleBlock'])->name('users.toggleBlock');
+
+/* show page profile admin*/
+
+Route::get('/showProfile', [App\Http\Controllers\AdminController::class, 'showProfile'])->name('showProfile');
+
+
+/* button update  compte admin*/
+Route::put('/update-email-name', [App\Http\Controllers\AdminController::class, 'updateEmailName'])->name('update.email.name');
+
+/* button update  mot de passe  admin*/
+
+Route::put('/update-password', [App\Http\Controllers\AdminController::class, 'updatePassword'])->name('update.password');
 
 

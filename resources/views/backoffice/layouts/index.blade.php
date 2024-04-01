@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="/backoffice/css/responsive.css">
 	<link href="/backoffice/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 
@@ -34,7 +35,7 @@
 			<div class="res-logo"><img src="/backoffice/images/logo.png" alt=""></div>
 
 			<div class="user-avatar mobile">
-				<a href="profile.html" title="View Profile"><img alt="" src="/backoffice/images/resources/user.jpg"></a>
+				<a href="'{{route('showProfile')}}'" title="View Profile"><img alt="" src="/backoffice/images/resources/user.jpg"></a>
 				<div class="name">
 					<h4>Saim Turan</h4>
 					<span>Antalaya, Turky</span>
@@ -55,7 +56,7 @@
 						</i>
 					</div>
 					<ul class="drop-menu">
-						<li><a title="profile.html" href="profile.html"><i class="icofont-user-alt-1"></i>Your
+						<li><a title="profile.html" href="{{route('showProfile')}}"><i class="icofont-user-alt-1"></i>Your
 								Profile</a></li>
 						<li><a title="" href="#"><i class="icofont-question-circle"></i>Help</a></li>
 						<li><a title="" href="#"><i class="icofont-gear"></i>Setting</a></li>
@@ -101,7 +102,7 @@
 							<a href="profile-page2.html" title="">
 								<img src="/backoffice/images/resources/user.jpg" alt="">
 								<div class="name">
-									<h4>{{ auth()->user()->name }}</h4>
+									<h4  id="userName">{{ auth()->user()->name }}</h4>
 								</div>
 							</a>
 						</div>
@@ -165,7 +166,7 @@
 							</i>
 						</a>
 						<ul class="dropdown">
-							<li><a href="profile.html" title=""><i class="icofont-user-alt-3"></i> Your Profile</a></li>
+							<li><a href="{{route('showProfile')}}" title=""><i class="icofont-user-alt-3"></i> Your Profile</a></li>
 							<li><a href="add-new-course.html" title=""><i class="icofont-plus"></i> New Course</a></li>
 							<li><a class="invite-new" href="#" title=""><i class="icofont-brand-slideshare"></i> Invite
 									Collegue</a></li>
@@ -253,7 +254,7 @@
 					</a>
 				</li>
 				<li class="">
-					<a class="" href="profile.html" title="">
+					<a class="" href="{{route('showProfile')}}" title="">
 						<i><svg id="ab1" class="feather feather-users" stroke-linejoin="round" stroke-linecap="round"
 								stroke-width="2" stroke="currentColor" fill="none" viewBox="0 0 24 24" height="14"
 								width="14" xmlns="http://www.w3.org/2000/svg">

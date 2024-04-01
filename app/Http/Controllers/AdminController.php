@@ -11,7 +11,9 @@ use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     /**
@@ -23,6 +25,7 @@ class AdminController extends Controller
     {
         $this->middleware(['auth', 'role:admin']);
     }
+
     public function index()
     {
         // Count records in each table
@@ -33,7 +36,7 @@ class AdminController extends Controller
         $publicationsCount = Publication::count();
         $userCount = User::where('role', 'utilisateur')->count();
 
-        return view("backoffice.home.index", [
+        return view('backoffice.home.index', [
             'abonnementsCount' => $abonnementsCount,
             'commentairesCount' => $commentairesCount,
             'jaimeCommentairesCount' => $jaimeCommentairesCount,
@@ -42,32 +45,83 @@ class AdminController extends Controller
             'userCount' => $userCount,
         ]);
     }
+
     public function showPageUtilisateurs()
+    {
+        // Retrieve users with role 'utilisateur' with pagination
+        $utilisateurs = User::where('role', 'utilisateur')->paginate(6);  // Change 10 to the number of users per page you desire
+
+        return view('backoffice.utilisateurs.index', ['utilisateurs' => $utilisateurs]);
+    }
+
+    public function toggleBlock($id)
+    {
+        $user = User::findOrFail($id);
+        $user->blocked = !$user->blocked;  // Toggle the blocked status
+        $user->save();
+        $action = $user->blocked ? 'blocked' : 'unblocked';
+        $message = "User '{$user->name}' has been successfully {$action}.";
+
+        // Send email notification to the user
+        Queue::push(function ($job) use ($user, $action) {
+            Mail::to($user->email)->send(new UserBlockedNotification($user, $action));
+            $job->delete();
+        });
+        // Return JSON response with the message
+        return response()->json(['message' => $message]);
+    }
+
+    public function showProfile()
+    {
+        return view('backoffice.Profile.index');
+    }
+
+    public function updateEmailName(Request $request)
 {
-    // Retrieve users with role 'utilisateur' with pagination
-    $utilisateurs = User::where('role', 'utilisateur')->paginate(6); // Change 10 to the number of users per page you desire
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'email' => 'required|email',
+        'name' => 'required|string|max:255',
+    ]);
 
-    return view('backoffice.utilisateurs.index', ['utilisateurs' => $utilisateurs]);
-}
+    // Get the authenticated user
+    $user = Auth::user();
 
+    // Update the user's email and name
+    $user->email = $validatedData['email'];
+    $user->name = $validatedData['name'];
 
-public function toggleBlock($id)
-{
-    $user = User::findOrFail($id);
-    $user->blocked = !$user->blocked; // Toggle the blocked status
+    // Save the updated user to the database
     $user->save();
-    $action = $user->blocked ? 'blocked' : 'unblocked';
-    $message = "User '{$user->name}' has been successfully {$action}.";
 
-    // Send email notification to the user
-    Queue::push(function ($job) use ($user, $action) {
-        Mail::to($user->email)->send(new UserBlockedNotification($user, $action));
-        $job->delete();
-    });
-    // Return JSON response with the message
-    return response()->json(['message' => $message]);
+    // Show a success toast message
+    return response()->json(['message' => 'Email and name updated successfully.']);
 }
 
+public function updatePassword(Request $request)
+{
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'current_password' => 'required',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
+    // Check if the current password matches the authenticated user's password
+    if (!Hash::check($request->current_password, Auth::user()->password)) {
+        return response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => [
+                'current_password' => ['Current password is incorrect.'],
+            ],
+        ], 422);
+    }
 
+    // Update the user's password
+    $user = Auth::user();
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    // Return a success response
+    return response()->json(['message' => 'Password updated successfully.']);
+}
 }
