@@ -23,24 +23,21 @@
 											<span id="date"></span>
 										</div>
 									</div>
-									<div class="widget">
-										<h4 class="widget-title">Complete Your Profile</h4>
-										<span>Your Profile is missing followings!</span>
-										<div data-progress="tip" class="progress__outer" data-value="0.67">
-											<div class="progress__inner">82%</div>
-										</div>
-										<ul class="prof-complete">
-											<li><i class="icofont-plus-square"></i> <a href="#" title="">Upload Your Picture</a><em>10%</em></li>
-											<li><i class="icofont-plus-square"></i> <a href="#" title="">Your University?</a><em>20%</em></li>
-											<li><i class="icofont-plus-square"></i> <a href="#" title="">Add Payment Method</a><em>20%</em></li>
-										</ul>
-									</div><!-- complete profile widget -->
-									<div class="advertisment-box">
-										<h4 class=""><i class="icofont-info-circle"></i> advertisment</h4>
-										<figure>
-											<a href="#" title="Advertisment"><img src="/frontoffice/images/resources/ad-widget2.gif" alt=""></a>
-										</figure>
-									</div><!-- adversment widget -->
+									@if (auth()->check())
+    <div class="widget">
+        <h4 class="widget-title">Complete Your Profile</h4>
+        <span>Your Profile is missing followings!</span>
+        <div data-progress="tip" class="progress__outer" data-value="0.67">
+            <div class="progress__inner">82%</div>
+        </div>
+        <ul class="prof-complete">
+            <li><i class="icofont-plus-square"></i> <a href="#" title="">Upload Your Picture</a><em>10%</em></li>
+            <li><i class="icofont-plus-square"></i> <a href="#" title="">Your University?</a><em>20%</em></li>
+            <li><i class="icofont-plus-square"></i> <a href="#" title="">Add Payment Method</a><em>20%</em></li>
+        </ul>
+    </div><!-- complete profile widget -->
+@endif
+									
 									
 									<div class="widget">
 										<h4 class="widget-title"><i class="icofont-flame-torch"></i> Popular Courses</h4>
@@ -93,6 +90,8 @@
 											</li>
 										</ul>
 									</div><!-- recent blog -->
+
+									@if (auth()->check())
 									<div class="widget">
 										<h4 class="widget-title">Your profile has a new Experience section</h4>
 										<p>
@@ -100,6 +99,7 @@
 										</p>
 										<a class="main-btn" href="profile.html" title="" data-ripple="">view profile</a>
 									</div><!-- your profile -->
+									@endif
 									<div class="widget web-links stick-widget">
 										<h4 class="widget-title">Useful Links <a title="" href="#" class="see-all">See All</a></h4>
 										<ul>
@@ -123,6 +123,7 @@
 									<li><a href="#" title="">Recent</a></li>
 									<li><a href="#" title="">Favourit</a></li>
 								</ul><!-- tab buttons -->
+								@if(auth()->check())
 								<div class="main-wraper">
 									<span class="new-title">Create New Post</span>
 									<div class="new-post">
@@ -152,6 +153,58 @@
 										</ul>
 									</div>
 								</div><!-- create new post -->
+								@else
+								<div class="main-wrapper">
+    <div class="new-post">
+        <span class="new-title">Create New Post</span>
+        <div class="login-prompt">
+            <p>To create a new post, please</p>
+            <div class="auth-links">
+                <a href="{{ route('login') }}" class="login-link">Log In</a>
+                <span class="separator">or</span>
+                <a href="{{ route('register') }}" class="register-link">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+<style>
+	.login-prompt {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.separator {
+    margin: 0 10px;
+}
+
+.login-link,
+.register-link {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.login-link:hover,
+.register-link:hover {
+    background-color: #2980b9;
+}
+
+</style>
+
+<br>
+<br>
+@if (auth()->check())
+
 								<div class="story-card">
 									<div class="story-title">
 										<h5>Recent Stories</h5>
@@ -194,10 +247,47 @@
 										<span>Emma Watson</span>
 									</div>
 								</div><!-- stories -->
+								@else
+								<div class="story-card">
+    <div class="story-title">
+        <h5>Login or Register to View Stories</h5>
+    </div>
+    <div class="story-title">
+        <div class="login-register-message">
+            <p>Please <a href="{{ route('login') }}">log in</a> or <a href="{{ route('register') }}">register</a> to view stories or add your own.</p>
+        </div>
+    </div>
+</div><!-- stories -->
+
+@endif
+<style>
+	
+
+.story-title {
+    margin-bottom: 10px;
+}
+
+.login-register-message p {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+}
+
+.login-register-message a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-register-message a:hover {
+    text-decoration: underline;
+}
+
+</style>
+@if (auth()->check())
 								<div class="main-wraper">
 									<div class="chatroom-title">
 										<i>
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tv"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg></i>
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tv"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg></i>
 										<span>Chat Rooms <em>Video chat with friends</em></span>
 										<a class="create-newroom" href="#" title="">Create Room</a>
 									</div>
@@ -249,6 +339,10 @@
 										</li>
 									</ul>
 								</div><!-- chat rooms -->
+								@endif
+
+								@if (auth()->check())
+
 								<div class="main-wraper">
 									<div class="user-post">
 										<div class="friend-info">
@@ -282,6 +376,7 @@
 										</div>
 									</div>
 								</div><!-- suggested friends -->
+								@endif
 								<div class="main-wraper">
 									<div class="user-post">
 										<div class="friend-info">
@@ -2606,62 +2701,8 @@
 							</div>
 							<div class="col-lg-3">
 								<aside class="sidebar static right">
-									<div class="widget">
-										<h4 class="widget-title">Your Groups</h4>
-										<ul class="ak-groups">
-											<li>
-												<figure><img src="/frontoffice/images/resources/your-group1.jpg" alt=""></figure>
-												<div class="your-grp">
-													<h5><a href="group-detail.html" title="">Good Group</a></h5>
-													<a href="#" title=""><i class="icofont-bell-alt"></i>Notifilactions <span>13</span></a>
-													<a href="group-feed.html" title="" class="promote">view feed</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="/frontoffice/images/resources/your-group2.jpg" alt=""></figure>
-												<div class="your-grp">
-													<h5><a href="group-detail.html" title="">E-course Group</a></h5>
-													<a href="#" title=""><i class="icofont-bell-alt"></i>Notifilactions <span>13</span></a>
-													<a href="group-feed.html" title="" class="promote">view feed</a>
-												</div>
-											</li>
-										</ul>
-									</div><!-- Your groups -->
-									<div class="widget">
-										<h4 class="widget-title">Suggested Group</h4>
-										<div class="sug-caro">
-											<div class="friend-box">
-												<figure>
-													<img alt="" src="/frontoffice/images/resources/sidebar-info.jpg">
-													<span>Members: 505K</span>
-												</figure>
-												<div class="frnd-meta">
-													<img alt="" src="/frontoffice/images/resources/frnd-figure2.jpg">
-													<div class="frnd-name">
-														<a title="" href="#">Social Research</a>
-														<span>@biolabest</span>
-
-													</div>
-													<a class="main-btn2" href="#" title="">Join Community</a>
-												</div>
-											</div>
-											<div class="friend-box">
-												<figure>
-													<img alt="" src="/frontoffice/images/resources/sidebar-info2.jpg">
-													<span>Members: 505K</span>
-												</figure>
-												<div class="frnd-meta">
-													<img alt="" src="/frontoffice/images/resources/frnd-figure3.jpg">
-													<div class="frnd-name">
-														<a title="" href="#">Bio Labest Group</a>
-														<span>@biolabest</span>
-
-													</div>
-													<a class="main-btn2" href="#" title="">Join Community</a>
-												</div>
-											</div>
-										</div>	
-									</div><!-- suggested group -->
+								
+									
 									<div class="widget">
 										<h4 class="widget-title">Ask Research Question?</h4>
 										<div class="ask-question">
@@ -2670,38 +2711,8 @@
 											<a class="ask-qst" href="#" title="">Ask a question</a>
 										</div>
 									</div><!-- ask question widget -->
-									<div class="widget">
-										<h4 class="widget-title">Explor Events <a class="see-all" href="#" title="">See All</a></h4>
-										<div class="rec-events bg-purple">
-											<i class="icofont-gift"></i>
-											<h6><a title="" href="">BZ University good night event in columbia</a></h6>
-											<img alt="" src="/frontoffice/images/clock.png">
-										</div>
-										<div class="rec-events bg-blue">
-											<i class="icofont-microphone"></i>
-											<h6><a title="" href="">The 3rd International Conference 2020</a></h6>
-											<img alt="" src="/frontoffice/images/clock.png">
-										</div>
-									</div><!-- event widget -->
-									<div class="widget">
-										<span><i class="icofont-globe"></i> Sponsored</span>
-										<ul class="sponsors-ad">
-											<li>
-												<figure><img src="/frontoffice/images/resources/sponsor.jpg" alt=""></figure>
-												<div class="sponsor-meta">
-													<h5><a href="#" title="">IQ Options Broker</a></h5>
-													<a href="#" title="" target="_blank">www.iqvie.com</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="/frontoffice/images/resources/sponsor2.jpg" alt=""></figure>
-												<div class="sponsor-meta">
-													<h5><a href="#" title="">BM Fashion Designer</a></h5>
-													<a href="#" title="" target="_blank">www.abcd.com</a>
-												</div>
-											</li>
-										</ul>
-									</div><!-- sponsord -->
+									
+									
 									<div class="widget stick-widget">
 										<h4 class="widget-title">Who's follownig</h4>
 										<ul class="followers" >
