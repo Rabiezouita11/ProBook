@@ -17,6 +17,7 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        // Check if the user is authenticated
         if (Auth::guard($guard)->check()) {
             $user = Auth::user();
 
@@ -45,6 +46,7 @@ class RedirectIfAuthenticated
             }
         }
 
+        // If the user is not authenticated, allow access to the route
         return $next($request);
     }
 }

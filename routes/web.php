@@ -44,7 +44,8 @@ Route::post('/resend/code', [App\Http\Controllers\ClientController::class, 'rese
 
 /* frontoffice*/
 
-Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');
+
 
 
 /* backoffice*/
