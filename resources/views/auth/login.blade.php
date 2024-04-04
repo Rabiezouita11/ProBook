@@ -37,7 +37,7 @@
     <section class="fxt-template-animation fxt-template-layout29">
         <div class="container-fluid">
             <div class="row">
-                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/template_Authentification/img/figure/bg29-l-1.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-2.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-3.jpg"}]}'>                  
+                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/image1.jpg"}, {"src": "/image2.jpg"}, {"src": "/image3.jpg"}]}'>                  
                     <div class="fxt-page-switcher">
                         <a href="{{route('login')}}" class="switcher-text1 active">Login</a>
                         <a href="{{route('register')}}" class="switcher-text1">Register</a>
