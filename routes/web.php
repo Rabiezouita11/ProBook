@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\Auth;
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+/* Page blocked */
+
+Route::get('/blocked', [App\Http\Controllers\BlokedController::class, 'index']);
+
+
 
 /* authentification*/
 Auth::routes();
