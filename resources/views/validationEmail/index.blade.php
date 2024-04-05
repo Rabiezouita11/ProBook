@@ -48,18 +48,26 @@
                             <form id="verificationForm" method="POST" action="{{ route('verify.code') }}">
                                 @csrf
                                 <!-- Verification Code Input -->
+                                <!-- Verification Code Input -->
                                 <div class="form-group">
-                                    <input id="verification_code" type="password"
-                                        class="form-control @error('verification_code') is-invalid @enderror"
-                                        placeholder="Enter Verification Code" name="verification_code"
-                                        value="{{ old('verification_code') }}" required>
+                                    <div class="input-group">
+                                        <input id="verification_code" type="password"
+                                            class="form-control @error('verification_code') is-invalid @enderror"
+                                            placeholder="Enter Verification Code" name="verification_code"
+                                            value="{{ old('verification_code') }}" required>
+                                        <div class="input-group-append">
+                                            
+                                                <i class="fa fa-eye" id="toggleVerificationCode"></i>
+                                           
+                                        </div>
+                                    </div>
                                     @error('verification_code')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                    <i class="flaticon-key"></i>
                                 </div>
+
                                 <!-- Submit Button -->
                                 <div class="form-group">
                                     <button type="button" class="fxt-btn-fill" onclick="verifyEmail()">Verify</button>
@@ -149,7 +157,7 @@
             verifyEmail(); // Call the verifyEmail function
         });
 
-       
+
 
 
         function showToast(type, message) {
@@ -178,6 +186,21 @@
                     break;
             }
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Toggle password visibility for verification code input
+            $("#toggleVerificationCode").click(function() {
+                var verificationCodeField = $("#verification_code");
+                var verificationCodeFieldType = verificationCodeField.attr("type");
+                if (verificationCodeFieldType === "password") {
+                    verificationCodeField.attr("type", "text");
+                } else {
+                    verificationCodeField.attr("type", "password");
+                }
+                $(this).toggleClass("fa-eye fa-eye-slash");
+            });
+        });
     </script>
 
 </body>
