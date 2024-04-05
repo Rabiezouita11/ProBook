@@ -2,7 +2,8 @@
 
 @section('content')
 
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 <section>
 		<div class="gap">
 			<div class="container">
@@ -27,16 +28,27 @@
     <div class="widget">
         <h4 class="widget-title">Complete Your Profile</h4>
         <span>Your Profile is missing followings!</span>
-        <div data-progress="tip" class="progress__outer" data-value="0.67">
-            <div class="progress__inner">82%</div>
+        <div data-progress="tip" class="progress__outer" data-value="{{ auth()->user()->image ? '1' : '0.9' }}">
+            <div class="progress__inner">{{ auth()->user()->image ? '100%' : '90%' }}</div>
         </div>
         <ul class="prof-complete">
-            <li><i class="icofont-plus-square"></i> <a href="#" title="">Upload Your Picture</a><em>10%</em></li>
-            <li><i class="icofont-plus-square"></i> <a href="#" title="">Your University?</a><em>20%</em></li>
-            <li><i class="icofont-plus-square"></i> <a href="#" title="">Add Payment Method</a><em>20%</em></li>
+            @if (auth()->user()->image == null)
+                <li>
+                    <i class="icofont-plus-square"></i>
+                    <a href="#" title="" data-toggle="modal" data-target="#uploadImageModal">Upload Your Picture</a>
+					
+                    <em>10%</em>
+                </li>
+            @endif
+            <!-- Add other completion steps here -->
         </ul>
     </div><!-- complete profile widget -->
 @endif
+
+<!-- Modal -->
+
+
+
 									
 									
 									<div class="widget">
@@ -2776,4 +2788,92 @@
 			</div>
 		</div>
 	</section><!-- content -->
+	<div class="modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadImageModalLabel">Upload Your Picture</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="imageUploadForm" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <input type="file" name="image" id="image" accept="image/*">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+    $('#imageUploadForm').submit(function(e) {
+        e.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+        var imageInput = $('#image')[0];
+
+        // Check if the file input is empty
+        if (imageInput.files.length === 0) {
+            showToast('error', 'Please select an image.');
+            return; // Exit the function early if no image is selected
+        }
+
+        // Proceed with the AJAX request if an image is selected
+        $.ajax({
+            url: "{{ route('upload.image') }}",
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Get CSRF token from meta tag
+            },
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                showToast('success', response.message);
+                $('#uploadImageModal').modal('hide');
+                reloadCompletionProgress();
+
+            },
+            error: function(xhr, status, error) {
+                showToast('error', error);
+            }
+        });
+    });
+
+    function reloadCompletionProgress() {
+        $('.prof-complete').load(location.href + ' .prof-complete');
+        $('.progress__inner').load(location.href + ' .progress__inner');
+    }
+    function showToast(type, message) {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            showMethod: 'slideDown',
+            hideMethod: 'slideUp',
+            timeOut: 5000,
+        };
+
+        switch (type) {
+            case 'success':
+                toastr.success(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+        }
+    }
+});
+
+</script>
 @endsection

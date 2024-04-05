@@ -46,6 +46,10 @@ Route::post('/resend/code', [App\Http\Controllers\ClientController::class, 'rese
 
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');
 
+/* button  pour uploid image en cas missing image  */
+
+Route::post('/upload-image', [App\Http\Controllers\ClientController::class, 'upload'])->name('upload.image')->middleware(['auth', 'role:utilisateur']);
+
 
 
 /* backoffice*/
