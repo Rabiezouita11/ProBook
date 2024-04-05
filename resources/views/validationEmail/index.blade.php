@@ -28,7 +28,8 @@
             <div class="row">
                 <!-- Background Image Container -->
                 <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide"
-                    data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/template_Authentification/img/figure/bg29-l-1.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-2.jpg"}, {"src": "/template_Authentification/img/figure/bg29-l-3.jpg"}]}'>
+                    data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/image1.jpg"}, {"src": "/image2.jpg"}, {"src": "/image3.jpg"}]}'>
+
                     <!-- Page Switcher -->
                     <div class="fxt-page-switcher">
                         <a href="{{ route('login') }}" class="switcher-text1">Login</a>
@@ -53,16 +54,17 @@
                                         placeholder="Enter Verification Code" name="verification_code"
                                         value="{{ old('verification_code') }}" required>
                                     @error('verification_code')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                     <i class="flaticon-key"></i>
                                 </div>
                                 <!-- Submit Button -->
                                 <div class="form-group">
                                     <button type="button" class="fxt-btn-fill" onclick="verifyEmail()">Verify</button>
-                                    <button type="button" class="fxt-btn-fill" onclick="resendVerificationCode()">Resend Code</button> <!-- New button -->
+                                    <button type="button" class="fxt-btn-fill"
+                                        onclick="resendVerificationCode()">Resend Code</button> <!-- New button -->
 
                                 </div>
                             </form>
@@ -89,64 +91,65 @@
 
     <script>
         function resendVerificationCode() {
-    $.ajax({
-        type: 'POST',
-        url: '/resend/code', // Route to resend verification code
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include the CSRF token in the request headers
-        },
-        dataType: 'json',
-        success: function(response) {
-            showToast('success', response.message);
-        },
-        error: function(xhr, status, error) {
-            var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
-            showToast('error', errorMessage);
+            $.ajax({
+                type: 'POST',
+                url: '/resend/code', // Route to resend verification code
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content') // Include the CSRF token in the request headers
+                },
+                dataType: 'json',
+                success: function(response) {
+                    showToast('success', response.message);
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+                    showToast('error', errorMessage);
+                }
+            });
         }
-    });
-}
 
-function verifyEmail() {
-    // Perform AJAX request to verify the email
-    $.ajax({
-        type: 'POST',
-        url: '/verify/code',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include the CSRF token in the request headers
-        },
-        data: $('#verificationForm').serialize(), // Assuming your form has an ID of 'verificationForm'
-        dataType: 'json',
-        success: function(response) {
-            // Check the status of the response
-            if (response.status === 'success') {
-                // Show success toastr message
-                showToast('success', response.message);
-                // Redirect to the home page or perform any other action
-                window.location.href = '/home';
-            } 
-        },
-        error: function(xhr, status, error) {
-            // Show error toastr message
-            if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.verification_code) {
-                var errorMessage = xhr.responseJSON.errors.verification_code[0];
-                showToast('error', errorMessage);
-            } else {
-                var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
-                showToast('error', errorMessage);
-            }
+        function verifyEmail() {
+            // Perform AJAX request to verify the email
+            $.ajax({
+                type: 'POST',
+                url: '/verify/code',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                        'content') // Include the CSRF token in the request headers
+                },
+                data: $('#verificationForm').serialize(), // Assuming your form has an ID of 'verificationForm'
+                dataType: 'json',
+                success: function(response) {
+                    // Check the status of the response
+                    if (response.status === 'success') {
+                        // Show success toastr message
+                        showToast('success', response.message);
+                        // Redirect to the home page or perform any other action
+                        window.location.href = '/home';
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Show error toastr message
+                    if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors
+                        .verification_code) {
+                        var errorMessage = xhr.responseJSON.errors.verification_code[0];
+                        showToast('error', errorMessage);
+                    } else {
+                        var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+                        showToast('error', errorMessage);
+                    }
+                }
+            });
         }
-    });
-}
 
-// Bind the verifyEmail function to the form submission event
-$('#verificationForm').submit(function(event) {
-    event.preventDefault(); // Prevent default form submission behavior
-    verifyEmail(); // Call the verifyEmail function
-});
+        // Bind the verifyEmail function to the form submission event
+        $('#verificationForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            verifyEmail(); // Call the verifyEmail function
+        });
 
-// Bind the verifyEmail function to the click event of the "Verify" button
-$('#verificationForm').find('.fxt-btn-fill').click(verifyEmail);
-
+       
 
 
         function showToast(type, message) {
