@@ -27,7 +27,9 @@ class User extends Authenticatable
         'verification_code',
         'email_verified',
         'institut',
-        'diploma'
+        'diploma',
+        'cover_photo', // Add cover_photo here
+
     ];
 
     /**

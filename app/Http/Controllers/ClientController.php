@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Hash;
 class ClientController extends Controller
 {
     public function index()
@@ -126,5 +126,97 @@ class ClientController extends Controller
     public function showProfileUser()
     {
         return view('frontoffice.profile.index');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'institute' => 'nullable|string|max:255',
+            'diploma' => 'nullable|string|max:255',
+            'profile_image' => 'nullable|image|max:2048',
+            'cover_photo' => 'nullable|image|max:2048',
+        ]);
+
+        // Get the current authenticated user
+        $user = Auth::user();
+
+        // Update user data
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->institut = $request->institute;
+        $user->diploma = $request->diploma;
+
+        // Handle profile image upload
+        if ($request->hasFile('profile_image')) {
+            $imageName = time() . '.' . $request->file('profile_image')->extension();
+            $uploadPath = public_path('users');
+            $request->file('profile_image')->move($uploadPath, $imageName);
+            $user->image = $imageName;
+        }
+
+        // Handle cover photo upload
+        if ($request->hasFile('cover_photo')) {
+            $imageName = time() . '.' . $request->file('cover_photo')->extension();
+            $uploadPath = public_path('cover_photos');
+            $request->file('cover_photo')->move($uploadPath, $imageName);
+            $user->cover_photo = $imageName;
+        }
+
+        // Save the updated user data
+        $user->save();
+
+        // Return a JSON response for the toast message
+        return response()->json(['message' => 'Profile updated successfully']);
+    }
+
+    public function uploadCoverPhoto(Request $request)
+    {
+        $request->validate([
+            'cover_photo' => 'required|image|max:2048',  // Maximum file size of 2MB
+        ]);
+
+        $imageName = null;
+        if ($request->file('cover_photo')) {
+            // Check if the 'public/users' folder exists, if not, create it
+            $uploadPath = public_path('cover_photos');
+            if (!File::isDirectory($uploadPath)) {
+                File::makeDirectory($uploadPath, 0777, true, true);
+            }
+
+            $imageName = time() . '.' . $request->file('cover_photo')->extension();  // Generate unique filename
+            $request->file('cover_photo')->move($uploadPath, $imageName);  // Move uploaded file to 'public/users' folder
+            Auth::user()->update(['cover_photo' => $imageName]);
+            return response()->json(['success' => true, 'message' => 'Cover photo uploaded successfully.']);
+        }
+
+        // Return error response if file is not uploaded
+        return response()->json(['success' => false, 'message' => 'Cover photo upload failed.'], Response::HTTP_BAD_REQUEST);
+    }
+    public function changePassword(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => 'required|string|min:8|different:currentPassword',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        // Get the current authenticated user
+        $user = Auth::user();
+
+        // Verify if the current password matches the one provided
+        if (!Hash::check($request->currentPassword, $user->password)) {
+            return response()->json(['message' => 'The current password is incorrect'], 422);
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        // Return a success response
+        return response()->json(['message' => 'Password changed successfully']);
     }
 }

@@ -55,8 +55,17 @@ Route::post('/upload-image', [App\Http\Controllers\ClientController::class, 'upl
 
 Route::get('/Profile_User', [App\Http\Controllers\ClientController::class, 'showProfileUser'])->name('Profile_User')->middleware(['auth', 'role:utilisateur']);
 
+/* button modifier  profile frontoffice  */
 
+Route::post('/update/profile', [App\Http\Controllers\ClientController::class, 'updateProfile'])->name('update.profile')->middleware(['auth', 'role:utilisateur']);
 
+/* button ajouter coverr photo  profile  frontoffice  */
+
+Route::post('/upload-cover-photo', [App\Http\Controllers\ClientController::class, 'uploadCoverPhoto'])->name('upload.cover.photo')->middleware(['auth', 'role:utilisateur']);
+
+/* button update password  frontoffice  */
+
+Route::post('/change-password', [App\Http\Controllers\ClientController::class, 'changePassword'])->name('change.password')->middleware(['auth', 'role:utilisateur']);
 
 
 /* backoffice*/
