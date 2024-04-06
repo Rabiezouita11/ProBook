@@ -37,7 +37,8 @@
     <section class="fxt-template-animation fxt-template-layout29">
         <div class="container-fluid">
             <div class="row">
-            <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide" data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/image1.jpg"}, {"src": "/image2.jpg"}, {"src": "/image3.jpg"}]}'>                  
+                <div class="vegas-container col-md-6 col-12 fxt-bg-img" id="vegas-slide"
+                    data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/image1.jpg"}, {"src": "/image2.jpg"}, {"src": "/image3.jpg"}]}'>
 
                     <div class="fxt-page-switcher">
                         <a href="{{route('login')}}" class="switcher-text1">Login</a>
@@ -92,40 +93,73 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-1">
-                                        <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                                        <input id="diploma" type="text"
+                                            class="form-control  @error('diploma') is-invalid @enderror" placeholder="diploma"
+                                            name="diploma" value="{{ old('diploma') }}" required autocomplete="diploma"
+                                            autofocus>
+
+                                        @error('diploma')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <input id="institut" type="text"
+                                            class="form-control  @error('institut') is-invalid @enderror" placeholder="institut"
+                                            name="institut" value="{{ old('institut') }}" required autocomplete="institut"
+                                            autofocus>
+
+                                        @error('institut')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <input type="file" id="image" name="image"
+                                            class="form-control @error('image') is-invalid @enderror" accept="image/*">
                                         @error('image')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-2">
-
                                         <input id="password" type="password"
                                             class="form-control @error('password') is-invalid @enderror"
                                             placeholder="Password" name="password" required autocomplete="new-password">
-
+                                        <span id="password-toggle" class="password-toggle-icon" onclick="togglePassword('password')">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
                                         @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
-                                        <i class="flaticon-padlock"></i>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-2">
-
-
-                                        <input id="password-confirm" type="password" class="form-control"
+                                        <input id="password-confirm" type="password"
+                                            class="form-control"
                                             placeholder="Confirm Password" name="password_confirmation" required
                                             autocomplete="new-password">
-
-                                        <i class="flaticon-padlock"></i>
+                                        <span id="password-confirm-toggle" class="password-toggle-icon" onclick="togglePassword('password-confirm')">
+                                            <i class="fas fa-eye"></i>
+                                        </span>
                                     </div>
                                 </div>
+                                
+                                
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-3">
                                         <button type="submit" class="fxt-btn-fill">Register</button>
@@ -133,7 +167,7 @@
                                 </div>
                             </form>
                         </div>
-                     
+
                     </div>
                 </div>
             </div>
@@ -150,7 +184,23 @@
     <script src="/template_Authentification/js/validator.min.js"></script>
     <!-- Custom Js -->
     <script src="/template_Authentification/js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script>
+        function togglePassword(inputId) {
+            var passwordField = $('#' + inputId);
+            var fieldType = passwordField.attr('type');
+            if (fieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $('#' + inputId + '-toggle i').removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                $('#' + inputId + '-toggle i').removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        }
+    </script>
+    
+    
 </body>
 
 </html>

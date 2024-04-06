@@ -70,6 +70,9 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'diploma' => ['required', 'string', 'max:255'],
+            'institut' => ['required', 'string', 'max:255'],
+
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'role' => ['required', 'string', 'max:255'],
@@ -104,6 +107,9 @@ class RegisterController extends Controller
             $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'diploma' => $data['diploma'],
+            'institut' => $data['institut'],
+
             'role' => 'utilisateur', 
             'password' => Hash::make($data['password']),
             'image' => $imageName, // Save the filename in the 'image' column

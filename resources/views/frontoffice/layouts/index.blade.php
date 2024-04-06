@@ -227,7 +227,7 @@
 							</i>
 						</a>
 						<ul class="dropdown">
-							<li><a href="profile.html" title=""><i class="icofont-user-alt-3"></i> Your Profile</a></li>
+							<li><a href="{{route('Profile_User')}}" title=""><i class="icofont-user-alt-3"></i> Your Profile</a></li>
 							<li><a href="add-new-course.html" title=""><i class="icofont-plus"></i> New Course</a></li>
 							<li><a class="invite-new" href="#" title=""><i class="icofont-brand-slideshare"></i> Invite
 									Collegue</a></li>
@@ -903,7 +903,7 @@
 			</div>
 		</div><!-- ask question -->
 
-		<div class="auto-popup">
+		<!-- <div class="auto-popup">
 			<div class="popup-innner">
 				<div class="popup-head">
 					<h4>We want to hear from you!</h4>
@@ -925,7 +925,7 @@
 					</form>
 				</div>
 			</div>
-		</div> <!-- auto popup -->
+		</div>  -->
 
 		<div class="share-wraper">
 			<div class="share-options">

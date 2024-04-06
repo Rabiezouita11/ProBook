@@ -81,21 +81,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="fxt-transformY-50 fxt-transition-delay-5 input-group">
-                                        <input id="password" type="password"
-                                               class="form-control @error('password') is-invalid @enderror"
-                                               placeholder="Password" name="password" required
-                                               autocomplete="current-password">
-                                        <div class="input-group-append">
-                                                <i id="togglePassword" class="fas fa-eye"></i>
-                                        </div>
-                                    </div>
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+    <div class="fxt-transformY-50 fxt-transition-delay-5">
+        <input id="password" type="password"
+               class="form-control @error('password') is-invalid @enderror"
+               placeholder="Password" name="password" required
+               autocomplete="current-password">
+        <i id="togglePassword" class="fas fa-eye"></i>
+    </div>
+    @error('password')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
                                 
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-6">
@@ -119,20 +117,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#togglePassword').click(function() {
-                var passwordField = $('#password');
-                var passwordFieldType = passwordField.attr('type');
-                if (passwordFieldType === 'password') {
-                    passwordField.attr('type', 'text');
-                    $('#togglePassword').removeClass('fa-eye').addClass('fa-eye-slash');
-                } else {
-                    passwordField.attr('type', 'password');
-                    $('#togglePassword').removeClass('fa-eye-slash').addClass('fa-eye');
-                }
-            });
+    $(document).ready(function() {
+        $('#togglePassword').click(function() {
+            var passwordField = $('#password');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $('#togglePassword').removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                $('#togglePassword').removeClass('fa-eye-slash').addClass('fa-eye');
+            }
         });
-    </script>
+    });
+</script>
     
 
     <script src="/template_Authentification/js/jquery-3.5.0.min.js"></script>

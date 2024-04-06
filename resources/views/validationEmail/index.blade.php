@@ -49,24 +49,21 @@
                                 @csrf
                                 <!-- Verification Code Input -->
                                 <!-- Verification Code Input -->
+                               
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        <input id="verification_code" type="password"
-                                            class="form-control @error('verification_code') is-invalid @enderror"
-                                            placeholder="Enter Verification Code" name="verification_code"
-                                            value="{{ old('verification_code') }}" required>
-                                        <div class="input-group-append">
-                                            
-                                                <i class="fa fa-eye" id="toggleVerificationCode"></i>
-                                           
-                                        </div>
-                                    </div>
-                                    @error('verification_code')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+    <div class="fxt-transformY-50 fxt-transition-delay-5">
+        <input id="verification_code" type="password"
+        class="form-control @error('verification_code') is-invalid @enderror"
+        placeholder="Enter Verification Code" name="verification_code"
+        value="{{ old('verification_code') }}" required>
+        <i id="togglePassword" class="fas fa-eye"></i>
+    </div>
+    @error('verification_code')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
 
                                 <!-- Submit Button -->
                                 <div class="form-group">
@@ -187,21 +184,23 @@
             }
         }
     </script>
-    <script>
-        $(document).ready(function() {
-            // Toggle password visibility for verification code input
-            $("#toggleVerificationCode").click(function() {
-                var verificationCodeField = $("#verification_code");
-                var verificationCodeFieldType = verificationCodeField.attr("type");
-                if (verificationCodeFieldType === "password") {
-                    verificationCodeField.attr("type", "text");
-                } else {
-                    verificationCodeField.attr("type", "password");
-                }
-                $(this).toggleClass("fa-eye fa-eye-slash");
-            });
-        });
-    </script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#togglePassword').click(function() {
+        var passwordField = $('#verification_code');
+        var passwordFieldType = passwordField.attr('type');
+        if (passwordFieldType === 'password') {
+            passwordField.attr('type', 'text');
+            $('#togglePassword').removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            $('#togglePassword').removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    });
+});
+</script>
 
 </body>
 

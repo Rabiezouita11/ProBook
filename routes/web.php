@@ -51,6 +51,13 @@ Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->na
 Route::post('/upload-image', [App\Http\Controllers\ClientController::class, 'upload'])->name('upload.image')->middleware(['auth', 'role:utilisateur']);
 
 
+/* Show profile frontoffice  */
+
+Route::get('/Profile_User', [App\Http\Controllers\ClientController::class, 'showProfileUser'])->name('Profile_User')->middleware(['auth', 'role:utilisateur']);
+
+
+
+
 
 /* backoffice*/
 

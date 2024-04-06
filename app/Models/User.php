@@ -25,7 +25,9 @@ class User extends Authenticatable
         'blocked',
         'image',
         'verification_code',
-        'email_verified'
+        'email_verified',
+        'institut',
+        'diploma'
     ];
 
     /**

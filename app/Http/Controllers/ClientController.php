@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Mail\VerificationCodeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
 
 class ClientController extends Controller
 {
@@ -121,5 +121,10 @@ class ClientController extends Controller
 
         // Return error response if file is not uploaded
         return response()->json(['success' => false, 'message' => 'Image upload failed.'], Response::HTTP_BAD_REQUEST);
+    }
+
+    public function showProfileUser()
+    {
+        return view('frontoffice.profile.index');
     }
 }
