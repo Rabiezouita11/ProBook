@@ -56,6 +56,14 @@ Route::post('/resend/code', [App\Http\Controllers\ClientController::class, 'rese
 
 /* frontoffice*/
 
+
+
+
+Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 'store'])->name('publications.store')->middleware(['auth', 'role:utilisateur']);;
+
+
+
+
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');
 
 /* button  pour uploid image en cas missing image  */

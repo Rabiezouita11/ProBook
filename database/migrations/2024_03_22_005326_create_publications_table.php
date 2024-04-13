@@ -16,6 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->longText('contenu');    
+            $table->boolean('story');
+            $table->boolean('Activity_Feed');
+
             $table->string('image')->nullable();   
 
             $table->timestamps();

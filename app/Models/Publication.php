@@ -12,6 +12,8 @@ class Publication extends Model
         'user_id',
         'contenu',
         'image',
+        'Activity_Feed',
+        'story'
       
     ];
     public function user()

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Publication;
+
 class ClientController extends Controller
 {
     public function index()
@@ -125,7 +127,9 @@ class ClientController extends Controller
 
     public function showProfileUser()
     {
-        return view('frontoffice.profile.index');
+        $publications = auth()->user()->publications()->latest()->get();
+
+        return view('frontoffice.profile.index', compact('publications'));
     }
 
     public function updateProfile(Request $request)
@@ -219,4 +223,39 @@ class ClientController extends Controller
         // Return a success response
         return response()->json(['message' => 'Password changed successfully']);
     }
+
+
+    public function store(Request $request)
+    {
+        // Validate the form data
+    
+        // Store the new publication in the database
+        $publication = new Publication();
+        $publication->user_id = auth()->id();
+        $publication->contenu = $request['contenu'];
+        $publication->story = $request->has('story') ? true : false;
+        $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
+    
+        // Handle image upload if provided
+        $imageName = null;
+        if ($request->hasFile('image')) {
+            // Check if the 'public/images' folder exists, if not, create it
+            $uploadPath = public_path('images');
+            if (!File::isDirectory($uploadPath)) {
+                File::makeDirectory($uploadPath, 0777, true, true);
+            }
+    
+            $imageName = time() . '.' . $request->file('image')->extension(); // Generate unique filename
+            $request->file('image')->move($uploadPath, $imageName); // Move uploaded file to 'public/images' folder
+        }
+    
+        $publication->image = $imageName; // Assign the image name to the publication model
+    
+        $publication->save();
+    
+        // Redirect to a success page or back to the creation form
+        return redirect()->back()->with('success', 'Publication created successfully!');
+    }
+
+ 
 }
