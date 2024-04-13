@@ -27,15 +27,7 @@
 								<h4>{{Auth::user()->name}} </h4>
 								<span>@ {{ Auth::user()->name }}</span>
 							</div>
-							<ul class="sharing-options">
-								<li><a title="Invite Colleagues" href="#" data-toggle="tooltip"><i
-											class="icofont-id-card"></i></a> </li>
-								<li><a title="Follow" href="#" data-toggle="tooltip"><i class="icofont-star"></i></a>
-								</li>
-								<li><a title="Share" href="#" data-toggle="tooltip"><i
-											class="icofont-share-alt"></i></a> </li>
-							</ul>
-							<a data-ripple="" title="" href="#" class="invite">Invite Colleagues</a>
+							
 						</div>
 
 						<ul class="nav nav-tabs post-detail-btn">
