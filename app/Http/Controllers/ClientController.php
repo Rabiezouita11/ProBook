@@ -127,10 +127,11 @@ class ClientController extends Controller
 
     public function showProfileUser()
     {
-        $publications = auth()->user()->publications()->latest()->get();
-
+        $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
+    
         return view('frontoffice.profile.index', compact('publications'));
     }
+    
 
     public function updateProfile(Request $request)
     {
@@ -253,9 +254,21 @@ class ClientController extends Controller
     
         $publication->save();
     
-        // Redirect to a success page or back to the creation form
-        return redirect()->back()->with('success', 'Publication created successfully!');
+        // Determine the success message based on the scenario
+        if ($publication->story && $publication->Activity_Feed) {
+            $message = 'Publication and story created successfully!';
+        } elseif ($publication->story) {
+            $message = 'Story created successfully!';
+        } elseif ($publication->Activity_Feed) {
+            $message = 'Publication created successfully!';
+        } else {
+            $message = 'Publication created successfully!';
+        }
+    
+        // Redirect to a success page or back to the creation form with success message
+        return redirect()->back()->with('success', $message);
     }
+    
 
  
 }

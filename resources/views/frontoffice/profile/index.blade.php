@@ -76,7 +76,13 @@
 											
 										</div>
 									</div><!-- create new post -->
-									@foreach($publications as $publication)
+									@if($publications->isEmpty())
+    
+									<div style="text-align: center; font-size: 30px; font-weight: bold;">
+    <p>No posts found.</p>
+</div>
+@else
+						  @foreach($publications as $publication)
 
 									<div class="main-wraper">
 										<div class="user-post">
@@ -130,8 +136,26 @@
 														</div>
 													</div>
 													<ins><a title="" href="time-line.html">{{Auth::user()->name}}</a> 
-													<span><i class="icofont-globe"></i> published: Sep,15 2020</span>
+													<span><i class="icofont-globe"></i> published: {{ \Carbon\Carbon::parse($publication->created_at)->format('M, d Y') }}</span>
 												</div>
+@php
+
+    // Assuming $publication->created_at is your timestamp
+    $created_at = \Carbon\Carbon::parse($publication->created_at);
+
+    // Calculate the difference between the created_at timestamp and the current time
+    $timeElapsed = $created_at->diffForHumans(null, true);
+@endphp
+
+    @if($publication->image)
+
+			<a data-toggle="modal" data-target="#img-comt" data-time="{{ $timeElapsed }}" data-src="{{ asset('images/' . $publication->image) }}">
+			<img src="{{ asset('images/' . $publication->image) }}" height="400px" width="600px" alt="">
+		</a>
+    @endif
+
+
+
 												<div class="post-meta">
 													
 													<p>
@@ -387,317 +411,13 @@
 										</div>
 									</div><!-- share post without image -->
 									@endforeach
+									@endif
 
-<!-- 								
-									<div class="main-wraper">
-										<div class="user-post">
-											<div class="friend-info">
-												<figure>
-													<img alt="" src="/frontoffice/images/resources/user3.jpg">
-												</figure>
-												<div class="friend-name">
-													<div class="more">
-														<div class="more-post-optns">
-															<i class="">
-																<svg xmlns="http://www.w3.org/2000/svg" width="24"
-																	height="24" viewBox="0 0 24 24" fill="none"
-																	stroke="currentColor" stroke-width="2"
-																	stroke-linecap="round" stroke-linejoin="round"
-																	class="feather feather-more-horizontal">
-																	<circle cx="12" cy="12" r="1"></circle>
-																	<circle cx="19" cy="12" r="1"></circle>
-																	<circle cx="5" cy="12" r="1"></circle>
-																</svg></i>
-															<ul>
-																<li>
-																	<i class="icofont-pen-alt-1"></i>Edit Post
-																	<span>Edit This Post within a Hour</span>
-																</li>
-																<li>
-																	<i class="icofont-ban"></i>Hide Post
-																	<span>Hide This Post</span>
-																</li>
-																<li>
-																	<i class="icofont-ui-delete"></i>Delete Post
-																	<span>If inappropriate Post By Mistake</span>
-																</li>
-																<li>
-																	<i class="icofont-flag"></i>Report
-																	<span>Inappropriate content</span>
-																</li>
-															</ul>
-														</div>
-													</div>
-													<ins><a title="" href="time-line.html">Turgut Alp</a> Create
-														Post</ins>
-													<span><i class="icofont-globe"></i> published: Sep,15 2020</span>
-												</div>
-												<div class="post-meta">
-													<figure>
-														<a data-toggle="modal" data-target="#img-comt"
-															href="/frontoffice/images/resources/album1.jpg">
-															<img src="/frontoffice/images/resources/study.jpg" alt="">
-														</a>
-													</figure>
-													<a href="post-detail.html" class="post-title">Supervision as a
-														Personnel Development Device</a>
-													<p>
-														Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
-														condimentum rhoncus, sem quam semper libero.
-													</p>
-													<div class="we-video-info">
-														<ul>
-															<li>
-																<span title="views" class="views">
-																	<i>
-																		<svg xmlns="http://www.w3.org/2000/svg"
-																			width="16" height="16" viewBox="0 0 24 24"
-																			fill="none" stroke="currentColor"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="feather feather-eye">
-																			<path
-																				d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-																			</path>
-																			<circle cx="12" cy="12" r="3"></circle>
-																		</svg></i>
-																	<ins>1.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span title="Comments" class="Recommend">
-																	<i>
-																		<svg class="feather feather-message-square"
-																			stroke-linejoin="round"
-																			stroke-linecap="round" stroke-width="2"
-																			stroke="currentColor" fill="none"
-																			viewBox="0 0 24 24" height="16" width="16"
-																			xmlns="http://www.w3.org/2000/svg">
-																			<path
-																				d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-																		</svg></i>
-																	<ins>54</ins>
-																</span>
-
-															</li>
-															<li>
-																<span title="follow" class="Follow">
-																	<i>
-																		<svg xmlns="http://www.w3.org/2000/svg"
-																			width="16" height="16" viewBox="0 0 24 24"
-																			fill="none" stroke="currentColor"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="feather feather-star">
-																			<polygon
-																				points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-																			</polygon>
-																		</svg></i>
-																	<ins>5k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="share-pst" title="Share">
-																	<i>
-																		<svg xmlns="http://www.w3.org/2000/svg"
-																			width="16" height="16" viewBox="0 0 24 24"
-																			fill="none" stroke="currentColor"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="feather feather-share-2">
-																			<circle cx="18" cy="5" r="3"></circle>
-																			<circle cx="6" cy="12" r="3"></circle>
-																			<circle cx="18" cy="19" r="3"></circle>
-																			<line x1="8.59" y1="13.51" x2="15.42"
-																				y2="17.49"></line>
-																			<line x1="15.41" y1="6.51" x2="8.59"
-																				y2="10.49"></line>
-																		</svg></i>
-																	<ins>205</ins>
-																</span>
-															</li>
-														</ul>
-														<a href="post-detail.html" title="" class="reply">Reply <i
-																class="icofont-reply"></i></a>
-													</div>
-													<div class="stat-tools">
-														<div class="box">
-															<div class="Like"><a class="Like__link"><i
-																		class="icofont-like"></i> Like</a>
-																<div class="Emojis">
-																	<div class="Emoji Emoji--like">
-																		<div class="icon icon--like"></div>
-																	</div>
-																	<div class="Emoji Emoji--love">
-																		<div class="icon icon--heart"></div>
-																	</div>
-																	<div class="Emoji Emoji--haha">
-																		<div class="icon icon--haha"></div>
-																	</div>
-																	<div class="Emoji Emoji--wow">
-																		<div class="icon icon--wow"></div>
-																	</div>
-																	<div class="Emoji Emoji--sad">
-																		<div class="icon icon--sad"></div>
-																	</div>
-																	<div class="Emoji Emoji--angry">
-																		<div class="icon icon--angry"></div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="box">
-															<div class="Emojis">
-																<div class="Emoji Emoji--like">
-																	<div class="icon icon--like"></div>
-																</div>
-																<div class="Emoji Emoji--love">
-																	<div class="icon icon--heart"></div>
-																</div>
-																<div class="Emoji Emoji--haha">
-																	<div class="icon icon--haha"></div>
-																</div>
-																<div class="Emoji Emoji--wow">
-																	<div class="icon icon--wow"></div>
-																</div>
-																<div class="Emoji Emoji--sad">
-																	<div class="icon icon--sad"></div>
-																</div>
-																<div class="Emoji Emoji--angry">
-																	<div class="icon icon--angry"></div>
-																</div>
-															</div>
-														</div>
-														<a title="" href="#" class="comment-to"><i
-																class="icofont-comment"></i> Comment</a>
-														<a title="" href="#" class="share-to"><i
-																class="icofont-share-alt"></i> Share</a>
-														<div class="emoji-state">
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/thumb.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/thumb.png">
-																		Likes</span>
-																	<ul class="namelist">
-																		<li>Jhon Doe</li>
-																		<li>Amara Sin</li>
-																		<li>Sarah K.</li>
-																		<li><span>20+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/heart.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/heart.png">
-																		Love</span>
-																	<ul class="namelist">
-																		<li>Amara Sin</li>
-																		<li>Jhon Doe</li>
-																		<li><span>10+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/smile.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/smile.png">
-																		Happy</span>
-																	<ul class="namelist">
-																		<li>Sarah K.</li>
-																		<li>Jhon Doe</li>
-																		<li>Amara Sin</li>
-																		<li><span>100+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/weep.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/weep.png">
-																		Dislike</span>
-																	<ul class="namelist">
-																		<li>Danial Carbal</li>
-																		<li>Amara Sin</li>
-																		<li>Sarah K.</li>
-																		<li><span>15+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<p>30+</p>
-														</div>
-														<div class="new-comment" style="display: none;">
-															<form method="post">
-																<input type="text" placeholder="write comment">
-																<button type="submit"><i
-																		class="icofont-paper-plane"></i></button>
-															</form>
-															<div class="comments-area">
-																<ul>
-																	<li>
-																		<figure><img alt=""
-																				src="/frontoffice/images/resources/user1.jpg">
-																		</figure>
-																		<div class="commenter">
-																			<h5><a title="" href="#">Jack Carter</a>
-																			</h5>
-																			<span>2 hours ago</span>
-																			<p>
-																				i think that some how, we learn who we
-																				really are and then live with that
-																				decision, great post!
-																			</p>
-																			<span>you can view the more detail via
-																				link</span>
-																			<a title=""
-																				href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a>
-																		</div>
-																		<a title="Like" href="#"><i
-																				class="icofont-heart"></i></a>
-																		<a title="Reply" href="#"
-																			class="reply-coment"><i
-																				class="icofont-reply"></i></a>
-																	</li>
-																	<li>
-																		<figure><img alt=""
-																				src="/frontoffice/images/resources/user2.jpg">
-																		</figure>
-																		<div class="commenter">
-																			<h5><a title="" href="#">Ching xang</a></h5>
-																			<span>2 hours ago</span>
-																			<p>
-																				i think that some how, we learn who we
-																				really are and then live with that
-																				decision, great post!
-																			</p>
-																		</div>
-																		<a title="Like" href="#"><i
-																				class="icofont-heart"></i></a>
-																		<a title="Reply" href="#"
-																			class="reply-coment"><i
-																				class="icofont-reply"></i></a>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div> -->
+								
 									<!-- share image with post -->
 									
 									
 									
-									<div class="sp sp-bars"></div>
 								</div>
 								<div class="tab-pane fade" id="followers">
 									<div class="row col-xs-6 merged-10">
@@ -1227,6 +947,415 @@
 		</div>
 	</div>
 </section>
+<div class="modal fade" id="img-comt">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="row merged">
+                                <div class="col-lg-9">
+                                    <div class="pop-image">
+                                        <div class="pop-item">
+                                            <div class="action-block">
+                                                <a class="action-button">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-tag"
+                                                    >
+                                                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                                                        <line
+                                                            x1="7"
+                                                            y1="7"
+                                                            x2="7.01"
+                                                            y2="7"
+                                                        />
+                                                    </svg>
+                                                </a>
+                                                <a class="action-button">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-map-pin"
+                                                    >
+                                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                                        <circle cx="12" cy="10" r="3"/>
+                                                    </svg>
+                                                </a>
+                                                <a class="action-button">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-arrow-down"
+                                                    >
+                                                        <line
+                                                            x1="12"
+                                                            y1="5"
+                                                            x2="12"
+                                                            y2="19"
+                                                        />
+                                                        <polyline points="19 12 12 19 5 12"/>
+                                                    </svg>
+                                                </a>
+                                                <a class="action-button">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-more-vertical"
+                                                    >
+                                                        <circle cx="12" cy="12" r="1"/>
+                                                        <circle cx="12" cy="5" r="1"/>
+                                                        <circle cx="12" cy="19" r="1"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <figure>
+											<img id="modal-image" src="" alt="">
+                                            </figure>
+                                            <div class="stat-tools">
+                                                <div class="box">
+                                                    <div class="Like">
+                                                        <a class="Like__link">
+                                                            <i class="icofont-like"></i>
+                                                            Like
+                                                        </a>
+                                                        <div class="Emojis">
+                                                            <div class="Emoji Emoji--like">
+                                                                <div class="icon icon--like"></div>
+                                                            </div>
+                                                            <div class="Emoji Emoji--love">
+                                                                <div class="icon icon--heart"></div>
+                                                            </div>
+                                                            <div class="Emoji Emoji--haha">
+                                                                <div class="icon icon--haha"></div>
+                                                            </div>
+                                                            <div class="Emoji Emoji--wow">
+                                                                <div class="icon icon--wow"></div>
+                                                            </div>
+                                                            <div class="Emoji Emoji--sad">
+                                                                <div class="icon icon--sad"></div>
+                                                            </div>
+                                                            <div class="Emoji Emoji--angry">
+                                                                <div class="icon icon--angry"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="box">
+                                                    <div class="Emojis">
+                                                        <div class="Emoji Emoji--like">
+                                                            <div class="icon icon--like"></div>
+                                                        </div>
+                                                        <div class="Emoji Emoji--love">
+                                                            <div class="icon icon--heart"></div>
+                                                        </div>
+                                                        <div class="Emoji Emoji--haha">
+                                                            <div class="icon icon--haha"></div>
+                                                        </div>
+                                                        <div class="Emoji Emoji--wow">
+                                                            <div class="icon icon--wow"></div>
+                                                        </div>
+                                                        <div class="Emoji Emoji--sad">
+                                                            <div class="icon icon--sad"></div>
+                                                        </div>
+                                                        <div class="Emoji Emoji--angry">
+                                                            <div class="icon icon--angry"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a title="" href="#" class="share-to">
+                                                    <i class="icofont-share-alt"></i>
+                                                    Share
+                                                </a>
+                                                <div class="emoji-state">
+                                                    <div class="popover_wrapper">
+                                                        <a class="popover_title" href="#" title="">
+                                                            <img alt="" src="/frontoffice/images/smiles/thumb.png">
+                                                        </a>
+                                                        <div class="popover_content">
+                                                            <span>
+                                                                <img alt="" src="/frontoffice/images/smiles/thumb.png">
+                                                                Likes
+                                                            </span>
+                                                            <ul class="namelist">
+                                                                <li>Jhon Doe</li>
+                                                                <li>Amara Sin</li>
+                                                                <li>Sarah K.</li>
+                                                                <li>
+                                                                    <span>20+ more</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="popover_wrapper">
+                                                        <a class="popover_title" href="#" title="">
+                                                            <img alt="" src="/frontoffice/images/smiles/heart.png">
+                                                        </a>
+                                                        <div class="popover_content">
+                                                            <span>
+                                                                <img alt="" src="/frontoffice/images/smiles/heart.png">
+                                                                Love
+                                                            </span>
+                                                            <ul class="namelist">
+                                                                <li>Amara Sin</li>
+                                                                <li>Jhon Doe</li>
+                                                                <li>
+                                                                    <span>10+ more</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="popover_wrapper">
+                                                        <a class="popover_title" href="#" title="">
+                                                            <img alt="" src="/frontoffice/images/smiles/smile.png">
+                                                        </a>
+                                                        <div class="popover_content">
+                                                            <span>
+                                                                <img alt="" src="/frontoffice/images/smiles/smile.png">
+                                                                Happy
+                                                            </span>
+                                                            <ul class="namelist">
+                                                                <li>Sarah K.</li>
+                                                                <li>Jhon Doe</li>
+                                                                <li>Amara Sin</li>
+                                                                <li>
+                                                                    <span>100+ more</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="popover_wrapper">
+                                                        <a class="popover_title" href="#" title="">
+                                                            <img alt="" src="/frontoffice/images/smiles/weep.png">
+                                                        </a>
+                                                        <div class="popover_content">
+                                                            <span>
+                                                                <img alt="" src="/frontoffice/images/smiles/weep.png">
+                                                                Dislike
+                                                            </span>
+                                                            <ul class="namelist">
+                                                                <li>Danial Carbal</li>
+                                                                <li>Amara Sin</li>
+                                                                <li>Sarah K.</li>
+                                                                <li>
+                                                                    <span>15+ more</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <p>10+</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="commentbar">
+                                        <div class="user">
+                                           	@if (Auth::user()->image)
+							<figure><img src="{{ asset('users/' . Auth::user()->image) }}" height="50px" width="50px" alt=""></figure>
+							@else
+							<figure><img
+									src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=104d93&color=fff"
+									alt=""></figure>
+							@endif
+                                            <div class="user-information">
+                                                <h4>
+                                                    <a href="{{route('Profile_User')}}" title="">{{auth::user()->name}}</a>
+                                                </h4>
+												
+												<span><i class="icofont-globe"></i> <span id="modal-time"></span></span>
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class="we-video-info">
+                                            <ul>
+                                                <li>
+                                                    <span title="Comments" class="liked">
+                                                        <i>
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="16"
+                                                                height="16"
+                                                                viewBox="0 0 24 24"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                stroke-width="2"
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="feather feather-thumbs-up"
+                                                            >
+                                                                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                                            </svg>
+                                                        </i>
+                                                        <ins>52</ins>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span title="Comments" class="comment">
+                                                        <i>
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="16"
+                                                                height="16"
+                                                                viewBox="0 0 24 24"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                stroke-width="2"
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="feather feather-message-square"
+                                                            >
+                                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                                            </svg>
+                                                        </i>
+                                                        <ins>52</ins>
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        <a title="Share" href="#" class="">
+                                                            <i>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16"
+                                                                    height="16"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    stroke-width="2"
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                    class="feather feather-share-2"
+                                                                >
+                                                                    <circle cx="18" cy="5" r="3"></circle>
+                                                                    <circle cx="6" cy="12" r="3"></circle>
+                                                                    <circle cx="18" cy="19" r="3"></circle>
+                                                                    <line
+                                                                        x1="8.59"
+                                                                        y1="13.51"
+                                                                        x2="15.42"
+                                                                        y2="17.49"
+                                                                    ></line>
+                                                                    <line
+                                                                        x1="15.41"
+                                                                        y1="6.51"
+                                                                        x2="8.59"
+                                                                        y2="10.49"
+                                                                    ></line>
+                                                                </svg>
+                                                            </i>
+                                                        </a>
+                                                        <ins>20</ins>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                          
+                                        </div>
+                                        <div class="new-comment" style="display: block;">
+                                            <form method="post">
+                                                <input type="text" placeholder="write comment">
+                                                <button type="submit">
+                                                    <i class="icofont-paper-plane"></i>
+                                                </button>
+                                            </form>
+
+											@if(Auth::check() && $publication->user_id === Auth::id())
+
+                                            <div class="comments-area">
+											@if($publication->commentaires->isNotEmpty())
+                                                <ul>
+													        @foreach($publication->commentaires as $comment)
+
+                                                    <li>
+                                                        <figure>
+                                                            <img alt="" src="/frontoffice/images/resources/user1.jpg">
+                                                        </figure>
+                                                        <div class="commenter">
+                                                            <h5>
+                                                                <a title="" href="#">{{ $comment->user->name }}</a>
+                                                            </h5>
+															@php
+	
+
+    // Assuming $publication->created_at is your timestamp
+    $created_at = Carbon::parse($comment->created_at);
+
+    // Calculate the difference between the created_at timestamp and the current time
+    $timeElapsedd = $created_at->diffForHumans(null, true);
+@endphp					
+															<span>{{timeElapsedd }}</span>
+                                                            <p>
+															{{ $comment->contenu }}
+                                                            </p>
+                                                           
+                                                        </div>
+
+
+
+
+
+                                                        <a title="Like" href="#">
+                                                            <i class="icofont-heart"></i>
+                                                        </a>
+                                                        <a title="Reply" href="#" class="reply-coment">
+                                                            <i class="icofont-reply"></i>
+                                                        </a>
+                                                    </li>
+													@endforeach
+    
+                                                  
+                                                </ul>
+												@else
+												<div class="text-center"> <!-- Center-align the message -->
+            <p>No comments found.</p>
+        </div>    @endif
+												@else
+    <p>No comments found.</p>
+@endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
@@ -1311,6 +1440,17 @@
 			}
 		});
 	}
+</script>
+<script>
+    $(document).ready(function() {
+        $('a[data-toggle="modal"]').on('click', function() {
+            var imageUrl = $(this).data('src');
+			var publicationTime = $(this).data('time');
+			$('#modal-time').text('(Published ' + publicationTime + ' ago)');
+
+            $('#modal-image').attr('src', imageUrl);
+        });
+    });
 </script>
 <script>
 	$(document).ready(function () {
