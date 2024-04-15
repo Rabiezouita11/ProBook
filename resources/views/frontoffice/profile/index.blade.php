@@ -864,6 +864,14 @@
             </div>
         </div>
     </section>
+    <style>
+        /* CSS for modal scrollbar */
+.modal-body {
+    max-height: 100vh; /* Set maximum height for the modal body */
+    overflow-y: auto; /* Allow vertical scrollbar when content exceeds the height */
+}
+
+    </style>
     <div class="modal fade" id="img-comt">
         <div class="modal-dialog">
             <div class="modal-content">
