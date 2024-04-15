@@ -1391,7 +1391,7 @@
 	}
 
 </script>
-<script>
+<!-- <script>
     $(document).ready(function() {
         $('.comment-to').click(function(e) {
             e.preventDefault();
@@ -1425,46 +1425,73 @@
             });
         });
     });
-</script>
+</script> -->
 <script>
-    $(document).ready(function() {
-        // Submit comment form
-        $('#commentForm').submit(function(e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            var publicationId = $(this).find('input[name="publication_id"]').val();
+   function fetchAndDisplayComments(publicationId) {
+    var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
 
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formData,
-                success: function(response) {
-                    if (response.success) {
-                        // Clear input field
-                        $('#commentForm input[name="content"]').val('');
-
-                        // Append the new comment to the comments area
-                        var commentHtml = '<li>' +
-                            '<figure><img alt="" src="' + response.comment.user.profile_picture + '"></figure>' +
-                            '<div class="commenter">' +
-                            '<h5><a title="" href="#">' + response.comment.user.name + '</a></h5>' +
-                            '<span>' + response.comment.created_at + '</span>' +
-                            '<p>' + response.comment.content + '</p>' +
-                            '</div>' +
-                            '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
-                            '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
-                            '</li>';
-                        $('.comments-area[data-comments-publication-id="' + publicationId + '"] ul').prepend(commentHtml);
-                    } else {
-                        console.error(response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
+    // Make an AJAX request to fetch comments for this publication
+    $.ajax({
+        type: 'GET',
+        url: '/publication/' + publicationId + '/comments',
+        success: function(response) {
+            commentsArea.find('ul').empty(); // Clear existing comments
+            $.each(response.comments, function(index, comment) {
+                var commentHtml = '<li>' +
+                    '<figure><img alt="" src="/frontoffice/images/resources/user1.jpg"></figure>' +
+                    '<div class="commenter">' +
+                    '<h5><a title="" href="#">"aaa"</a></h5>' +
+                    '<span>' + comment.created_at + '</span>' +
+                    '<p>' + comment.contenu + '</p>' +
+                    '</div>' +
+                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
+                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                    '</li>';
+                commentsArea.find('ul').append(commentHtml);
             });
+            commentsArea.show(); // Show the comments area
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+$(document).ready(function() {
+    // Submit comment form
+    $('#commentForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        var publicationId = $(this).find('input[name="publication_id"]').val();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Clear input field
+                    $('#commentForm input[name="content"]').val('');
+
+                    // Fetch and display comments for the publication
+                    fetchAndDisplayComments(publicationId);
+                } else {
+                    console.error(response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
         });
     });
+
+    // Click event for fetching comments
+    $('.comment-to').click(function(e) {
+        e.preventDefault();
+        var publicationId = $(this).data('publication-id');
+        fetchAndDisplayComments(publicationId);
+    });
+});
+
 </script>
 
 @endsection

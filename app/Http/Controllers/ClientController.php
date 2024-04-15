@@ -295,21 +295,28 @@ class ClientController extends Controller
 
     public function addComment(Request $request)
     {
-        // Valider les données du formulaire
+        // Validate the incoming request
         $request->validate([
             'publication_id' => 'required|exists:publications,id',
-            'content' => 'required|string',
+            'content' => 'required|string|max:255',
         ]);
+    
+        // Create a new comment
+        $comment = new Commentaire();
+        $comment->publication_id = $request->publication_id;
+        $comment->contenu = $request->content;
+        $comment->user_id = auth()->id();
 
-        // Créer un nouveau commentaire
-        $comment = Commentaire::create([
-            'user_id' => auth()->id(),
-            'publication_id' => $request->publication_id,
-            'contenu' => $request->content,
+        // You might need to associate the comment with a user if you have user authentication
+        // $comment->user_id = auth()->id();
+        $comment->save();
+    
+        // You can return the newly created comment in the response if needed
+        return response()->json([
+            'success' => true,
+            'comment' => $comment,
+            'message' => 'Comment added successfully',
         ]);
-
-        // Retourner une réponse JSON avec le commentaire créé
-        return response()->json(['comment' => $comment]);
     }
     public function getComments($publicationId)
     {
