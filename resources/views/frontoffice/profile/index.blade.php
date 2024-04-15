@@ -913,132 +913,11 @@
                                                     <i class="icofont-like"></i>
                                                     Like
                                                 </a>
-                                                <div class="Emojis">
-                                                    <div class="Emoji Emoji--like">
-                                                        <div class="icon icon--like"></div>
-                                                    </div>
-                                                    <div class="Emoji Emoji--love">
-                                                        <div class="icon icon--heart"></div>
-                                                    </div>
-                                                    <div class="Emoji Emoji--haha">
-                                                        <div class="icon icon--haha"></div>
-                                                    </div>
-                                                    <div class="Emoji Emoji--wow">
-                                                        <div class="icon icon--wow"></div>
-                                                    </div>
-                                                    <div class="Emoji Emoji--sad">
-                                                        <div class="icon icon--sad"></div>
-                                                    </div>
-                                                    <div class="Emoji Emoji--angry">
-                                                        <div class="icon icon--angry"></div>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
-                                        <div class="box">
-                                            <div class="Emojis">
-                                                <div class="Emoji Emoji--like">
-                                                    <div class="icon icon--like"></div>
-                                                </div>
-                                                <div class="Emoji Emoji--love">
-                                                    <div class="icon icon--heart"></div>
-                                                </div>
-                                                <div class="Emoji Emoji--haha">
-                                                    <div class="icon icon--haha"></div>
-                                                </div>
-                                                <div class="Emoji Emoji--wow">
-                                                    <div class="icon icon--wow"></div>
-                                                </div>
-                                                <div class="Emoji Emoji--sad">
-                                                    <div class="icon icon--sad"></div>
-                                                </div>
-                                                <div class="Emoji Emoji--angry">
-                                                    <div class="icon icon--angry"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a title="" href="#" class="share-to">
-                                            <i class="icofont-share-alt"></i>
-                                            Share
-                                        </a>
-                                        <div class="emoji-state">
-                                            <div class="popover_wrapper">
-                                                <a class="popover_title" href="#" title="">
-                                                    <img alt="" src="/frontoffice/images/smiles/thumb.png">
-                                                </a>
-                                                <div class="popover_content">
-                                                    <span>
-                                                        <img alt="" src="/frontoffice/images/smiles/thumb.png">
-                                                        Likes
-                                                    </span>
-                                                    <ul class="namelist">
-                                                        <li>Jhon Doe</li>
-                                                        <li>Amara Sin</li>
-                                                        <li>Sarah K.</li>
-                                                        <li>
-                                                            <span>20+ more</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="popover_wrapper">
-                                                <a class="popover_title" href="#" title="">
-                                                    <img alt="" src="/frontoffice/images/smiles/heart.png">
-                                                </a>
-                                                <div class="popover_content">
-                                                    <span>
-                                                        <img alt="" src="/frontoffice/images/smiles/heart.png">
-                                                        Love
-                                                    </span>
-                                                    <ul class="namelist">
-                                                        <li>Amara Sin</li>
-                                                        <li>Jhon Doe</li>
-                                                        <li>
-                                                            <span>10+ more</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="popover_wrapper">
-                                                <a class="popover_title" href="#" title="">
-                                                    <img alt="" src="/frontoffice/images/smiles/smile.png">
-                                                </a>
-                                                <div class="popover_content">
-                                                    <span>
-                                                        <img alt="" src="/frontoffice/images/smiles/smile.png">
-                                                        Happy
-                                                    </span>
-                                                    <ul class="namelist">
-                                                        <li>Sarah K.</li>
-                                                        <li>Jhon Doe</li>
-                                                        <li>Amara Sin</li>
-                                                        <li>
-                                                            <span>100+ more</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="popover_wrapper">
-                                                <a class="popover_title" href="#" title="">
-                                                    <img alt="" src="/frontoffice/images/smiles/weep.png">
-                                                </a>
-                                                <div class="popover_content">
-                                                    <span>
-                                                        <img alt="" src="/frontoffice/images/smiles/weep.png">
-                                                        Dislike
-                                                    </span>
-                                                    <ul class="namelist">
-                                                        <li>Danial Carbal</li>
-                                                        <li>Amara Sin</li>
-                                                        <li>Sarah K.</li>
-                                                        <li>
-                                                            <span>15+ more</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <p>10+</p>
-                                        </div>
+                                    
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -1525,6 +1404,8 @@
                             fetchAndDisplayComments(publicationId);
                             var likeCountElement = $('.unique-commentaire-count-' + publicationId);
                             likeCountElement.text(response.totalComments);
+                            showToast('success', 'Comment added successfully!');
+
                         } else {
                             console.error(response.message);
                         }
@@ -1542,6 +1423,30 @@
                 fetchAndDisplayComments(publicationId);
             });
         });
+        function showToast(type, message) {
+            toastr.options = {
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                showMethod: 'slideDown', // Animation in
+                hideMethod: 'slideUp', // Animation out
+                timeOut: 5000, // Time before auto-dismiss
+            };
+
+            switch (type) {
+                case 'info':
+                    toastr.info(message);
+                    break;
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+            }
+        }
     </script>
 
 
