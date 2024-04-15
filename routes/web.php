@@ -68,6 +68,14 @@ Route::post('/add-comment', [App\Http\Controllers\ClientController::class, 'addC
 Route::get('/publication/{publicationId}/comments', [App\Http\Controllers\ClientController::class, 'getComments'])->middleware(['auth', 'role:utilisateur']);
 
 
+/* methode to show count comments   */
+
+Route::get('/publication/{publicationId}/comments/count',  [App\Http\Controllers\ClientController::class, 'getCommentsCount'])->middleware(['auth', 'role:utilisateur']);
+
+
+Route::get('/publication/{publicationId}/likes/count', [App\Http\Controllers\ClientController::class, 'getLikesCount'])->middleware(['auth', 'role:utilisateur']);
+
+
 /* button  pour save publications */
 
 Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 'store'])->name('publications.store')->middleware(['auth', 'role:utilisateur']);

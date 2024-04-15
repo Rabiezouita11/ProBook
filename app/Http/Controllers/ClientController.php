@@ -300,30 +300,45 @@ class ClientController extends Controller
             'publication_id' => 'required|exists:publications,id',
             'content' => 'required|string|max:255',
         ]);
-
+    
         // Create a new comment
         $comment = new Commentaire();
         $comment->publication_id = $request->publication_id;
         $comment->contenu = $request->content;
         $comment->user_id = auth()->id();
-
-        // You might need to associate the comment with a user if you have user authentication
-        // $comment->user_id = auth()->id();
         $comment->save();
+    
+        // Get the total number of comments for the publication
         $totalComments = Commentaire::where('publication_id', $request->publication_id)->count();
-
+    
         // You can return the newly created comment in the response if needed
         return response()->json([
             'success' => true,
             'comment' => $comment,
+            'publicationId' => $request->publication_id, // Include the publication ID in the response
             'totalComments' => $totalComments,
             'message' => 'Comment added successfully',
         ]);
     }
+    
     public function getComments($publicationId)
     {
         $publication = Publication::findOrFail($publicationId);
         $comments = $publication->commentaires()->with('user')->orderBy('created_at', 'desc')->get();
         return response()->json(['comments' => $comments]);
+    }
+    public function getCommentsCount($publicationId)
+{
+    $publication = Publication::findOrFail($publicationId);
+    $commentsCount = $publication->commentaires()->count(); // Assuming you have a relationship set up between Publication and Comment models
+
+    return response()->json(['commentsCount' => $commentsCount]);
+}
+public function getLikesCount($publicationId)
+    {
+        $publication = Publication::findOrFail($publicationId);
+        $likesCount = $publication->jaime_publications()->count(); // Assuming you have a relationship set up between Publication and Like models
+
+        return response()->json(['likesCount' => $likesCount]);
     }
 }

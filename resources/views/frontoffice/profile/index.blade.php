@@ -157,7 +157,9 @@
                                                             @if ($publication->image)
                                                                 <a data-toggle="modal" data-target="#img-comt"
                                                                     data-time="{{ $timeElapsed }}"
-                                                                    data-src="{{ asset('images/' . $publication->image) }}">
+                                                                    data-src="{{ asset('images/' . $publication->image) }}"
+                                                                    data-publication-id="{{ $publication->id }}">
+
                                                                     <img src="{{ asset('images/' . $publication->image) }}"
                                                                         height="400px" width="600px" alt="">
                                                                 </a>
@@ -173,16 +175,28 @@
                                                                 <div class="we-video-info">
                                                                     <ul>
                                                                         <li>
-                                                                            <span title="Likes" class="likes">
-                                                                                <i class="icofont-like"
-                                                                                    style="color: blue;"></i>
+                                                                            <span title="Comments" class="liked">
+                                                                                <i>
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                        width="16" height="16"
+                                                                                        viewBox="0 0 24 24" fill="none"
+                                                                                        stroke="currentColor"
+                                                                                        stroke-width="2"
+                                                                                        stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        class="feather feather-thumbs-up">
+                                                                                        <path
+                                                                                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
+                                                                                        </path>
+                                                                                    </svg>
+                                                                                </i>
                                                                                 <ins>
                                                                                     <span
                                                                                         class="like-count unique-like-count-{{ $publication->id }}">
                                                                                         {{ $publication->jaime_publications->count() }}
-                                                                                    </span> </ins>
-                                                                            </span>
+                                                                                    </span> </ins> </span>
                                                                         </li>
+
 
                                                                         <li>
                                                                             <span title="Comments" class="Recommend">
@@ -863,46 +877,7 @@
                         <div class="col-lg-9">
                             <div class="pop-image">
                                 <div class="pop-item">
-                                    <div class="action-block">
-                                        <a class="action-button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-tag">
-                                                <path
-                                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                                                <line x1="7" y1="7" x2="7.01" y2="7" />
-                                            </svg>
-                                        </a>
-                                        <a class="action-button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-map-pin">
-                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                                <circle cx="12" cy="10" r="3" />
-                                            </svg>
-                                        </a>
-                                        <a class="action-button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-arrow-down">
-                                                <line x1="12" y1="5" x2="12" y2="19" />
-                                                <polyline points="19 12 12 19 5 12" />
-                                            </svg>
-                                        </a>
-                                        <a class="action-button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-more-vertical">
-                                                <circle cx="12" cy="12" r="1" />
-                                                <circle cx="12" cy="5" r="1" />
-                                                <circle cx="12" cy="19" r="1" />
-                                            </svg>
-                                        </a>
-                                    </div>
+
                                     <figure>
                                         <img id="modal-image" src="" alt="">
                                     </figure>
@@ -916,8 +891,8 @@
 
                                             </div>
                                         </div>
-                                    
-                                       
+
+
                                     </div>
                                 </div>
                             </div>
@@ -959,7 +934,7 @@
                                                         </path>
                                                     </svg>
                                                 </i>
-                                                <ins>52</ins>
+                                                <ins id="modal-jaime-count">0</ins>
                                             </span>
                                         </li>
                                         <li>
@@ -974,100 +949,28 @@
                                                         </path>
                                                     </svg>
                                                 </i>
-                                                <ins>52</ins>
+                                                <ins id="modal-comments-count">0</ins>
                                             </span>
                                         </li>
-                                        <li>
-                                            <span>
-                                                <a title="Share" href="#" class="">
-                                                    <i>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-share-2">
-                                                            <circle cx="18" cy="5" r="3"></circle>
-                                                            <circle cx="6" cy="12" r="3"></circle>
-                                                            <circle cx="18" cy="19" r="3"></circle>
-                                                            <line x1="8.59" y1="13.51" x2="15.42"
-                                                                y2="17.49"></line>
-                                                            <line x1="15.41" y1="6.51" x2="8.59"
-                                                                y2="10.49"></line>
-                                                        </svg>
-                                                    </i>
-                                                </a>
-                                                <ins>20</ins>
-                                            </span>
-                                        </li>
+
                                     </ul>
 
                                 </div>
                                 <div class="new-comment" style="display: block;">
-                                    <form method="post">
-                                        <input type="text" placeholder="write comment">
+                                    <form id="add-comment-form" action="{{ route('add-comment') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="publication_id" value="{{ $publication->id }}">
+
+                                        <input type="text" name="content" placeholder="Write a comment">
                                         <button type="submit">
                                             <i class="icofont-paper-plane"></i>
                                         </button>
                                     </form>
-
-                                    @if (isset($publication) && Auth::check() && $publication->user_id === Auth::id())
-
-                                        <div class="comments-area">
-                                            @if ($publication->commentaires->isNotEmpty())
-                                                <ul>
-                                                    @foreach ($publication->commentaires as $comment)
-                                                        <li>
-                                                            <figure>
-                                                                <img alt=""
-                                                                    src="/frontoffice/images/resources/user1.jpg">
-                                                            </figure>
-                                                            <div class="commenter">
-                                                                <h5>
-                                                                    <a title=""
-                                                                        href="#">{{ $comment->user->name }}</a>
-                                                                </h5>
-                                                                @php
-
-                                                                    // Assuming $publication->created_at is your timestamp
-                                                                    $created_at = \Carbon\Carbon::parse(
-                                                                        $comment->created_at,
-                                                                    );
-
-                                                                    // Calculate the difference between the created_at timestamp and the current time
-                                                                    $timeElapsedd = $created_at->diffForHumans(
-                                                                        null,
-                                                                        true,
-                                                                    );
-                                                                @endphp
-                                                                <span>{{ $timeElapsedd }}</span>
-                                                                <p>
-                                                                    {{ $comment->contenu }}
-                                                                </p>
-
-                                                            </div>
-
-
-
-
-
-                                                            <a title="Like" href="#">
-                                                                <i class="icofont-heart"></i>
-                                                            </a>
-                                                            <a title="Reply" href="#" class="reply-coment">
-                                                                <i class="icofont-reply"></i>
-                                                            </a>
-                                                        </li>
-                                                    @endforeach
-
-
-                                                </ul>
-                                            @else
-                                                <div class="text-center"> <!-- Center-align the message -->
-                                                    <p>No comments found.</p>
-                                                </div>
-                                            @endif
-                                        @else
-                                            <p>No comments found.</p>
-                                    @endif
+                                    <div class="comments-area">
+                                        <ul>
+                                            <!-- Comments will be dynamically loaded here via AJAX -->
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1075,6 +978,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1165,17 +1069,82 @@
             });
         }
     </script>
+    <!-- Update the modal script -->
     <script>
         $(document).ready(function() {
             $('a[data-toggle="modal"]').on('click', function() {
                 var imageUrl = $(this).data('src');
                 var publicationTime = $(this).data('time');
-                $('#modal-time').text('(Published ' + publicationTime + ' ago)');
+                var publicationId = $(this).data('publication-id');
+                $('#add-comment-form').find('input[name="publication_id"]').val(publicationId);
 
+                $('#modal-time').text('(Published ' + publicationTime + ' ago)');
                 $('#modal-image').attr('src', imageUrl);
+
+                // Fetch likes count using AJAX
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId + '/likes/count',
+                    success: function(response) {
+                        $('#modal-jaime-count').text(response.likesCount);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+
+                // Fetch comments count using AJAX
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId + '/comments/count',
+                    success: function(response) {
+                        $('#modal-comments-count').text(response.commentsCount);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+
+                // Fetch comments for the publication
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId + '/comments',
+                    success: function(response) {
+                        var commentsHtml = '';
+                        if (response.comments.length > 0) {
+                            $.each(response.comments, function(index, comment) {
+                                var createdAt = moment(comment.created_at).fromNow();
+                                commentsHtml += '<li>' +
+                                    '<figure><img alt="" src="' + (comment.user.image ?
+                                        '/users/' + comment.user.image :
+                                        'https://ui-avatars.com/api/?name=' +
+                                        encodeURIComponent(comment.user.name) +
+                                        '&background=104d93&color=fff') +
+                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                    '<div class="commenter">' +
+                                    '<h5><a title="" href="#">' + comment.user.name +
+                                    '</a></h5>' +
+                                    '<span>' + createdAt + '</span>' +
+                                    '<p>' + comment.contenu + '</p>' +
+                                    '</div>' +
+                                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
+                                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                                    '</li>';
+                            });
+                        } else {
+                            commentsHtml = '<li>No comments yet.</li>';
+                        }
+                        $('.comments-area').find('ul').html(commentsHtml);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             });
         });
     </script>
+
+
     <script>
         $(document).ready(function() {
             $('#changePasswordForm').submit(function(e) {
@@ -1402,7 +1371,8 @@
 
                             // Fetch and display comments for the publication
                             fetchAndDisplayComments(publicationId);
-                            var likeCountElement = $('.unique-commentaire-count-' + publicationId);
+                            var likeCountElement = $('.unique-commentaire-count-' +
+                                publicationId);
                             likeCountElement.text(response.totalComments);
                             showToast('success', 'Comment added successfully!');
 
@@ -1423,6 +1393,7 @@
                 fetchAndDisplayComments(publicationId);
             });
         });
+
         function showToast(type, message) {
             toastr.options = {
                 closeButton: true, // Add a close button
@@ -1448,6 +1419,72 @@
             }
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            // Function to fetch and display comments
+            function fetchComments(publicationId) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId +'/comments', // Replace this URL with your backend endpoint
+                    success: function(response) {
+                        var commentsList = $('.comments-area ul');
+                        commentsList.empty(); // Clear existing comments
 
+                        if (response.comments.length === 0) {
+                            commentsList.append('<li>No comments yet.</li>');
+                        } else {
+                            $.each(response.comments, function(index, comment) {
+                                var createdAt = moment(comment.created_at)
+                                    .fromNow(); // Format timestamp using moment.js
+                                var commentHtml = '<li>' +
+                                    '<figure><img src="' + (comment.user.image ? '/users/' +
+                                        comment.user.image :
+                                        'https://ui-avatars.com/api/?name=' +
+                                        encodeURIComponent(comment.user.name) +
+                                        '&background=104d93&color=fff') +
+                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                    '<div class="commenter">' +
+                                    '<h5><a href="#">' + comment.user.name + '</a></h5>' +
+                                    '<span>' + createdAt + '</span>' +
+                                    '<p>' + comment.contenu + '</p>' +
+                                    '</div>' +
+                                    '</li>';
+                                commentsList.append(commentHtml);
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            // Submit comment form via AJAX
+            $('#add-comment-form').submit(function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        $('#add-comment-form input[name="content"]').val('');
+                        showToast('success', 'Comment added successfully!');
+
+                        console.log(response)
+                        // Fetch and display comments after adding a new comment
+                        fetchComments(response.publicationId);
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        showToast('error', error);
+
+                    }
+                });
+            });
+        });
+    </script>
 
 @endsection
