@@ -321,7 +321,7 @@ class ClientController extends Controller
     public function getComments($publicationId)
     {
         $publication = Publication::findOrFail($publicationId);
-        $comments = $publication->commentaires()->orderBy('created_at', 'desc')->get();
+        $comments = $publication->commentaires()->with('user')->orderBy('created_at', 'desc')->get();
         return response()->json(['comments' => $comments]);
     }
 }

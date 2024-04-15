@@ -20,4 +20,9 @@ class Commentaire extends Model
      {
          return $this->belongsTo(Publication::class);
      }
+     public function user()
+     {
+         return $this->belongsTo(User::class);
+     }
+ 
 }
