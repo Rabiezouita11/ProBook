@@ -12,6 +12,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Publication;
+use App\Models\jaime_publications;
+use App\Models\Commentaire;
 
 class ClientController extends Controller
 {
@@ -269,6 +271,50 @@ class ClientController extends Controller
         return redirect()->back()->with('success', $message);
     }
     
+    public function likePublication(Request $request)
+    {
+        $existingLike = jaime_publications::where('user_id', auth()->id())
+            ->where('publication_id', $request->publication_id)
+            ->first();
+    
+        if ($existingLike) {
+            $existingLike->delete();
+            $message = 'Publication unliked.';
+        } else {
+            jaime_publications::create([
+                'user_id' => auth()->id(),
+                'publication_id' => $request->publication_id,
+            ]);
+            $message = 'Publication liked.';
+        }
+        $likeCount = jaime_publications::where('publication_id', $request->publication_id)->count();
 
- 
+    
+        return response()->json(['message' => $message, 'like_count' => $likeCount]);
+    }
+
+    public function addComment(Request $request)
+    {
+        // Valider les données du formulaire
+        $request->validate([
+            'publication_id' => 'required|exists:publications,id',
+            'content' => 'required|string',
+        ]);
+
+        // Créer un nouveau commentaire
+        $comment = Commentaire::create([
+            'user_id' => auth()->id(),
+            'publication_id' => $request->publication_id,
+            'contenu' => $request->content,
+        ]);
+
+        // Retourner une réponse JSON avec le commentaire créé
+        return response()->json(['comment' => $comment]);
+    }
+    public function getComments($publicationId)
+    {
+        $publication = Publication::findOrFail($publicationId);
+        $comments = $publication->commentaires()->orderBy('created_at', 'desc')->get();
+        return response()->json(['comments' => $comments]);
+    }
 }

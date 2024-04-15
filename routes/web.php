@@ -56,10 +56,21 @@ Route::post('/resend/code', [App\Http\Controllers\ClientController::class, 'rese
 
 /* frontoffice*/
 
+/* button  pour jamie publications */
+
+Route::post('/jaime-publication', [App\Http\Controllers\ClientController::class, 'likePublication'])->middleware(['auth', 'role:utilisateur']);
+
+/* button  pour commenter publications */
+
+Route::post('/add-comment', [App\Http\Controllers\ClientController::class, 'addComment'])->name('add-comment')->middleware(['auth', 'role:utilisateur']);
+/* button  pour afficher comments */
+
+Route::get('/publication/{publicationId}/comments', [App\Http\Controllers\ClientController::class, 'getComments'])->middleware(['auth', 'role:utilisateur']);
 
 
+/* button  pour save publications */
 
-Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 'store'])->name('publications.store')->middleware(['auth', 'role:utilisateur']);;
+Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 'store'])->name('publications.store')->middleware(['auth', 'role:utilisateur']);
 
 
 

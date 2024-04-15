@@ -163,23 +163,16 @@
 													</p>
 													<div class="we-video-info">
 														<ul>
-															<li>
-																<span title="views" class="views">
-																	<i>
-																		<svg xmlns="http://www.w3.org/2000/svg"
-																			width="16" height="16" viewBox="0 0 24 24"
-																			fill="none" stroke="currentColor"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="feather feather-eye">
-																			<path
-																				d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-																			</path>
-																			<circle cx="12" cy="12" r="3"></circle>
-																		</svg></i>
-																	<ins>1.2k</ins>
-																</span>
-															</li>
+														<li>
+    <span title="Likes" class="likes">
+	<i class="icofont-like" style="color: blue;"></i>
+		<ins>
+		<span class="like-count unique-like-count-{{ $publication->id }}">
+    {{ $publication->jaime_publications->count() }}
+</span>   </ins>
+    </span>
+</li>
+
 															<li>
 																<span title="Comments" class="Recommend">
 																	<i>
@@ -192,218 +185,39 @@
 																			<path
 																				d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
 																		</svg></i>
-																	<ins>54</ins>
+																		<ins>{{ $publication->totalComments() }}</ins>
 																</span>
 
 															</li>
-															<li>
-																<span title="follow" class="Follow">
-																	<i>
-																		<svg xmlns="http://www.w3.org/2000/svg"
-																			width="16" height="16" viewBox="0 0 24 24"
-																			fill="none" stroke="currentColor"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="feather feather-star">
-																			<polygon
-																				points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-																			</polygon>
-																		</svg></i>
-																	<ins>5k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="share-pst" title="Share">
-																	<i>
-																		<svg xmlns="http://www.w3.org/2000/svg"
-																			width="16" height="16" viewBox="0 0 24 24"
-																			fill="none" stroke="currentColor"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="feather feather-share-2">
-																			<circle cx="18" cy="5" r="3"></circle>
-																			<circle cx="6" cy="12" r="3"></circle>
-																			<circle cx="18" cy="19" r="3"></circle>
-																			<line x1="8.59" y1="13.51" x2="15.42"
-																				y2="17.49"></line>
-																			<line x1="15.41" y1="6.51" x2="8.59"
-																				y2="10.49"></line>
-																		</svg></i>
-																	<ins>205</ins>
-																</span>
-															</li>
+															
+														
 														</ul>
-														<a href="post-detail.html" title="" class="reply">Reply <i
-																class="icofont-reply"></i></a>
+												
 													</div>
 													<div class="stat-tools">
-														<div class="box">
-															<div class="Like"><a class="Like__link"><i
-																		class="icofont-like"></i> Like</a>
-																<div class="Emojis">
-																	<div class="Emoji Emoji--like">
-																		<div class="icon icon--like"></div>
-																	</div>
-																	<div class="Emoji Emoji--love">
-																		<div class="icon icon--heart"></div>
-																	</div>
-																	<div class="Emoji Emoji--haha">
-																		<div class="icon icon--haha"></div>
-																	</div>
-																	<div class="Emoji Emoji--wow">
-																		<div class="icon icon--wow"></div>
-																	</div>
-																	<div class="Emoji Emoji--sad">
-																		<div class="icon icon--sad"></div>
-																	</div>
-																	<div class="Emoji Emoji--angry">
-																		<div class="icon icon--angry"></div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="box">
-															<div class="Emojis">
-																<div class="Emoji Emoji--like">
-																	<div class="icon icon--like"></div>
-																</div>
-																<div class="Emoji Emoji--love">
-																	<div class="icon icon--heart"></div>
-																</div>
-																<div class="Emoji Emoji--haha">
-																	<div class="icon icon--haha"></div>
-																</div>
-																<div class="Emoji Emoji--wow">
-																	<div class="icon icon--wow"></div>
-																</div>
-																<div class="Emoji Emoji--sad">
-																	<div class="icon icon--sad"></div>
-																</div>
-																<div class="Emoji Emoji--angry">
-																	<div class="icon icon--angry"></div>
-																</div>
-															</div>
-														</div>
-														<a title="" href="#" class="comment-to"><i
-																class="icofont-comment"></i> Comment</a>
-														<a title="" href="#" class="share-to"><i
-																class="icofont-share-alt"></i> Share</a>
-														<div class="emoji-state">
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/thumb.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/thumb.png">
-																		Likes</span>
-																	<ul class="namelist">
-																		<li>Jhon Doe</li>
-																		<li>Amara Sin</li>
-																		<li>Sarah K.</li>
-																		<li><span>20+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/heart.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/heart.png">
-																		Love</span>
-																	<ul class="namelist">
-																		<li>Amara Sin</li>
-																		<li>Jhon Doe</li>
-																		<li><span>10+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/smile.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/smile.png">
-																		Happy</span>
-																	<ul class="namelist">
-																		<li>Sarah K.</li>
-																		<li>Jhon Doe</li>
-																		<li>Amara Sin</li>
-																		<li><span>100+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<div class="popover_wrapper">
-																<a class="popover_title" href="#" title=""><img alt=""
-																		src="/frontoffice/images/smiles/weep.png"></a>
-																<div class="popover_content">
-																	<span><img alt=""
-																			src="/frontoffice/images/smiles/weep.png">
-																		Dislike</span>
-																	<ul class="namelist">
-																		<li>Danial Carbal</li>
-																		<li>Amara Sin</li>
-																		<li>Sarah K.</li>
-																		<li><span>15+ more</span></li>
-																	</ul>
-																</div>
-															</div>
-															<p>10+</p>
-														</div>
-														<div class="new-comment" style="display: none;">
-															<form method="post">
-																<input type="text" placeholder="write comment">
-																<button type="submit"><i
-																		class="icofont-paper-plane"></i></button>
-															</form>
-															<div class="comments-area">
-																<ul>
-																	<li>
-																		<figure><img alt=""
-																				src="/frontoffice/images/resources/user1.jpg">
-																		</figure>
-																		<div class="commenter">
-																			<h5><a title="" href="#">Jack Carter</a>
-																			</h5>
-																			<span>2 hours ago</span>
-																			<p>
-																				i think that some how, we learn who we
-																				really are and then live with that
-																				decision, great post!
-																			</p>
-																			<span>you can view the more detail via
-																				link</span>
-																			<a title=""
-																				href="https://www.youtube.com/watch?v=HpZgwHU1GcI"
-																				target="_blank">https://www.youtube.com/watch?v=HpZgwHU1GcI</a>
-																		</div>
-																		<a title="Like" href="#"><i
-																				class="icofont-heart"></i></a>
-																		<a title="Reply" href="#"
-																			class="reply-coment"><i
-																				class="icofont-reply"></i></a>
-																	</li>
-																	<li>
-																		<figure><img alt=""
-																				src="/frontoffice/images/resources/user2.jpg">
-																		</figure>
-																		<div class="commenter">
-																			<h5><a title="" href="#">Ching xang</a></h5>
-																			<span>2 hours ago</span>
-																			<p>
-																				i think that some how, we learn who we
-																				really are and then live with that
-																				decision, great post!
-																			</p>
-																		</div>
-																		<a title="Like" href="#"><i
-																				class="icofont-heart"></i></a>
-																		<a title="Reply" href="#"
-																			class="reply-coment"><i
-																				class="icofont-reply"></i></a>
-																	</li>
-																</ul>
-															</div>
+													<div class="box" data-publication-id="{{ $publication->id }}">
+        <div class="Like"><a class="Like__link"><i class="icofont-like"></i> Like</a></div>
+    </div>
+													
+	<a title="" href="#" class="comment-to" data-publication-id="{{ $publication->id }}">
+    <i class="icofont-comment"></i> Comment
+</a>
+<div class="new-comment" style="display: none;">
+<form id="commentForm" action="{{ route('add-comment') }}" method="POST">
+        @csrf
+        <input type="hidden" name="publication_id" value="{{ $publication->id }}">
+        <input type="text" name="content" placeholder="write comment">
+        <button type="submit"><i class="icofont-paper-plane"></i></button>
+    </form>
+   <div class="comments-area" data-comments-publication-id="{{ $publication->id }}">
+    <!-- Comments will be loaded here -->
+    <ul>
+        <!-- Existing comments will be dynamically added here -->
+    </ul>
+</div>
+
+
+
 														</div>
 													</div>
 												</div>
@@ -1514,4 +1328,143 @@
 		}
 	}
 </script>
+
+<script>
+ $(document).ready(function() {
+        $('.Like__link').click(function(e) {
+            e.preventDefault();
+            var publicationId = $(this).closest('.box').data('publication-id');
+			var csrfToken = $('meta[name="csrf-token"]').attr('content'); // Récupérer le jeton CSRF
+
+            $.ajax({
+                type: 'POST',
+                url: '/jaime-publication',
+                data: {
+					_token: csrfToken, // Ajouter le jeton CSRF à la demande
+
+                    publication_id: publicationId
+                },
+                success: function(response) {
+					var likeCountElement = $('.unique-like-count-' + publicationId);
+            likeCountElement.text(response.like_count);
+                        if (response.message === "Publication unliked.")
+						{
+							showToast('warning' ,response.message);
+
+						}else{
+							showToast('success' ,response.message);
+
+						}
+                  
+                },
+                error: function(xhr, status, error) {
+                    // Gérez les erreurs ou affichez un message d'erreur
+					showToast('error' ,error);
+
+                }
+            });
+        });
+    });
+	function showToast(type, message) {
+		toastr.options = {
+			closeButton: true, // Add a close button
+			progressBar: true, // Show a progress bar
+			showMethod: 'slideDown', // Animation in
+			hideMethod: 'slideUp', // Animation out
+			timeOut: 5000, // Time before auto-dismiss
+		};
+
+		switch (type) {
+			case 'info':
+				toastr.info(message);
+				break;
+			case 'success':
+				toastr.success(message);
+				break;
+			case 'warning':
+				toastr.warning(message);
+				break;
+			case 'error':
+				toastr.error(message);
+				break;
+		}
+	}
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('.comment-to').click(function(e) {
+            e.preventDefault();
+            var publicationId = $(this).data('publication-id');
+            var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
+
+            // Make an AJAX request to fetch comments for this publication
+            $.ajax({
+                type: 'GET',
+                url: '/publication/' + publicationId + '/comments',
+                success: function(response) {
+                    commentsArea.find('ul').empty(); // Clear existing comments
+                    $.each(response.comments, function(index, comment) {
+                        var commentHtml = '<li>' +
+                            '<figure><img alt="" src="/frontoffice/images/resources/user1.jpg"></figure>' +
+                            '<div class="commenter">' +
+                            '<h5><a title="" href="#">"aaa"</a></h5>' +
+                            '<span>' + comment.created_at + '</span>' +
+                            '<p>' + comment.contenu + '</p>' +
+                            '</div>' +
+                            '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
+                            '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                            '</li>';
+                        commentsArea.find('ul').append(commentHtml);
+                    });
+                    commentsArea.show(); // Show the comments area
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Submit comment form
+        $('#commentForm').submit(function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            var publicationId = $(this).find('input[name="publication_id"]').val();
+
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        // Clear input field
+                        $('#commentForm input[name="content"]').val('');
+
+                        // Append the new comment to the comments area
+                        var commentHtml = '<li>' +
+                            '<figure><img alt="" src="' + response.comment.user.profile_picture + '"></figure>' +
+                            '<div class="commenter">' +
+                            '<h5><a title="" href="#">' + response.comment.user.name + '</a></h5>' +
+                            '<span>' + response.comment.created_at + '</span>' +
+                            '<p>' + response.comment.content + '</p>' +
+                            '</div>' +
+                            '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
+                            '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                            '</li>';
+                        $('.comments-area[data-comments-publication-id="' + publicationId + '"] ul').prepend(commentHtml);
+                    } else {
+                        console.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+
 @endsection

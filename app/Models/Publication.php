@@ -24,4 +24,14 @@ class Publication extends Model
     {
         return $this->hasMany(Commentaire::class);
     }
+    public function jaime_publications()
+    {
+        return $this->hasMany(jaime_publications::class);
+    }
+    // Dans le modèle Publication
+public function totalComments()
+{
+    return $this->commentaires()->count();
+}
+
 }
