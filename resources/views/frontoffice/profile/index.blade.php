@@ -198,7 +198,10 @@
                                                                                         <path
                                                                                             d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                                                                                     </svg></i>
-                                                                                <ins>{{ $publication->totalComments() }}</ins>
+                                                                                <ins> <span
+                                                                                        class="commentaire-count unique-commentaire-count-{{ $publication->id }}">
+                                                                                        {{ $publication->totalComments() }}
+                                                                                    </span> </ins>
                                                                             </span>
 
                                                                         </li>
@@ -1474,7 +1477,7 @@
                         } else {
                             $.each(response.comments, function(index, comment) {
                                 var createdAt = moment(comment.created_at)
-                            .fromNow(); // Format timestamp using moment.js
+                                    .fromNow(); // Format timestamp using moment.js
 
                                 var commentHtml = '<li>' +
                                     '<figure><img alt="" src="' + (comment.user.image ?
@@ -1520,6 +1523,8 @@
 
                             // Fetch and display comments for the publication
                             fetchAndDisplayComments(publicationId);
+                            var likeCountElement = $('.unique-commentaire-count-' + publicationId);
+                            likeCountElement.text(response.totalComments);
                         } else {
                             console.error(response.message);
                         }

@@ -130,10 +130,10 @@ class ClientController extends Controller
     public function showProfileUser()
     {
         $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
-    
+
         return view('frontoffice.profile.index', compact('publications'));
     }
-    
+
 
     public function updateProfile(Request $request)
     {
@@ -231,14 +231,14 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         // Validate the form data
-    
+
         // Store the new publication in the database
         $publication = new Publication();
         $publication->user_id = auth()->id();
         $publication->contenu = $request['contenu'];
         $publication->story = $request->has('story') ? true : false;
         $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
-    
+
         // Handle image upload if provided
         $imageName = null;
         if ($request->hasFile('image')) {
@@ -247,15 +247,15 @@ class ClientController extends Controller
             if (!File::isDirectory($uploadPath)) {
                 File::makeDirectory($uploadPath, 0777, true, true);
             }
-    
+
             $imageName = time() . '.' . $request->file('image')->extension(); // Generate unique filename
             $request->file('image')->move($uploadPath, $imageName); // Move uploaded file to 'public/images' folder
         }
-    
+
         $publication->image = $imageName; // Assign the image name to the publication model
-    
+
         $publication->save();
-    
+
         // Determine the success message based on the scenario
         if ($publication->story && $publication->Activity_Feed) {
             $message = 'Publication and story created successfully!';
@@ -266,17 +266,17 @@ class ClientController extends Controller
         } else {
             $message = 'Publication created successfully!';
         }
-    
+
         // Redirect to a success page or back to the creation form with success message
         return redirect()->back()->with('success', $message);
     }
-    
+
     public function likePublication(Request $request)
     {
         $existingLike = jaime_publications::where('user_id', auth()->id())
             ->where('publication_id', $request->publication_id)
             ->first();
-    
+
         if ($existingLike) {
             $existingLike->delete();
             $message = 'Publication unliked.';
@@ -289,7 +289,7 @@ class ClientController extends Controller
         }
         $likeCount = jaime_publications::where('publication_id', $request->publication_id)->count();
 
-    
+
         return response()->json(['message' => $message, 'like_count' => $likeCount]);
     }
 
@@ -300,7 +300,7 @@ class ClientController extends Controller
             'publication_id' => 'required|exists:publications,id',
             'content' => 'required|string|max:255',
         ]);
-    
+
         // Create a new comment
         $comment = new Commentaire();
         $comment->publication_id = $request->publication_id;
@@ -310,11 +310,13 @@ class ClientController extends Controller
         // You might need to associate the comment with a user if you have user authentication
         // $comment->user_id = auth()->id();
         $comment->save();
-    
+        $totalComments = Commentaire::where('publication_id', $request->publication_id)->count();
+
         // You can return the newly created comment in the response if needed
         return response()->json([
             'success' => true,
             'comment' => $comment,
+            'totalComments' => $totalComments,
             'message' => 'Comment added successfully',
         ]);
     }
