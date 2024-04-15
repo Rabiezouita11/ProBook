@@ -1467,22 +1467,34 @@
                     url: '/publication/' + publicationId + '/comments',
                     success: function(response) {
                         commentsArea.find('ul').empty(); // Clear existing comments
-                        $.each(response.comments, function(index, comment) {
-                            var createdAt = moment(comment.created_at)
-                        .fromNow(); // Format timestamp using moment.js
 
-                            var commentHtml = '<li>' +
-                                '<figure><img alt="" src="/frontoffice/images/resources/user1.jpg"></figure>' +
-                                '<div class="commenter">' +
-                                '<h5><a title="" href="#">' + comment.user.name + '</a></h5>' +
-                                '<span>' + createdAt + '</span>' +
-                                '<p>' + comment.contenu + '</p>' +
-                                '</div>' +
-                                '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
-                                '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
-                                '</li>';
-                            commentsArea.find('ul').append(commentHtml);
-                        });
+                        // Check if there are comments in the response
+                        if (response.comments.length === 0) {
+                            commentsArea.find('ul').append('<li>No comments yet.</li>');
+                        } else {
+                            $.each(response.comments, function(index, comment) {
+                                var createdAt = moment(comment.created_at)
+                            .fromNow(); // Format timestamp using moment.js
+
+                                var commentHtml = '<li>' +
+                                    '<figure><img alt="" src="' + (comment.user.image ?
+                                        '/users/' + comment.user.image :
+                                        'https://ui-avatars.com/api/?name=' +
+                                        encodeURIComponent(comment.user.name) +
+                                        '&background=104d93&color=fff') +
+                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                    '<div class="commenter">' +
+                                    '<h5><a title="" href="#">' + comment.user.name +
+                                    '</a></h5>' +
+                                    '<span>' + createdAt + '</span>' +
+                                    '<p>' + comment.contenu + '</p>' +
+                                    '</div>' +
+                                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
+                                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                                    '</li>';
+                                commentsArea.find('ul').append(commentHtml);
+                            });
+                        }
                         commentsArea.show(); // Show the comments area
                     },
                     error: function(xhr, status, error) {
