@@ -1475,6 +1475,10 @@
                         console.log(response)
                         // Fetch and display comments after adding a new comment
                         fetchComments(response.publicationId);
+                        $('#modal-comments-count').text(response.totalComments);
+                        var likeCountElement = $('.unique-commentaire-count-' +
+                        response.publicationId);
+                            likeCountElement.text(response.totalComments);
                         
                     },
                     error: function(xhr, status, error) {
