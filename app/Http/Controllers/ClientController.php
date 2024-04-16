@@ -366,7 +366,19 @@ class ClientController extends Controller
         return response()->json(['success' => true, 'message' => 'Comment deleted successfully', 'totalComments' => $totalComments]);
     }
 
+    public function update(Request $request)
+    {
+        // Find the comment by its ID
+        $comment = Commentaire::findOrFail($request->comment_id);
 
+        // Update the comment content
+        $comment->contenu = $request->input('content');
+        $comment->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Comment updated successfully!');
+    }
+    
 
 
 }

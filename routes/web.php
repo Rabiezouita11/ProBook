@@ -70,7 +70,7 @@ Route::get('/publication/{publicationId}/comments', [App\Http\Controllers\Client
 
 /* methode to show count comments   */
 
-Route::get('/publication/{publicationId}/comments/count',  [App\Http\Controllers\ClientController::class, 'getCommentsCount'])->middleware(['auth', 'role:utilisateur']);
+Route::get('/publication/{publicationId}/comments/count', [App\Http\Controllers\ClientController::class, 'getCommentsCount'])->middleware(['auth', 'role:utilisateur']);
 
 
 Route::get('/publication/{publicationId}/likes/count', [App\Http\Controllers\ClientController::class, 'getLikesCount'])->middleware(['auth', 'role:utilisateur']);
@@ -82,8 +82,14 @@ Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 
 
 
 
+// udpate comment in profile user 
+
+
+Route::put('/comment', [App\Http\Controllers\ClientController::class, 'update'])->name('comment.update')->middleware(['auth', 'role:utilisateur']);
+
+
 // delete comment 
-Route::delete('/publication/{publicationId}/comment/{commentId}',  [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);
+Route::delete('/publication/{publicationId}/comment/{commentId}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);
 
 
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');

@@ -873,6 +873,10 @@
             /* Allow vertical scrollbar when content exceeds the height */
         }
     </style>
+
+
+
+
     <div class="modal fade" id="img-comt">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1130,7 +1134,7 @@
                             commentsList.append('<li>No comments yet.</li>');
                         } else {
                             $.each(response.comments, function(index, comment) {
-                                var createdAt = moment(comment.created_at).fromNow();
+                                var createdAt = moment(comment.updated_at).fromNow();
                                 var commentHtml = '<li data-comment-id="' + comment.id +
                                     '">' +
                                     '<figure><img src="' + (comment.user.image ?
@@ -1162,7 +1166,7 @@
         });
     </script>
 
-
+    {{-- changePasswordForm  --}}
     <script>
         $(document).ready(function() {
             $('#changePasswordForm').submit(function(e) {
@@ -1227,7 +1231,7 @@
             }
         }
     </script>
-
+    {{-- ajouter like  --}}
     <script>
         $(document).ready(function() {
             $('.Like__link').click(function(e) {
@@ -1290,6 +1294,8 @@
         }
     </script>
 
+
+    {{-- add comment in profile user --}}
     <script>
         $(document).ready(function() {
             function fetchAndDisplayComments(publicationId) {
@@ -1307,7 +1313,7 @@
                             commentsArea.find('ul').append('<li>No comments yet.</li>');
                         } else {
                             $.each(response.comments, function(index, comment) {
-                                var createdAt = moment(comment.created_at)
+                                var createdAt = moment(comment.updated_at)
                                     .fromNow(); // Format timestamp using moment.js
 
                                 var commentHtml = '<li data-comment-id="' + comment.id + '">' +
@@ -1324,8 +1330,8 @@
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>' +
-                                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
-                                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                    // Update button
                                     '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
                                     // Add delete icon
 
@@ -1407,6 +1413,8 @@
         }
     </script>
 
+
+    {{-- add comment in modal  --}}
     <script>
         $(document).ready(function() {
             // Function to fetch and display comments
@@ -1423,7 +1431,7 @@
                             commentsList.append('<li>No comments yet.</li>');
                         } else {
                             $.each(response.comments, function(index, comment) {
-                                var createdAt = moment(comment.created_at)
+                                var createdAt = moment(comment.updated_at)
                                     .fromNow(); // Format timestamp using moment.js
                                 var commentHtml = '<li data-comment-id="' + comment.id + '">' +
                                     // Set data-comment-id attribute with comment ID
@@ -1468,7 +1476,7 @@
                         // Fetch and display comments after adding a new comment
                         fetchComments(response.publicationId);
                         $('#modal-comments-count').text(response.totalComments);
-                        
+
                         var likeCountElement = $('.unique-commentaire-count-' +
                             response.publicationId);
                         likeCountElement.text(response.totalComments);
@@ -1484,56 +1492,56 @@
         });
     </script>
 
-
+    {{-- delete comment --}}
     <script>
-  function fetchAndDisplayComments(publicationId) {
-                var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
+        function fetchAndDisplayComments(publicationId) {
+            var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
 
-                // Make an AJAX request to fetch comments for this publication
-                $.ajax({
-                    type: 'GET',
-                    url: '/publication/' + publicationId + '/comments',
-                    success: function(response) {
-                        commentsArea.find('ul').empty(); // Clear existing comments
+            // Make an AJAX request to fetch comments for this publication
+            $.ajax({
+                type: 'GET',
+                url: '/publication/' + publicationId + '/comments',
+                success: function(response) {
+                    commentsArea.find('ul').empty(); // Clear existing comments
 
-                        // Check if there are comments in the response
-                        if (response.comments.length === 0) {
-                            commentsArea.find('ul').append('<li>No comments yet.</li>');
-                        } else {
-                            $.each(response.comments, function(index, comment) {
-                                var createdAt = moment(comment.created_at)
-                                    .fromNow(); // Format timestamp using moment.js
+                    // Check if there are comments in the response
+                    if (response.comments.length === 0) {
+                        commentsArea.find('ul').append('<li>No comments yet.</li>');
+                    } else {
+                        $.each(response.comments, function(index, comment) {
+                            var createdAt = moment(comment.updated_at)
+                                .fromNow(); // Format timestamp using moment.js
 
-                                var commentHtml = '<li data-comment-id="' + comment.id + '">' +
-                                    // Set data-comment-id attribute with comment ID
-                                    '<figure><img alt="" src="' + (comment.user.image ?
-                                        '/users/' + comment.user.image :
-                                        'https://ui-avatars.com/api/?name=' +
-                                        encodeURIComponent(comment.user.name) +
-                                        '&background=104d93&color=fff') +
-                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
-                                    '<div class="commenter">' +
-                                    '<h5><a title="" href="#">' + comment.user.name +
-                                    '</a></h5>' +
-                                    '<span>' + createdAt + '</span>' +
-                                    '<p>' + comment.contenu + '</p>' +
-                                    '</div>' +
-                                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
-                                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                            var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                // Set data-comment-id attribute with comment ID
+                                '<figure><img alt="" src="' + (comment.user.image ?
+                                    '/users/' + comment.user.image :
+                                    'https://ui-avatars.com/api/?name=' +
+                                    encodeURIComponent(comment.user.name) +
+                                    '&background=104d93&color=fff') +
+                                '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                '<div class="commenter">' +
+                                '<h5><a title="" href="#">' + comment.user.name +
+                                '</a></h5>' +
+                                '<span>' + createdAt + '</span>' +
+                                '<p>' + comment.contenu + '</p>' +
+                                '</div>' +
+                                '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                    // Update button
                                     '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
-                                    // Add delete icon
+                                // Add delete icon
 
-                                    '</li>';
-                                commentsArea.find('ul').append(commentHtml);
-                            });
-                        }
-                        commentsArea.show(); // Show the comments area
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
+                                '</li>';
+                            commentsArea.find('ul').append(commentHtml);
+                        });
                     }
-                });
-            }
+                    commentsArea.show(); // Show the comments area
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
 
         $(document).on('click', '.delete-comment', function(e) {
             e.preventDefault();
@@ -1570,4 +1578,53 @@
             });
         });
     </script>
+
+    <script>
+        // Event listener for the "Update" button
+        $(document).on('click', '.update-comment', function(e) {
+            e.preventDefault();
+            var commentId = $(this).closest('li').data('comment-id');
+            var commentContent = $(this).closest('li').find('.commenter p').text();
+            console.log(commentId)
+            console.log(commentContent)
+
+            // Populate modal fields with comment ID and content
+            $('#commentId').val(commentId);
+            $('#updatedContent').val(commentContent);
+
+            // Show the update comment modal
+            $('#updateCommentModal').modal('show');
+        });
+    </script>
+    <!-- Update Comment Modal -->
+    <div class="modal fade" id="updateCommentModal" tabindex="-1" role="dialog" aria-labelledby="updateCommentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCommentModalLabel">Update Comment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updateCommentForm" action="{{route('comment.update')}}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="commentId" name="comment_id">
+                    <input type="hidden" id="publicationId" name="publication_id">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="updatedContent">Updated Comment:</label>
+                            <textarea class="form-control" id="updatedContent" name="content" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
 @endsection
