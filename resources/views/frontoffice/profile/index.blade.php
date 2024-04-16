@@ -1119,36 +1119,35 @@
                     type: 'GET',
                     url: '/publication/' + publicationId + '/comments',
                     success: function(response) {
-                        var commentsHtml = '';
-                        if (response.comments.length > 0) {
+                        var commentsList = $('#img-comt .comments-area ul');
+                        commentsList.empty(); // Clear existing comments
+
+                        if (response.comments.length === 0) {
+                            commentsList.append('<li>No comments yet.</li>');
+                        } else {
                             $.each(response.comments, function(index, comment) {
                                 var createdAt = moment(comment.created_at).fromNow();
                                 var commentHtml = '<li data-comment-id="' + comment.id +
                                     '">' +
-                                    // Set data-comment-id attribute with comment ID
-                                    '<figure><img alt="" src="' + (comment.user.image ?
-                                        '/users/' + comment.user.image :
+                                    '<figure><img src="' + (comment.user.image ?
+                                        '/users/' +
+                                        comment.user.image :
                                         'https://ui-avatars.com/api/?name=' +
                                         encodeURIComponent(comment.user.name) +
                                         '&background=104d93&color=fff') +
                                     '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
                                     '<div class="commenter">' +
-                                    '<h5><a title="" href="#">' + comment.user.name +
+                                    '<h5><a href="#">' + comment.user.name +
                                     '</a></h5>' +
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>' +
-                                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
-                                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
-                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
-
                                     '</li>';
+                                commentsList.append(commentHtml);
                             });
-                        } else {
-                            commentsHtml = '<li>No comments yet.</li>';
                         }
-                        $('.comments-area').find('ul').html(commentsHtml);
                     },
+
                     error: function(xhr, status, error) {
                         console.error(error);
                     }
@@ -1284,42 +1283,7 @@
             }
         }
     </script>
-    <!-- <script>
-        $(document).ready(function() {
-            $('.comment-to').click(function(e) {
-                e.preventDefault();
-                var publicationId = $(this).data('publication-id');
-                var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId +
-                    '"]');
 
-                // Make an AJAX request to fetch comments for this publication
-                $.ajax({
-                    type: 'GET',
-                    url: '/publication/' + publicationId + '/comments',
-                    success: function(response) {
-                        commentsArea.find('ul').empty(); // Clear existing comments
-                        $.each(response.comments, function(index, comment) {
-                            var commentHtml = '<li>' +
-                                '<figure><img alt="" src="/frontoffice/images/resources/user1.jpg"></figure>' +
-                                '<div class="commenter">' +
-                                '<h5><a title="" href="#">"aaa"</a></h5>' +
-                                '<span>' + comment.created_at + '</span>' +
-                                '<p>' + comment.contenu + '</p>' +
-                                '</div>' +
-                                '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
-                                '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
-                                '</li>';
-                            commentsArea.find('ul').append(commentHtml);
-                        });
-                        commentsArea.show(); // Show the comments area
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script> -->
     <script>
         $(document).ready(function() {
             function fetchAndDisplayComments(publicationId) {
@@ -1527,7 +1491,7 @@
             $.ajax({
                 type: 'DELETE',
                 url: '/publication/' + publicationId + '/comment/' +
-                commentId, // Adjust the URL according to your backend route
+                    commentId, // Adjust the URL according to your backend route
                 data: {
                     _token: csrfToken // Include CSRF token in the data object
                 },

@@ -300,17 +300,17 @@ class ClientController extends Controller
             'publication_id' => 'required|exists:publications,id',
             'content' => 'required|string|max:255',
         ]);
-    
+
         // Create a new comment
         $comment = new Commentaire();
         $comment->publication_id = $request->publication_id;
         $comment->contenu = $request->content;
         $comment->user_id = auth()->id();
         $comment->save();
-    
+
         // Get the total number of comments for the publication
         $totalComments = Commentaire::where('publication_id', $request->publication_id)->count();
-    
+
         // You can return the newly created comment in the response if needed
         return response()->json([
             'success' => true,
@@ -320,7 +320,7 @@ class ClientController extends Controller
             'message' => 'Comment added successfully',
         ]);
     }
-    
+
     public function getComments($publicationId)
     {
         $publication = Publication::findOrFail($publicationId);
@@ -328,13 +328,13 @@ class ClientController extends Controller
         return response()->json(['comments' => $comments]);
     }
     public function getCommentsCount($publicationId)
-{
-    $publication = Publication::findOrFail($publicationId);
-    $commentsCount = $publication->commentaires()->count(); // Assuming you have a relationship set up between Publication and Comment models
+    {
+        $publication = Publication::findOrFail($publicationId);
+        $commentsCount = $publication->commentaires()->count(); // Assuming you have a relationship set up between Publication and Comment models
 
-    return response()->json(['commentsCount' => $commentsCount]);
-}
-public function getLikesCount($publicationId)
+        return response()->json(['commentsCount' => $commentsCount]);
+    }
+    public function getLikesCount($publicationId)
     {
         $publication = Publication::findOrFail($publicationId);
         $likesCount = $publication->jaime_publications()->count(); // Assuming you have a relationship set up between Publication and Like models
@@ -345,28 +345,28 @@ public function getLikesCount($publicationId)
     public function destroy($publicationId, $commentId)
     {
         $comment = Commentaire::find($commentId);
-    
+
         if (!$comment) {
             return response()->json(['success' => false, 'message' => 'Comment not found'], 404);
         }
-    
+
         // Check if the comment belongs to the specified publication
         if ($comment->publication_id != $publicationId) {
             return response()->json(['success' => false, 'message' => 'Comment does not belong to the specified publication'], 404);
         }
-    
+
         // Check if the user is authorized to delete the comment (optional)
-    
+
         $comment->delete();
-    
+
         // Retrieve the total count of comments for the publication after deletion
         $totalComments = Commentaire::where('publication_id', $publicationId)->count();
-    
+
         // Return success response along with the total count of comments
         return response()->json(['success' => true, 'message' => 'Comment deleted successfully', 'totalComments' => $totalComments]);
     }
-    
-    
-    
+
+
+
 
 }
