@@ -895,16 +895,13 @@
                                         <img id="modal-image" src="" alt="">
                                     </figure>
                                     <div class="stat-tools">
-                                        <div class="box">
-                                            <div class="Like">
-                                                <a class="Like__link">
-                                                    <i class="icofont-like"></i>
-                                                    Like
-                                                </a>
-
-                                            </div>
+                                       
+                                        <div class="box"
+                                        data-publication-id="{{ $publication->id }}">
+                                        <div class="Like"><a class="Like__link"><i
+                                                    class="icofont-like"></i> Like</a>
                                         </div>
-
+                                    </div>
 
                                     </div>
                                 </div>
@@ -1092,6 +1089,7 @@
 
                 // Set the publication ID attribute
                 $('#img-comt .comments-area').attr('data-comments-publication-id', publicationId);
+                $('.box').attr('data-publication-id', publicationId);
 
                 $('#add-comment-form').find('input[name="publication_id"]').val(publicationId);
 
