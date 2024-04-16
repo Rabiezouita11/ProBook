@@ -975,7 +975,7 @@
                                             <i class="icofont-paper-plane"></i>
                                         </button>
                                     </form>
-                                    <div class="comments-area">
+                                    <div class="comments-area" data-comments-publication-id="{{ $publication->id }}">
                                         <ul>
                                             <!-- Comments will be dynamically loaded here via AJAX -->
                                         </ul>
@@ -1085,6 +1085,10 @@
                 var imageUrl = $(this).data('src');
                 var publicationTime = $(this).data('time');
                 var publicationId = $(this).data('publication-id');
+
+                // Set the publication ID attribute
+                $('#img-comt .comments-area').attr('data-comments-publication-id', publicationId);
+
                 $('#add-comment-form').find('input[name="publication_id"]').val(publicationId);
 
                 $('#modal-time').text('(Published ' + publicationTime + ' ago)');
@@ -1142,6 +1146,8 @@
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
+
                                     '</li>';
                                 commentsList.append(commentHtml);
                             });
@@ -1462,6 +1468,7 @@
                         // Fetch and display comments after adding a new comment
                         fetchComments(response.publicationId);
                         $('#modal-comments-count').text(response.totalComments);
+                        
                         var likeCountElement = $('.unique-commentaire-count-' +
                             response.publicationId);
                         likeCountElement.text(response.totalComments);
@@ -1479,6 +1486,55 @@
 
 
     <script>
+  function fetchAndDisplayComments(publicationId) {
+                var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
+
+                // Make an AJAX request to fetch comments for this publication
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId + '/comments',
+                    success: function(response) {
+                        commentsArea.find('ul').empty(); // Clear existing comments
+
+                        // Check if there are comments in the response
+                        if (response.comments.length === 0) {
+                            commentsArea.find('ul').append('<li>No comments yet.</li>');
+                        } else {
+                            $.each(response.comments, function(index, comment) {
+                                var createdAt = moment(comment.created_at)
+                                    .fromNow(); // Format timestamp using moment.js
+
+                                var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                    // Set data-comment-id attribute with comment ID
+                                    '<figure><img alt="" src="' + (comment.user.image ?
+                                        '/users/' + comment.user.image :
+                                        'https://ui-avatars.com/api/?name=' +
+                                        encodeURIComponent(comment.user.name) +
+                                        '&background=104d93&color=fff') +
+                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                    '<div class="commenter">' +
+                                    '<h5><a title="" href="#">' + comment.user.name +
+                                    '</a></h5>' +
+                                    '<span>' + createdAt + '</span>' +
+                                    '<p>' + comment.contenu + '</p>' +
+                                    '</div>' +
+                                    '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
+                                    '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
+                                    // Add delete icon
+
+                                    '</li>';
+                                commentsArea.find('ul').append(commentHtml);
+                            });
+                        }
+                        commentsArea.show(); // Show the comments area
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
         $(document).on('click', '.delete-comment', function(e) {
             e.preventDefault();
             var commentElement = $(this).closest('li');
@@ -1500,6 +1556,9 @@
                         commentElement.remove();
                         var likeCountElement = $('.unique-commentaire-count-' + publicationId);
                         likeCountElement.text(response.totalComments);
+                        $('#modal-comments-count').text(response.totalComments);
+                        fetchAndDisplayComments(publicationId);
+
                         showToast('success', 'Comment deleted successfully!');
                     } else {
                         console.error(response.message);
