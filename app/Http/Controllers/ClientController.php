@@ -379,6 +379,21 @@ class ClientController extends Controller
         return redirect()->back()->with('success', 'Comment updated successfully!');
     }
     
-
+    public function destroyPublication($id)
+    {
+        // Find the publication
+        $publication = Publication::findOrFail($id);
+        
+        // Check if the authenticated user owns the publication
+        if(auth()->user()->id !== $publication->user_id) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+    
+        // Delete the publication
+        $publication->delete();
+    
+        return response()->json(['message' => 'Post deleted successfully']);
+    }
+    
 
 }

@@ -88,6 +88,11 @@ Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 
 Route::put('/comment', [App\Http\Controllers\ClientController::class, 'update'])->name('comment.update')->middleware(['auth', 'role:utilisateur']);
 
 
+//delete publication of user 
+Route::delete('/publication/{id}', [App\Http\Controllers\ClientController::class, 'destroyPublication'])->name('publication.delete')->middleware(['auth', 'role:utilisateur']);
+
+    
+
 // delete comment 
 Route::delete('/publication/{publicationId}/comment/{commentId}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);
 

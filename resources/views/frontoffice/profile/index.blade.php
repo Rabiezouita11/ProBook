@@ -85,7 +85,7 @@
                                             </div>
                                         @else
                                             @foreach ($publications as $publication)
-                                                <div class="main-wraper">
+                                                <div class="main-wraper" id="publication-{{ $publication->id }}">
                                                     <div class="user-post">
                                                         <div class="friend-info">
                                                             <figure>
@@ -122,19 +122,16 @@
                                                                                 <i class="icofont-pen-alt-1"></i>Edit Post
                                                                                 <span>Edit This Post within a Hour</span>
                                                                             </li>
+
                                                                             <li>
-                                                                                <i class="icofont-ban"></i>Hide Post
-                                                                                <span>Hide This Post</span>
+                                                                                <a href="#" class="delete-post-btn"
+                                                                                    data-publication-id="{{ $publication->id }}">
+                                                                                    <i class="icofont-ui-delete"></i>Delete
+                                                                                    Post
+                                                                                </a>
+
                                                                             </li>
-                                                                            <li>
-                                                                                <i class="icofont-ui-delete"></i>Delete Post
-                                                                                <span>If inappropriate Post By
-                                                                                    Mistake</span>
-                                                                            </li>
-                                                                            <li>
-                                                                                <i class="icofont-flag"></i>Report
-                                                                                <span>Inappropriate content</span>
-                                                                            </li>
+
                                                                         </ul>
                                                                     </div>
                                                                 </div>
@@ -264,6 +261,150 @@
                                                         </div>
                                                     </div>
                                                 </div><!-- share post without image -->
+                                                <div class="modal fade" id="img-comt">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <!-- Modal Header -->
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal">×</button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="modal-body">
+                                                                <div class="row merged">
+                                                                    <div class="col-lg-9">
+                                                                        <div class="pop-image">
+                                                                            <div class="pop-item">
+
+                                                                                <figure>
+                                                                                    <img id="modal-image" src=""
+                                                                                        alt="">
+                                                                                </figure>
+                                                                                <div class="stat-tools">
+
+                                                                                    <div class="box"
+                                                                                        data-publication-id="{{ $publication->id }}">
+                                                                                        <div class="Like"><a
+                                                                                                class="Like__link"><i
+                                                                                                    class="icofont-like"></i>
+                                                                                                Like</a>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <div class="commentbar">
+                                                                            <div class="user">
+                                                                                @if (Auth::user()->image)
+                                                                                    <figure><img
+                                                                                            src="{{ asset('users/' . Auth::user()->image) }}"
+                                                                                            height="50px" width="50px"
+                                                                                            alt=""></figure>
+                                                                                @else
+                                                                                    <figure><img
+                                                                                            src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=104d93&color=fff"
+                                                                                            alt=""></figure>
+                                                                                @endif
+                                                                                <div class="user-information">
+                                                                                    <h4>
+                                                                                        <a href="{{ route('Profile_User') }}"
+                                                                                            title="">{{ auth::user()->name }}</a>
+                                                                                    </h4>
+
+                                                                                    <span><i class="icofont-globe"></i>
+                                                                                        <span
+                                                                                            id="modal-time"></span></span>
+
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="we-video-info">
+                                                                                <ul>
+                                                                                    <li>
+                                                                                        <span title="Comments"
+                                                                                            class="liked">
+                                                                                            <i>
+                                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                                    width="16"
+                                                                                                    height="16"
+                                                                                                    viewBox="0 0 24 24"
+                                                                                                    fill="none"
+                                                                                                    stroke="currentColor"
+                                                                                                    stroke-width="2"
+                                                                                                    stroke-linecap="round"
+                                                                                                    stroke-linejoin="round"
+                                                                                                    class="feather feather-thumbs-up">
+                                                                                                    <path
+                                                                                                        d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
+                                                                                                    </path>
+                                                                                                </svg>
+                                                                                            </i>
+                                                                                            <ins
+                                                                                                id="modal-jaime-count">0</ins>
+
+                                                                                        </span>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <span title="Comments"
+                                                                                            class="comment">
+                                                                                            <i>
+                                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                                    width="16"
+                                                                                                    height="16"
+                                                                                                    viewBox="0 0 24 24"
+                                                                                                    fill="none"
+                                                                                                    stroke="currentColor"
+                                                                                                    stroke-width="2"
+                                                                                                    stroke-linecap="round"
+                                                                                                    stroke-linejoin="round"
+                                                                                                    class="feather feather-message-square">
+                                                                                                    <path
+                                                                                                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                                                                                                    </path>
+                                                                                                </svg>
+                                                                                            </i>
+                                                                                            <ins
+                                                                                                id="modal-comments-count">0</ins>
+                                                                                        </span>
+                                                                                    </li>
+
+                                                                                </ul>
+
+                                                                            </div>
+                                                                            <div class="new-comment"
+                                                                                style="display: block;">
+                                                                                <form id="add-comment-form"
+                                                                                    action="{{ route('add-comment') }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    <input type="hidden"
+                                                                                        name="publication_id"
+                                                                                        value="{{ $publication->id }}">
+
+                                                                                    <input type="text" name="content"
+                                                                                        placeholder="Write a comment">
+                                                                                    <button type="submit">
+                                                                                        <i class="icofont-paper-plane"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                                <div class="comments-area"
+                                                                                    data-comments-publication-id="{{ $publication->id }}">
+                                                                                    <ul>
+                                                                                        <!-- Comments will be dynamically loaded here via AJAX -->
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         @endif
 
@@ -877,118 +1018,7 @@
 
 
 
-    <div class="modal fade" id="img-comt">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="row merged">
-                        <div class="col-lg-9">
-                            <div class="pop-image">
-                                <div class="pop-item">
 
-                                    <figure>
-                                        <img id="modal-image" src="" alt="">
-                                    </figure>
-                                    <div class="stat-tools">
-
-                                        <div class="box" data-publication-id="{{ $publication->id }}">
-                                            <div class="Like"><a class="Like__link"><i class="icofont-like"></i>
-                                                    Like</a>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="commentbar">
-                                <div class="user">
-                                    @if (Auth::user()->image)
-                                        <figure><img src="{{ asset('users/' . Auth::user()->image) }}" height="50px"
-                                                width="50px" alt=""></figure>
-                                    @else
-                                        <figure><img
-                                                src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=104d93&color=fff"
-                                                alt=""></figure>
-                                    @endif
-                                    <div class="user-information">
-                                        <h4>
-                                            <a href="{{ route('Profile_User') }}"
-                                                title="">{{ auth::user()->name }}</a>
-                                        </h4>
-
-                                        <span><i class="icofont-globe"></i> <span id="modal-time"></span></span>
-
-
-
-                                    </div>
-                                </div>
-                                <div class="we-video-info">
-                                    <ul>
-                                        <li>
-                                            <span title="Comments" class="liked">
-                                                <i>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-thumbs-up">
-                                                        <path
-                                                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
-                                                        </path>
-                                                    </svg>
-                                                </i>
-                                                <ins id="modal-jaime-count">0</ins>
-
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <span title="Comments" class="comment">
-                                                <i>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-message-square">
-                                                        <path
-                                                            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
-                                                        </path>
-                                                    </svg>
-                                                </i>
-                                                <ins id="modal-comments-count">0</ins>
-                                            </span>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-                                <div class="new-comment" style="display: block;">
-                                    <form id="add-comment-form" action="{{ route('add-comment') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="publication_id" value="{{ $publication->id }}">
-
-                                        <input type="text" name="content" placeholder="Write a comment">
-                                        <button type="submit">
-                                            <i class="icofont-paper-plane"></i>
-                                        </button>
-                                    </form>
-                                    <div class="comments-area" data-comments-publication-id="{{ $publication->id }}">
-                                        <ul>
-                                            <!-- Comments will be dynamically loaded here via AJAX -->
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1246,7 +1276,7 @@
                         publication_id: publicationId
                     },
                     success: function(response) {
-                       
+
                         var likeCountElement = $('.unique-like-count-' + publicationId);
                         likeCountElement.text(response.like_count);
                         var likeCountElements = $('#modal-jaime-count');
@@ -1627,6 +1657,38 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.delete-post-btn').click(function(e) {
+                e.preventDefault();
+                var publicationId = $(this).data('publication-id');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/publication/' + publicationId,
+                    data: {
+                        _token: csrfToken
+                    },
+                    success: function(response) {
+                        // Handle success, for example, remove the deleted post from the DOM
+                        $('#publication-' + publicationId).remove();
+                        showToast('success', response.message);
+                        if ($('.main-wraper').length === 0) {
+                            // If no remaining publications, show the "No posts found" message
+                            $('div.container').append(
+                                '<div style="text-align: center; font-size: 30px; font-weight: bold;"><p>No posts found.</p></div>'
+                                );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(error);
+                        showToast('error', 'An error occurred. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
 
 @endsection
