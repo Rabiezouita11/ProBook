@@ -79,13 +79,18 @@
 
                                             </div>
                                         </div><!-- create new post -->
+                                        <div class="container" id="post-container">
+                                            <!-- Your existing publication HTML here -->
+                                        </div>
                                         @if ($publications->isEmpty())
-                                            <div style="text-align: center; font-size: 30px; font-weight: bold;">
+                                            <div class="container"
+                                                style="text-align: center; font-size: 30px; font-weight: bold;">
                                                 <p>No posts found.</p>
                                             </div>
                                         @else
                                             @foreach ($publications as $publication)
-                                                <div class="main-wraper" id="publication-{{ $publication->id }}">
+                                                <div class="main-wraper unique-class"
+                                                    id="publication-{{ $publication->id }}">
                                                     <div class="user-post">
                                                         <div class="friend-info">
                                                             <figure>
@@ -1674,11 +1679,13 @@
                         // Handle success, for example, remove the deleted post from the DOM
                         $('#publication-' + publicationId).remove();
                         showToast('success', response.message);
-                        if ($('.main-wraper').length === 0) {
-                            // If no remaining publications, show the "No posts found" message
+
+                        if ($('.main-wraper.unique-class').length === 0) {
+                            console.log("No publications found");
+                            // If no remaining publications with the unique class, show the "No posts found" message
                             $('div.container').append(
                                 '<div style="text-align: center; font-size: 30px; font-weight: bold;"><p>No posts found.</p></div>'
-                                );
+                            );
                         }
                     },
                     error: function(xhr, status, error) {
