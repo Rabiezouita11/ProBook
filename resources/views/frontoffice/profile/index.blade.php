@@ -895,13 +895,12 @@
                                         <img id="modal-image" src="" alt="">
                                     </figure>
                                     <div class="stat-tools">
-                                       
-                                        <div class="box"
-                                        data-publication-id="{{ $publication->id }}">
-                                        <div class="Like"><a class="Like__link"><i
-                                                    class="icofont-like"></i> Like</a>
+
+                                        <div class="box" data-publication-id="{{ $publication->id }}">
+                                            <div class="Like"><a class="Like__link"><i class="icofont-like"></i>
+                                                    Like</a>
+                                            </div>
                                         </div>
-                                    </div>
 
                                     </div>
                                 </div>
@@ -945,6 +944,7 @@
                                                     </svg>
                                                 </i>
                                                 <ins id="modal-jaime-count">0</ins>
+
                                             </span>
                                         </li>
                                         <li>
@@ -1246,8 +1246,11 @@
                         publication_id: publicationId
                     },
                     success: function(response) {
+                       
                         var likeCountElement = $('.unique-like-count-' + publicationId);
                         likeCountElement.text(response.like_count);
+                        var likeCountElements = $('#modal-jaime-count');
+                        likeCountElements.text(response.like_count);
                         if (response.message === "Publication unliked.") {
                             showToast('warning', response.message);
 
@@ -1525,8 +1528,8 @@
                                 '<p>' + comment.contenu + '</p>' +
                                 '</div>' +
                                 '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
-                                    // Update button
-                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
+                                // Update button
+                                '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
                                 // Add delete icon
 
                                 '</li>';
@@ -1576,7 +1579,7 @@
             });
         });
     </script>
-
+    {{-- udpate comment --}}
     <script>
         // Event listener for the "Update" button
         $(document).on('click', '.update-comment', function(e) {
@@ -1595,7 +1598,8 @@
         });
     </script>
     <!-- Update Comment Modal -->
-    <div class="modal fade" id="updateCommentModal" tabindex="-1" role="dialog" aria-labelledby="updateCommentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateCommentModal" tabindex="-1" role="dialog"
+        aria-labelledby="updateCommentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1604,7 +1608,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="updateCommentForm" action="{{route('comment.update')}}" method="POST">
+                <form id="updateCommentForm" action="{{ route('comment.update') }}" method="POST">
                     @csrf
                     @method('PUT')
                     <input type="hidden" id="commentId" name="comment_id">
@@ -1623,6 +1627,6 @@
             </div>
         </div>
     </div>
-    
+
 
 @endsection
