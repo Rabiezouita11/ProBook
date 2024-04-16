@@ -1123,7 +1123,9 @@
                         if (response.comments.length > 0) {
                             $.each(response.comments, function(index, comment) {
                                 var createdAt = moment(comment.created_at).fromNow();
-                                commentsHtml += '<li>' +
+                                var commentHtml = '<li data-comment-id="' + comment.id +
+                                    '">' +
+                                    // Set data-comment-id attribute with comment ID
                                     '<figure><img alt="" src="' + (comment.user.image ?
                                         '/users/' + comment.user.image :
                                         'https://ui-avatars.com/api/?name=' +
@@ -1138,6 +1140,8 @@
                                     '</div>' +
                                     '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
                                     '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
+
                                     '</li>';
                             });
                         } else {
@@ -1336,7 +1340,8 @@
                                 var createdAt = moment(comment.created_at)
                                     .fromNow(); // Format timestamp using moment.js
 
-                                    var commentHtml = '<li data-comment-id="' + comment.id + '">' + // Set data-comment-id attribute with comment ID
+                                var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                    // Set data-comment-id attribute with comment ID
                                     '<figure><img alt="" src="' + (comment.user.image ?
                                         '/users/' + comment.user.image :
                                         'https://ui-avatars.com/api/?name=' +
@@ -1450,7 +1455,8 @@
                             $.each(response.comments, function(index, comment) {
                                 var createdAt = moment(comment.created_at)
                                     .fromNow(); // Format timestamp using moment.js
-                                var commentHtml = '<li>' +
+                                var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                    // Set data-comment-id attribute with comment ID
                                     '<figure><img src="' + (comment.user.image ? '/users/' +
                                         comment.user.image :
                                         'https://ui-avatars.com/api/?name=' +
@@ -1462,6 +1468,8 @@
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
+
                                     '</li>';
                                 commentsList.append(commentHtml);
                             });
@@ -1518,7 +1526,8 @@
 
             $.ajax({
                 type: 'DELETE',
-                url: '/comment/' + commentId,
+                url: '/publication/' + publicationId + '/comment/' +
+                commentId, // Adjust the URL according to your backend route
                 data: {
                     _token: csrfToken // Include CSRF token in the data object
                 },

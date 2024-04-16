@@ -342,24 +342,31 @@ public function getLikesCount($publicationId)
         return response()->json(['likesCount' => $likesCount]);
     }
 
-    public function destroy($id)
+    public function destroy($publicationId, $commentId)
     {
-        $comment = Commentaire::find($id);
+        $comment = Commentaire::find($commentId);
     
         if (!$comment) {
             return response()->json(['success' => false, 'message' => 'Comment not found'], 404);
+        }
+    
+        // Check if the comment belongs to the specified publication
+        if ($comment->publication_id != $publicationId) {
+            return response()->json(['success' => false, 'message' => 'Comment does not belong to the specified publication'], 404);
         }
     
         // Check if the user is authorized to delete the comment (optional)
     
         $comment->delete();
     
-        // Retrieve the total count of comments after deletion
-        $totalComments = Commentaire::count(); // Assuming Commentaire is your model name
+        // Retrieve the total count of comments for the publication after deletion
+        $totalComments = Commentaire::where('publication_id', $publicationId)->count();
     
         // Return success response along with the total count of comments
         return response()->json(['success' => true, 'message' => 'Comment deleted successfully', 'totalComments' => $totalComments]);
     }
+    
+    
     
 
 }
