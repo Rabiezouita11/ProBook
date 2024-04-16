@@ -82,6 +82,9 @@ Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 
 
 
 
+// delete comment 
+Route::delete('/comment/{id}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);
+
 
 Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->name('home')->middleware('role:utilisateur');
 

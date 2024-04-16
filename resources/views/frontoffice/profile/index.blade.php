@@ -866,11 +866,12 @@
     </section>
     <style>
         /* CSS for modal scrollbar */
-.modal-body {
-    max-height: 100vh; /* Set maximum height for the modal body */
-    overflow-y: auto; /* Allow vertical scrollbar when content exceeds the height */
-}
-
+        .modal-body {
+            max-height: 100vh;
+            /* Set maximum height for the modal body */
+            overflow-y: auto;
+            /* Allow vertical scrollbar when content exceeds the height */
+        }
     </style>
     <div class="modal fade" id="img-comt">
         <div class="modal-dialog">
@@ -1335,7 +1336,7 @@
                                 var createdAt = moment(comment.created_at)
                                     .fromNow(); // Format timestamp using moment.js
 
-                                var commentHtml = '<li>' +
+                                    var commentHtml = '<li data-comment-id="' + comment.id + '">' + // Set data-comment-id attribute with comment ID
                                     '<figure><img alt="" src="' + (comment.user.image ?
                                         '/users/' + comment.user.image :
                                         'https://ui-avatars.com/api/?name=' +
@@ -1350,6 +1351,9 @@
                                     '</div>' +
                                     '<a title="Like" href="#"><i class="icofont-heart"></i></a>' +
                                     '<a title="Reply" href="#" class="reply-coment"><i class="icofont-reply"></i></a>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
+                                    // Add delete icon
+
                                     '</li>';
                                 commentsArea.find('ul').append(commentHtml);
                             });
@@ -1427,13 +1431,15 @@
             }
         }
     </script>
+
     <script>
         $(document).ready(function() {
             // Function to fetch and display comments
             function fetchComments(publicationId) {
                 $.ajax({
                     type: 'GET',
-                    url: '/publication/' + publicationId +'/comments', // Replace this URL with your backend endpoint
+                    url: '/publication/' + publicationId +
+                        '/comments', // Replace this URL with your backend endpoint
                     success: function(response) {
                         var commentsList = $('.comments-area ul');
                         commentsList.empty(); // Clear existing comments
@@ -1485,9 +1491,9 @@
                         fetchComments(response.publicationId);
                         $('#modal-comments-count').text(response.totalComments);
                         var likeCountElement = $('.unique-commentaire-count-' +
-                        response.publicationId);
-                            likeCountElement.text(response.totalComments);
-                        
+                            response.publicationId);
+                        likeCountElement.text(response.totalComments);
+
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
@@ -1499,4 +1505,37 @@
         });
     </script>
 
+
+    <script>
+        $(document).on('click', '.delete-comment', function(e) {
+            e.preventDefault();
+            var commentElement = $(this).closest('li');
+            var commentId = commentElement.data('comment-id');
+            var publicationId = commentElement.closest('.comments-area').data('comments-publication-id');
+
+            // Get the CSRF token from the meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/comment/' + commentId,
+                data: {
+                    _token: csrfToken // Include CSRF token in the data object
+                },
+                success: function(response) {
+                    if (response.success) {
+                        commentElement.remove();
+                        var likeCountElement = $('.unique-commentaire-count-' + publicationId);
+                        likeCountElement.text(response.totalComments);
+                        showToast('success', 'Comment deleted successfully!');
+                    } else {
+                        console.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
 @endsection

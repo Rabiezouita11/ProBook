@@ -341,4 +341,25 @@ public function getLikesCount($publicationId)
 
         return response()->json(['likesCount' => $likesCount]);
     }
+
+    public function destroy($id)
+    {
+        $comment = Commentaire::find($id);
+    
+        if (!$comment) {
+            return response()->json(['success' => false, 'message' => 'Comment not found'], 404);
+        }
+    
+        // Check if the user is authorized to delete the comment (optional)
+    
+        $comment->delete();
+    
+        // Retrieve the total count of comments after deletion
+        $totalComments = Commentaire::count(); // Assuming Commentaire is your model name
+    
+        // Return success response along with the total count of comments
+        return response()->json(['success' => true, 'message' => 'Comment deleted successfully', 'totalComments' => $totalComments]);
+    }
+    
+
 }
