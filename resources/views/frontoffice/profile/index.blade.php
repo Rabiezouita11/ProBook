@@ -156,7 +156,31 @@
                                                                 // Calculate the difference between the created_at timestamp and the current time
                                                                 $timeElapsed = $created_at->diffForHumans(null, true);
                                                             @endphp
+                                                            <style>
+                                                             
 
+                                                                .modal-content {
+                                                                    overflow-y: auto;
+
+                                                                }
+
+                                                                .pop-item {
+                                                                    width: 200px;
+                                                                    /* Set the width */
+                                                                    height: 200px;
+                                                                    /* Set the height */
+                                                                    /* Add any additional styling as needed */
+                                                                }
+
+                                                                .pop-item figure img {
+                                                                    width: 100%;
+                                                                    /* Make sure the image fills the container */
+                                                                    height: 100%;
+                                                                    /* Make sure the image fills the container */
+                                                                    object-fit: cover;
+                                                                    /* Ensure the image covers the container */
+                                                                }
+                                                            </style>
                                                             @if ($publication->image)
                                                                 <a data-toggle="modal" data-target="#img-comt"
                                                                     data-time="{{ $timeElapsed }}"
@@ -280,7 +304,7 @@
                                                                 <div class="row merged">
                                                                     <div class="col-lg-9">
                                                                         <div class="pop-image">
-                                                                            <div class="pop-item">
+
 
                                                                                 <figure>
                                                                                     <img id="modal-image" src=""
@@ -298,7 +322,7 @@
                                                                                     </div>
 
                                                                                 </div>
-                                                                            </div>
+                                                                           
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
@@ -1011,15 +1035,7 @@
             </div>
         </div>
     </section>
-    <style>
-        /* CSS for modal scrollbar */
-        .modal-body {
-            max-height: 100vh;
-            /* Set maximum height for the modal body */
-            overflow-y: auto;
-            /* Allow vertical scrollbar when content exceeds the height */
-        }
-    </style>
+  
 
 
 
@@ -1627,19 +1643,19 @@
             var commentContent = $(this).closest('li').find('.commenter p').text();
             console.log(commentId);
             console.log(commentContent);
-    
+
             // Populate modal fields with comment ID and content
             $('#commentId').val(commentId);
             $('#updatedContent').val(commentContent);
-    
+
             // Show the update comment modal
             $('#updateCommentModal').modal('show');
-    
+
             // Bring the update comment modal to the front
             $('#updateCommentModal').css('z-index', 9999999999);
         });
     </script>
-    
+
     <!-- Update Comment Modal -->
     <div class="modal fade" id="updateCommentModal" tabindex="-1" role="dialog"
         aria-labelledby="updateCommentModalLabel" aria-hidden="true">
@@ -1705,29 +1721,30 @@
             });
         });
     </script>
- <script>
-    $(document).ready(function() {
-        $('.edit-post-btn').click(function() {
-            // Retrieve the publication ID from the data attribute
-            var publicationId = $(this).data('publication-id');
-            console.log("Retrieved publicationId:", publicationId);
+    <script>
+        $(document).ready(function() {
+            $('.edit-post-btn').click(function() {
+                // Retrieve the publication ID from the data attribute
+                var publicationId = $(this).data('publication-id');
+                console.log("Retrieved publicationId:", publicationId);
 
-            // Retrieve the post content from the data attribute
-            var postContent = $(this).data('post-content');
-            console.log("Retrieved postContent:", postContent);
+                // Retrieve the post content from the data attribute
+                var postContent = $(this).data('post-content');
+                console.log("Retrieved postContent:", postContent);
 
-            // Update the hidden field value with the retrieved publication ID
-            $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
-            console.log("Updated publicationId in input field:", $('input[name="publication_id"]').val());
+                // Update the hidden field value with the retrieved publication ID
+                $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
+                console.log("Updated publicationId in input field:", $('input[name="publication_id"]')
+                    .val());
 
-            // Update the textarea value with the retrieved post content
-            $('#updatePublicationModal #updatedContent').val(postContent);
+                // Update the textarea value with the retrieved post content
+                $('#updatePublicationModal #updatedContent').val(postContent);
 
-            // Show the modal
-            $('#updatePublicationModal').modal('show');
+                // Show the modal
+                $('#updatePublicationModal').modal('show');
+            });
         });
-    });
-</script>
+    </script>
 
 
 
@@ -1743,8 +1760,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="updatePublicationForm"
-                    action="{{ route('publications.update') }}" method="POST">
+                <form id="updatePublicationForm" action="{{ route('publications.update') }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
