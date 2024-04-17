@@ -93,6 +93,12 @@ Route::delete('/publication/{id}', [App\Http\Controllers\ClientController::class
 
     
 
+//update publciation
+
+Route::put('/publications', [App\Http\Controllers\ClientController::class, 'updatePublication'])->name('publications.update')->middleware(['auth', 'role:utilisateur']);
+
+
+
 // delete comment 
 Route::delete('/publication/{publicationId}/comment/{commentId}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);
 

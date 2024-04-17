@@ -395,5 +395,25 @@ class ClientController extends Controller
         return response()->json(['message' => 'Post deleted successfully']);
     }
     
+    public function updatePublication(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'publication_id' => 'required|exists:publications,id',
+            'contenu' => 'required|string',
+        ]);
+    
+        // Find the publication by ID
+        $publication = Publication::findOrFail($request->input('publication_id'));
+    
+        // Update the publication with the new content
+        $publication->update([
+            'contenu' => $request->input('contenu'),
+        ]);
+    
+        // Redirect back or return a response as needed
+        return redirect()->back()->with('success', 'Publication updated successfully.');
+    }
+
 
 }

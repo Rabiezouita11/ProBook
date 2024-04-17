@@ -123,9 +123,10 @@
                                                                                 </circle>
                                                                             </svg></i>
                                                                         <ul>
-                                                                            <li>
+                                                                            <li class="edit-post-btn"
+                                                                                data-publication-id="{{ $publication->id }}"
+                                                                                data-post-content="{{ $publication->contenu }}">
                                                                                 <i class="icofont-pen-alt-1"></i>Edit Post
-                                                                                <span>Edit This Post within a Hour</span>
                                                                             </li>
 
                                                                             <li>
@@ -1183,6 +1184,8 @@
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>' +
+                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+
                                     '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
 
                                     '</li>';
@@ -1482,6 +1485,8 @@
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>' +
+                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+
                                     '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
 
                                     '</li>';
@@ -1616,22 +1621,25 @@
     </script>
     {{-- udpate comment --}}
     <script>
-        // Event listener for the "Update" button
         $(document).on('click', '.update-comment', function(e) {
             e.preventDefault();
             var commentId = $(this).closest('li').data('comment-id');
             var commentContent = $(this).closest('li').find('.commenter p').text();
-            console.log(commentId)
-            console.log(commentContent)
-
+            console.log(commentId);
+            console.log(commentContent);
+    
             // Populate modal fields with comment ID and content
             $('#commentId').val(commentId);
             $('#updatedContent').val(commentContent);
-
+    
             // Show the update comment modal
             $('#updateCommentModal').modal('show');
+    
+            // Bring the update comment modal to the front
+            $('#updateCommentModal').css('z-index', 9999999999);
         });
     </script>
+    
     <!-- Update Comment Modal -->
     <div class="modal fade" id="updateCommentModal" tabindex="-1" role="dialog"
         aria-labelledby="updateCommentModalLabel" aria-hidden="true">
@@ -1697,5 +1705,65 @@
             });
         });
     </script>
+ <script>
+    $(document).ready(function() {
+        $('.edit-post-btn').click(function() {
+            // Retrieve the publication ID from the data attribute
+            var publicationId = $(this).data('publication-id');
+            console.log("Retrieved publicationId:", publicationId);
+
+            // Retrieve the post content from the data attribute
+            var postContent = $(this).data('post-content');
+            console.log("Retrieved postContent:", postContent);
+
+            // Update the hidden field value with the retrieved publication ID
+            $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
+            console.log("Updated publicationId in input field:", $('input[name="publication_id"]').val());
+
+            // Update the textarea value with the retrieved post content
+            $('#updatePublicationModal #updatedContent').val(postContent);
+
+            // Show the modal
+            $('#updatePublicationModal').modal('show');
+        });
+    });
+</script>
+
+
+
+
+    </script>
+    <div class="modal fade" id="updatePublicationModal" tabindex="-1" role="dialog"
+        aria-labelledby="updatePublicationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updatePublicationModalLabel">Edit Publication</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updatePublicationForm"
+                    action="{{ route('publications.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="updatedContent">Updated Content:</label>
+                            <textarea class="form-control" id="updatedContent" name="contenu" rows="3"></textarea>
+                        </div>
+                        <!-- Hidden field to store publication ID -->
+                        <input type="hidden" id="publicationId" name="publication_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Publication</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 @endsection
