@@ -36,7 +36,7 @@
                                 <li class="nav-item"><a class="" href="#followers"
                                         data-toggle="tab">Followers</a><span>23</span></li>
                                 <li class="nav-item"><a class="" href="#follow"
-                                        data-toggle="tab">Follow</a><span>100</span>
+                                        data-toggle="tab">Follow</a><span>{{ $followingCount }}</span>
                                 </li>
                                 <li class="nav-item"><a class="" href="#about" data-toggle="tab">About</a></li>
                                 <li class="nav-item"><a class="" href="#profile" data-toggle="tab">Profile</a></li>
@@ -157,8 +157,6 @@
                                                                 $timeElapsed = $created_at->diffForHumans(null, true);
                                                             @endphp
                                                             <style>
-                                                             
-
                                                                 .modal-content {
                                                                     overflow-y: auto;
 
@@ -306,23 +304,23 @@
                                                                         <div class="pop-image">
 
 
-                                                                                <figure>
-                                                                                    <img id="modal-image" src=""
-                                                                                        alt="">
-                                                                                </figure>
-                                                                                <div class="stat-tools">
+                                                                            <figure>
+                                                                                <img id="modal-image" src=""
+                                                                                    alt="">
+                                                                            </figure>
+                                                                            <div class="stat-tools">
 
-                                                                                    <div class="box"
-                                                                                        data-publication-id="{{ $publication->id }}">
-                                                                                        <div class="Like"><a
-                                                                                                class="Like__link"><i
-                                                                                                    class="icofont-like"></i>
-                                                                                                Like</a>
-                                                                                        </div>
+                                                                                <div class="box"
+                                                                                    data-publication-id="{{ $publication->id }}">
+                                                                                    <div class="Like"><a
+                                                                                            class="Like__link"><i
+                                                                                                class="icofont-like"></i>
+                                                                                            Like</a>
                                                                                     </div>
-
                                                                                 </div>
-                                                                           
+
+                                                                            </div>
+
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
@@ -559,120 +557,49 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <style>
+                                        .no-users-message {
+                                            font-size: 16px;
+                                            color: #888;
+                                            text-align: center;
+                                            margin-top: 20px;
+                                        }
+                                    </style>
                                     <div class="tab-pane fade" id="follow">
-                                        <div class="row merged-10 col-xs-6">
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-10.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Amy Watson</a></span>
-                                                    <ins>Bz University, Pakistan</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>Unfollow</a>
-                                                </div>
+                                        @if ($followingUsers->isEmpty())
+                                            <p class="no-users-message">No users followed yet. Your journey starts here!
+                                                Start following users to discover new connections and insights!</p>
+                                        @else
+                                            <div class="row merged-10 col-xs-6">
+                                                @foreach ($followingUsers as $following)
+                                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                                        <div class="friendz">
+
+
+
+
+                                                            @if ($following->user->image)
+                                                                <figure><img
+                                                                        src="{{ asset('users/' . $following->user->image) }}"
+                                                                        alt=""></figure>
+                                                            @else
+                                                                <figure><img
+                                                                        src="https://ui-avatars.com/api/?name={{ urlencode($following->user->name) }}&background=104d93&color=fff"
+                                                                        alt=""></figure>
+                                                            @endif
+                                                            <span><a href="#"
+                                                                    title="">{{ $following->user->name }}</a></span>
+                                                            <ins>{{ $following->user->institut }}</ins>
+                                                            <a href="#" title="" data-ripple=""><i
+                                                                    class="icofont-star"></i>Unfollow</a>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-11.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Muhammad Khan</a></span>
-                                                    <ins>Oxford University, UK</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-12.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Sadia Gill</a></span>
-                                                    <ins>WB University, USA</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-4.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Rjapal</a></span>
-                                                    <ins>Km University, India</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-1.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Amy watson</a></span>
-                                                    <ins>Oxford University, UK</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-2.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Bob Frank</a></span>
-                                                    <ins>WB University, Canada</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-5.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Amy Watson</a></span>
-                                                    <ins>Bz University, Pakistan</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-7.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Muhammad Khan</a></span>
-                                                    <ins>Oxford University, UK</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-10.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Sadia Gill</a></span>
-                                                    <ins>WB University, USA</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Unfollow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="sp sp-bars"></div>
-                                            </div>
-                                        </div>
+                                        @endif
                                     </div>
+
+
                                     <div class="tab-pane fade " id="about">
                                         <div class="main-wraper">
                                             <h3 class="main-title">About Engin</h3>
@@ -880,16 +807,39 @@
                                                 <span><i class="icofont-runner-alt-1"></i> Follow similar Research
                                                     People</span>
                                             </div>
+                                            <style>
+                                                .user-image img {
+                                                    width: 100px;
+                                                    /* Adjust the width as needed */
+                                                    height: 100px;
+                                                    /* Adjust the height as needed */
+                                                    border-radius: 50%;
+                                                    /* Optional: Add rounded corners */
+                                                }
+                                            </style>
                                             <ul class="suggested-caro">
-                                                @foreach($suggestedUsers as $user)
+                                                @foreach ($suggestedUsers as $user)
                                                     <li>
-                                                        <figure><img src="{{ asset('users/' . $user->image) }}" alt=""></figure>
+
+                                                        <figure class="user-image">
+                                                            @if ($user->image)
+                                                                <img src="{{ asset('users/' . $user->image) }}"
+                                                                    alt="">
+                                                            @else
+                                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
+                                                                    alt="">
+                                                            @endif
+                                                        </figure>
                                                         <span>{{ $user->name }}</span>
                                                         <ins>{{ $user->institut }}</ins>
-                                                        <a href="#" title="" data-ripple=""><i class="icofont-star"></i> Follow</a>
+                                                        <a href="#" title="" data-ripple=""><i
+                                                                class="icofont-star"></i> Follow</a>
                                                     </li>
                                                 @endforeach
                                             </ul>
+
+
+
                                         </div>
                                     </div>
                                 </div><!-- suggested friends -->
@@ -933,20 +883,33 @@
                                     <div class="widget stick-widget">
                                         <h4 class="widget-title">Who's follownig</h4>
                                         <ul class="followers">
-                                            @foreach($suggestedUsers as $user)
 
-                                            <li>
-                                                <figure><img src="{{ asset('users/' . $user->image) }}" alt=""></figure>
+                                            @foreach ($suggestedUsers as $user)
+                                                <li>
 
-                                                <div class="friend-meta">
-                                                    <h4>
-                                                        <a title="" href="time-line.html">{{ $user->name }}</a>
-                                                        <span>{{ $user->institut }}</span>
-                                                    </h4>
-                                                    <a class="underline" title="" href="#">Follow</a>
-                                                </div>
-                                            </li>
+
+                                                    @if ($user->image)
+                                                        <figure><img src="{{ asset('users/' . $user->image) }}"
+                                                                alt=""></figure>
+                                                    @else
+                                                        <figure><img
+                                                                src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
+                                                                alt=""></figure>
+                                                    @endif
+
+
+
+                                                    <div class="friend-meta">
+                                                        <h4>
+                                                            <a title=""
+                                                                href="time-line.html">{{ $user->name }}</a>
+                                                            <span>{{ $user->institut }}</span>
+                                                        </h4>
+                                                        <a class="underline" title="" href="#">Follow</a>
+                                                    </div>
+                                                </li>
                                             @endforeach
+
 
                                         </ul>
                                     </div>
@@ -958,7 +921,7 @@
             </div>
         </div>
     </section>
-  
+
 
 
 

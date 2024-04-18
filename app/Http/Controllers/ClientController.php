@@ -130,13 +130,23 @@ class ClientController extends Controller
 
     public function showProfileUser()
     {
-        $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
         $currentUser = auth()->user();
+
+        $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
         $suggestedUsers = User::where('role', 'utilisateur')
         ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+        ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id')) // Exclude users whom the current user is following
+
         ->where('id', '!=', $currentUser->id)
         ->get();
-        return view('frontoffice.profile.index', compact('publications','suggestedUsers'));
+        $followingUsers =$currentUser->abonnes()->with('user')->get();
+
+
+        $followerCount = $followingUsers->count();
+
+        $followingCount = $currentUser->abonnes()->count();
+
+        return view('frontoffice.profile.index', compact('publications','suggestedUsers','followingUsers','followingCount','followerCount'));
     }
 
 
