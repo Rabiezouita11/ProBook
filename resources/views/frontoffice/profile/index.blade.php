@@ -35,8 +35,8 @@
                                 <li class="nav-item"><a class="active" href="#timeline" data-toggle="tab">Timeline</a></li>
                                 <li class="nav-item"><a class="" href="#followers"
                                         data-toggle="tab">Followers</a><span>23</span></li>
-                                <li class="nav-item"><a class="" href="#follow"
-                                        data-toggle="tab">Follow</a><span>{{ $followingCount }}</span>
+                                <li class="nav-item"><a class="" href="#follow" data-toggle="tab">Follow</a><span
+                                        id="following-count">{{ $followingCount }}</span>
                                 </li>
                                 <li class="nav-item"><a class="" href="#about" data-toggle="tab">About</a></li>
                                 <li class="nav-item"><a class="" href="#profile" data-toggle="tab">Profile</a></li>
@@ -574,24 +574,21 @@
                                                 @foreach ($followingUsers as $following)
                                                     <div class="col-lg-4 col-md-4 col-sm-6">
                                                         <div class="friendz">
-
-
-
-
-                                                            @if ($following->user->image)
+                                                            @if ($following->image)
                                                                 <figure><img
-                                                                        src="{{ asset('users/' . $following->user->image) }}"
+                                                                        src="{{ asset('users/' . $following->image) }}"
                                                                         alt=""></figure>
                                                             @else
                                                                 <figure><img
-                                                                        src="https://ui-avatars.com/api/?name={{ urlencode($following->user->name) }}&background=104d93&color=fff"
+                                                                        src="https://ui-avatars.com/api/?name={{ urlencode($following->name) }}&background=104d93&color=fff"
                                                                         alt=""></figure>
                                                             @endif
                                                             <span><a href="#"
-                                                                    title="">{{ $following->user->name }}</a></span>
-                                                            <ins>{{ $following->user->institut }}</ins>
-                                                            <a href="#" title="" data-ripple=""><i
-                                                                    class="icofont-star"></i>Unfollow</a>
+                                                                    title="">{{ $following->name }}</a></span>
+                                                            <ins>{{ $following->institut }}</ins>
+                                                            <a href="#" class="unfollow-button"
+                                                                data-user-id="{{ $following->id }}" title=""
+                                                                data-ripple=""><i class="icofont-star"></i>Unfollow</a>
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -817,26 +814,31 @@
                                                     /* Optional: Add rounded corners */
                                                 }
                                             </style>
-                                            <ul class="suggested-caro">
-                                                @foreach ($suggestedUsers as $user)
-                                                    <li>
 
-                                                        <figure class="user-image">
-                                                            @if ($user->image)
-                                                                <img src="{{ asset('users/' . $user->image) }}"
-                                                                    alt="">
-                                                            @else
-                                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
-                                                                    alt="">
-                                                            @endif
-                                                        </figure>
-                                                        <span>{{ $user->name }}</span>
-                                                        <ins>{{ $user->institut }}</ins>
-                                                        <a href="#" title="" data-ripple=""><i
-                                                                class="icofont-star"></i> Follow</a>
-                                                    </li>
-                                                @endforeach
+                                            <ul class="suggested-caro" id="suggested-users">
+                                                @if ($suggestedUsers->isEmpty())
+                                                    <li>No suggested users to display.</li>
+                                                @else
+                                                    @foreach ($suggestedUsers as $user)
+                                                        <li data-user-id="{{ $user->id }}">
+                                                            <figure class="user-image">
+                                                                @if ($user->image)
+                                                                    <img src="{{ asset('users/' . $user->image) }}"
+                                                                        alt="">
+                                                                @else
+                                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
+                                                                        alt="">
+                                                                @endif
+                                                            </figure>
+                                                            <span>{{ $user->name }}</span>
+                                                            <ins>{{ $user->institut }}</ins>
+                                                            <a href="#" title="" class="follow-button"
+                                                                data-ripple=""><i class="icofont-star"></i> Follow</a>
+                                                        </li>
+                                                    @endforeach
+                                                @endif
                                             </ul>
+
 
 
 
@@ -880,39 +882,39 @@
                                             <img alt="" src="/frontoffice/images/clock.png">
                                         </div>
                                     </div>
-                                    <div class="widget stick-widget">
-                                        <h4 class="widget-title">Who's follownig</h4>
+                                    <div class="widget stick-widget" id="following-widget">
+                                        <h4 class="widget-title">Who's following</h4>
                                         <ul class="followers">
-
-                                            @foreach ($suggestedUsers as $user)
-                                                <li>
-
-
-                                                    @if ($user->image)
-                                                        <figure><img src="{{ asset('users/' . $user->image) }}"
-                                                                alt=""></figure>
-                                                    @else
-                                                        <figure><img
-                                                                src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
-                                                                alt=""></figure>
-                                                    @endif
-
-
-
-                                                    <div class="friend-meta">
-                                                        <h4>
-                                                            <a title=""
-                                                                href="time-line.html">{{ $user->name }}</a>
-                                                            <span>{{ $user->institut }}</span>
-                                                        </h4>
-                                                        <a class="underline" title="" href="#">Follow</a>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-
-
+                                            @if ($suggestedUsers->isEmpty())
+                                                <p>No suggested users to display.</p>
+                                            @else
+                                                @foreach ($suggestedUsers as $user)
+                                                    <li>
+                                                        @if ($user->image)
+                                                            <figure><img src="{{ asset('users/' . $user->image) }}"
+                                                                    alt=""></figure>
+                                                        @else
+                                                            <figure><img
+                                                                    src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
+                                                                    alt=""></figure>
+                                                        @endif
+                                                        <div class="friend-meta">
+                                                            <h4>
+                                                                <a title=""
+                                                                    href="time-line.html">{{ $user->name }}</a>
+                                                                <span>{{ $user->institut }}</span>
+                                                            </h4>
+                                                            <a class="underline follow-link" title=""
+                                                                href="#"
+                                                                data-user-id="{{ $user->id }}">Follow</a>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            @endif
                                         </ul>
+
                                     </div>
+
                                 </aside>
                             </div>
                         </div>
@@ -1665,7 +1667,194 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
 
+            $(document).on('click', '.follow-button', function(e) {
+
+                e.preventDefault();
+                var userId = $(this).closest('li').data('user-id');
+
+                // Send AJAX request to follow the user
+                $.ajax({
+                    url: '/follow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Update UI or show success message
+                        showToast('success', response.message);
+
+                        // AJAX request to update UI after following a user
+                        $.ajax({
+                            url: location.href,
+                            type: 'GET',
+                            success: function(response) {
+                                // Update following widget
+                                var followingWidgetHtml = $(response).find(
+                                    '#following-widget').html();
+                                $('#following-widget').html(followingWidgetHtml);
+
+                                var followingWidgetHtml = $(response).find(
+                                    '#follow').html();
+                                $('#follow').html(followingWidgetHtml);
+
+                                var followingCount = $(response).find(
+                                    '#following-count').text();
+                                $('#following-count').text(followingCount);
+
+                                $('#suggested-users li[data-user-id="' + userId +
+                                    '"]').remove();
+
+                                // Update suggested users list
+
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors if needed
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            // Event listener for the "Follow" link
+            $(document).on('click', '.follow-link', function(e) {
+                e.preventDefault();
+                var userId = $(this).data('user-id');
+
+                // Send AJAX request to follow the user
+                $.ajax({
+                    url: '/follow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+                        $.ajax({
+                            url: location.href,
+                            type: 'GET',
+                            success: function(response) {
+                                // Update following widget
+                                var followingWidgetHtml = $(response).find(
+                                    '#following-widget').html();
+                                $('#following-widget').html(followingWidgetHtml);
+
+                                var followingWidgetHtml = $(response).find(
+                                    '#follow').html();
+                                $('#follow').html(followingWidgetHtml);
+
+                                var followingCount = $(response).find(
+                                    '#following-count').text();
+                                $('#following-count').text(followingCount);
+
+                                $('#suggested-users li[data-user-id="' + userId +
+                                    '"]').remove();
+
+                                // Update suggested users list
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors if needed
+                                console.error(xhr.responseText);
+                            }
+                        });
+
+                        // Optionally, update the UI to reflect the followed user
+                        // For example, you can remove the user from the list
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Event listener for the "Unfollow" button
+            $(document).on('click', '.unfollow-button', function(e) {
+
+                e.preventDefault();
+                var userId = $(this).data('user-id');
+console.log(userId);
+                // Send AJAX request to unfollow the user
+                $.ajax({
+                    url: '/unfollow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+                        // Optionally, update the UI to reflect the unfollowed user
+                        $(this).closest('.friendz')
+                            .remove(); // Remove the unfollowed user from the UI
+
+                        var userContent = '<figure class="user-image">New image</figure>' +
+                            '<span>New name</span>' +
+                            '<ins>New institute</ins>' +
+                            '<a href="#" title="" class="follow-button" data-ripple=""><i class="icofont-star"></i> Follow</a>';
+                        $('#suggested-users li[data-user-id="' + userId + '"]').html(
+                            userContent);
+                        $.ajax({
+                            url: location.href,
+                            type: 'GET',
+                            success: function(response) {
+                                // Update following widget
+                                var followingWidgetHtml = $(response).find(
+                                    '#following-widget').html();
+                                $('#following-widget').html(followingWidgetHtml);
+
+                                var followingWidgetHtml = $(response).find(
+                                    '#follow').html();
+                                $('#follow').html(followingWidgetHtml);
+
+                                var followingCount = $(response).find(
+                                    '#following-count').text();
+                                $('#following-count').text(followingCount);
+
+
+                                // Assuming you receive the user ID from the response
+
+                                // Update suggested users list
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors if needed
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
 
 
 @endsection

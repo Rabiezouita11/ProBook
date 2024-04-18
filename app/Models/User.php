@@ -60,8 +60,9 @@ class User extends Authenticatable
     }
     public function abonnements()
     {
-        return $this->hasMany(abonnements::class, 'user_id');
+        return $this->belongsToMany(User::class, 'abonnements', 'user_id', 'abonne_id')->withTimestamps();
     }
+    
 /**
      * Get the abonnes for the user.
      */

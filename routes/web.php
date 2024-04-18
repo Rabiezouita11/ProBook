@@ -127,6 +127,14 @@ Route::post('/upload-cover-photo', [App\Http\Controllers\ClientController::class
 Route::post('/change-password', [App\Http\Controllers\ClientController::class, 'changePassword'])->name('change.password')->middleware(['auth', 'role:utilisateur']);
 
 
+// boutton follow 
+Route::post('/follow/{userId}', [App\Http\Controllers\ClientController::class, 'followUser'])->middleware(['auth', 'role:utilisateur']);
+//boutton unfollow
+
+Route::post('/unfollow/{userId}', [App\Http\Controllers\ClientController::class, 'unfollow'])->name('user.unfollow')->middleware(['auth', 'role:utilisateur']);
+
+
+
 /* backoffice*/
 
 /* show page dashboard admin*/

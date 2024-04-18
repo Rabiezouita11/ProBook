@@ -15,6 +15,7 @@ use App\Models\Publication;
 use App\Models\jaime_publications;
 use App\Models\Commentaire;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -134,19 +135,27 @@ class ClientController extends Controller
 
         $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
         $suggestedUsers = User::where('role', 'utilisateur')
-        ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
-        ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id')) // Exclude users whom the current user is following
+            ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+            ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id')) // Exclude users whom the current user is following
 
-        ->where('id', '!=', $currentUser->id)
-        ->get();
-        $followingUsers =$currentUser->abonnes()->with('user')->get();
+            ->where('id', '!=', $currentUser->id)
+            ->get();
+        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+            $query->where('user_id', $currentUser->id);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+            $query->where('abonne_id', $currentUser->id);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers = $followingUsers->union($followers)->get();
 
 
-        $followerCount = $followingUsers->count();
-
-        $followingCount = $currentUser->abonnes()->count();
-
-        return view('frontoffice.profile.index', compact('publications','suggestedUsers','followingUsers','followingCount','followerCount'));
+        $followingCount = $followingUsers->count();
+      
+        return view('frontoffice.profile.index', compact('publications', 'suggestedUsers', 'followingUsers', 'followingCount', ));
     }
 
 
@@ -393,23 +402,23 @@ class ClientController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Comment updated successfully!');
     }
-    
+
     public function destroyPublication($id)
     {
         // Find the publication
         $publication = Publication::findOrFail($id);
-        
+
         // Check if the authenticated user owns the publication
-        if(auth()->user()->id !== $publication->user_id) {
+        if (auth()->user()->id !== $publication->user_id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    
+
         // Delete the publication
         $publication->delete();
-    
+
         return response()->json(['message' => 'Post deleted successfully']);
     }
-    
+
     public function updatePublication(Request $request)
     {
         // Validate the request data
@@ -417,18 +426,56 @@ class ClientController extends Controller
             'publication_id' => 'required|exists:publications,id',
             'contenu' => 'required|string',
         ]);
-    
+
         // Find the publication by ID
         $publication = Publication::findOrFail($request->input('publication_id'));
-    
+
         // Update the publication with the new content
         $publication->update([
             'contenu' => $request->input('contenu'),
         ]);
-    
+
         // Redirect back or return a response as needed
         return redirect()->back()->with('success', 'Publication updated successfully.');
     }
 
 
+    public function followUser(Request $request, $userId)
+    {
+        // Get the user to follow
+        $userToFollow = User::find($userId);
+
+        if (!$userToFollow) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $currentUserId = auth()->id(); // Get the ID of the authenticated user
+        $userToFollow->abonnements()->attach($userId, [
+            'abonne_id' => $currentUserId, // The current user's ID
+            'user_id' => $userToFollow->id   // The user being followed's ID
+        ]);
+
+        return response()->json(['message' => 'You followed the user successfully'], 200);
+    }
+
+    public function unfollow(Request $request, $userId)
+    {
+        // Get the ID of the authenticated user
+        $currentUserId = auth()->id();
+    
+        // Delete records from the abonnements table where either user_id or abonne_id matches
+        DB::table('abonnements')
+            ->where(function ($query) use ($currentUserId, $userId) {
+                $query->where('user_id', $userId)
+                      ->where('abonne_id', $currentUserId);
+            })
+            ->orWhere(function ($query) use ($currentUserId, $userId) {
+                $query->where('user_id', $currentUserId)
+                      ->where('abonne_id', $userId);
+            })
+            ->delete();
+    
+        return response()->json(['message' => 'You unfollowed the user successfully'], 200);
+    }
+    
 }
