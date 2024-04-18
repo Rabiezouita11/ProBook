@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Publication;
 use App\Models\jaime_publications;
 use App\Models\Commentaire;
+use App\Models\User;
 
 class ClientController extends Controller
 {
@@ -130,8 +131,12 @@ class ClientController extends Controller
     public function showProfileUser()
     {
         $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
-
-        return view('frontoffice.profile.index', compact('publications'));
+        $currentUser = auth()->user();
+        $suggestedUsers = User::where('role', 'utilisateur')
+        ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+        ->where('id', '!=', $currentUser->id)
+        ->get();
+        return view('frontoffice.profile.index', compact('publications','suggestedUsers'));
     }
 
 

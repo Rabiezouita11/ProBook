@@ -881,46 +881,14 @@
                                                     People</span>
                                             </div>
                                             <ul class="suggested-caro">
-                                                <li>
-                                                    <figure><img src="/frontoffice/images/resources/speak-1.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span>Amy Watson</span>
-                                                    <ins>Department of Socilolgy</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </li>
-                                                <li>
-                                                    <figure><img src="/frontoffice/images/resources/speak-2.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span>Muhammad Khan</span>
-                                                    <ins>Department of Socilolgy</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </li>
-                                                <li>
-                                                    <figure><img src="/frontoffice/images/resources/speak-3.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span>Sadia Gill</span>
-                                                    <ins>Department of Socilolgy</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </li>
-                                                <li>
-                                                    <figure><img src="/frontoffice/images/resources/speak-4.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span>Aykash verma</span>
-                                                    <ins>Department of Socilolgy</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </li>
+                                                @foreach($suggestedUsers as $user)
+                                                    <li>
+                                                        <figure><img src="{{ asset('users/' . $user->image) }}" alt=""></figure>
+                                                        <span>{{ $user->name }}</span>
+                                                        <ins>{{ $user->institut }}</ins>
+                                                        <a href="#" title="" data-ripple=""><i class="icofont-star"></i> Follow</a>
+                                                    </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>
@@ -965,66 +933,21 @@
                                     <div class="widget stick-widget">
                                         <h4 class="widget-title">Who's follownig</h4>
                                         <ul class="followers">
+                                            @foreach($suggestedUsers as $user)
+
                                             <li>
-                                                <figure><img alt=""
-                                                        src="/frontoffice/images/resources/friend-avatar.jpg">
-                                                </figure>
+                                                <figure><img src="{{ asset('users/' . $user->image) }}" alt=""></figure>
+
                                                 <div class="friend-meta">
                                                     <h4>
-                                                        <a title="" href="time-line.html">Kelly Bill</a>
-                                                        <span>Dept colleague</span>
+                                                        <a title="" href="time-line.html">{{ $user->name }}</a>
+                                                        <span>{{ $user->institut }}</span>
                                                     </h4>
                                                     <a class="underline" title="" href="#">Follow</a>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <figure><img alt=""
-                                                        src="/frontoffice/images/resources/friend-avatar2.jpg">
-                                                </figure>
-                                                <div class="friend-meta">
-                                                    <h4>
-                                                        <a title="" href="time-line.html">Issabel</a>
-                                                        <span>Dept colleague</span>
-                                                    </h4>
-                                                    <a class="underline" title="" href="#">Follow</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><img alt=""
-                                                        src="/frontoffice/images/resources/friend-avatar3.jpg">
-                                                </figure>
-                                                <div class="friend-meta">
-                                                    <h4>
-                                                        <a title="" href="time-line.html">Andrew</a>
-                                                        <span>Dept colleague</span>
-                                                    </h4>
-                                                    <a class="underline" title="" href="#">Follow</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><img alt=""
-                                                        src="/frontoffice/images/resources/friend-avatar4.jpg">
-                                                </figure>
-                                                <div class="friend-meta">
-                                                    <h4>
-                                                        <a title="" href="time-line.html">Sophia</a>
-                                                        <span>Dept colleague</span>
-                                                    </h4>
-                                                    <a class="underline" title="" href="#">Follow</a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure><img alt=""
-                                                        src="/frontoffice/images/resources/friend-avatar5.jpg">
-                                                </figure>
-                                                <div class="friend-meta">
-                                                    <h4>
-                                                        <a title="" href="time-line.html">Allen</a>
-                                                        <span>Dept colleague</span>
-                                                    </h4>
-                                                    <a class="underline" title="" href="#">Follow</a>
-                                                </div>
-                                            </li>
+                                            @endforeach
+
                                         </ul>
                                     </div>
                                 </aside>
