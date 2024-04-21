@@ -16,6 +16,7 @@ use App\Models\jaime_publications;
 use App\Models\Commentaire;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Events\PrivateChannelUser;
 
 class ClientController extends Controller
 {
@@ -442,6 +443,7 @@ class ClientController extends Controller
 
     public function followUser(Request $request, $userId)
     {
+        
         // Get the user to follow
         $userToFollow = User::find($userId);
 
@@ -454,6 +456,9 @@ class ClientController extends Controller
             'abonne_id' => $currentUserId, // The current user's ID
             'user_id' => $userToFollow->id   // The user being followed's ID
         ]);
+        $message = auth()->user()->name . ' is now following you';
+        $userIdreciver = $userToFollow->id;
+        event(new PrivateChannelUser($message, $userIdreciver));
 
         return response()->json(['message' => 'You followed the user successfully'], 200);
     }
