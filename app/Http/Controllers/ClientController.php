@@ -17,6 +17,7 @@ use App\Models\Commentaire;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Events\PrivateChannelUser;
+use App\Models\notifications;
 
 class ClientController extends Controller
 {
@@ -30,6 +31,16 @@ class ClientController extends Controller
         return view('validationEmail.index');
     }
 
+    public function fetch()
+    {
+        // Retrieve notifications for the authenticated user
+        $notifications = notifications::where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->limit(10) // Limit to 10 latest notifications
+            ->get();
+
+        return response()->json(['notifications' => $notifications]);
+    }
     public function verify(Request $request)
     {
         // Validate the verification code
@@ -155,7 +166,7 @@ class ClientController extends Controller
 
 
         $followingCount = $followingUsers->count();
-      
+
         return view('frontoffice.profile.index', compact('publications', 'suggestedUsers', 'followingUsers', 'followingCount', ));
     }
 
@@ -443,7 +454,7 @@ class ClientController extends Controller
 
     public function followUser(Request $request, $userId)
     {
-        
+
         // Get the user to follow
         $userToFollow = User::find($userId);
 
@@ -456,9 +467,19 @@ class ClientController extends Controller
             'abonne_id' => $currentUserId, // The current user's ID
             'user_id' => $userToFollow->id   // The user being followed's ID
         ]);
+
+        $notification = new notifications();
+        $notification->user_id = $userId;
+        $notification->data = auth()->user()->name . ' is now following you';
+        $notification->username = auth()->user()->name;
+        $notification->imageUrl = auth()->user()->image; // Adjust this according to your user model
+        $notification->save();
+
         $message = auth()->user()->name . ' is now following you';
-        $userIdreciver = $userToFollow->id;
-        event(new PrivateChannelUser($message, $userIdreciver));
+        $username = auth()->user()->name;
+        $userIdReceiver = $userToFollow->id;
+        $imageUrl = auth()->user()->image; // Assuming you have a field named 'image_url' in your user model
+        event(new PrivateChannelUser($message, $username, $userIdReceiver, $imageUrl));
 
         return response()->json(['message' => 'You followed the user successfully'], 200);
     }
@@ -467,20 +488,20 @@ class ClientController extends Controller
     {
         // Get the ID of the authenticated user
         $currentUserId = auth()->id();
-    
+
         // Delete records from the abonnements table where either user_id or abonne_id matches
         DB::table('abonnements')
             ->where(function ($query) use ($currentUserId, $userId) {
                 $query->where('user_id', $userId)
-                      ->where('abonne_id', $currentUserId);
+                    ->where('abonne_id', $currentUserId);
             })
             ->orWhere(function ($query) use ($currentUserId, $userId) {
                 $query->where('user_id', $currentUserId)
-                      ->where('abonne_id', $userId);
+                    ->where('abonne_id', $userId);
             })
             ->delete();
-    
+
         return response()->json(['message' => 'You unfollowed the user successfully'], 200);
     }
-    
+
 }

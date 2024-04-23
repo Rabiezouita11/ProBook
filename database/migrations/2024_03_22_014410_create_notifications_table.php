@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // Add user_id column
             $table->text('data');
             $table->timestamp('read_at')->nullable();
+            $table->string('imageurl')->nullable();
+            $table->string('username')->nullable();
 
             $table->timestamps();
 

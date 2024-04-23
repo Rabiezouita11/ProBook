@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Route::get('/blocked', [App\Http\Controllers\BlokedController::class, 'index']);
 use App\Events\AdminChannel;
+use App\Http\Controllers\ClientController;
 
 Route::get('/test-broadcast', function () {
     // Prepare the data you want to broadcast
@@ -133,6 +134,8 @@ Route::post('/follow/{userId}', [App\Http\Controllers\ClientController::class, '
 
 Route::post('/unfollow/{userId}', [App\Http\Controllers\ClientController::class, 'unfollow'])->name('user.unfollow')->middleware(['auth', 'role:utilisateur']);
 
+// show notiifciaitons 
+Route::get('/notifications/fetch', [ClientController::class, 'fetch'])->name('notifications.fetch');
 
 
 /* backoffice*/

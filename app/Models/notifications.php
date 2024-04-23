@@ -11,6 +11,8 @@ class notifications extends Model
     protected $fillable = [
         'user_id',
         'data',
+        'username',
+        'imageurl',
         'read_at',
     ];
     protected $casts = [

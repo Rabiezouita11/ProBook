@@ -12,17 +12,21 @@ class PrivateChannelUser implements ShouldBroadcastNow
     use SerializesModels;
 
     public $message;
-    public $userIdReceiver;
+    public $username;
+    public $userId;
+    public $imageUrl;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($message, $userIdReceiver)
+    public function __construct($message, $username, $userId, $imageUrl)
     {
         $this->message = $message;
-        $this->userIdReceiver = $userIdReceiver;
+        $this->username = $username;
+        $this->userId = $userId;
+        $this->imageUrl = $imageUrl;
     }
 
     /**
@@ -32,7 +36,7 @@ class PrivateChannelUser implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("private-channel.user.$this->userIdReceiver");
+        return new PrivateChannel("private-channel.user.$this->userId");
     }
 }
 
