@@ -1796,7 +1796,7 @@
 
                 e.preventDefault();
                 var userId = $(this).data('user-id');
-console.log(userId);
+                console.log(userId);
                 // Send AJAX request to unfollow the user
                 $.ajax({
                     url: '/unfollow/' + userId,

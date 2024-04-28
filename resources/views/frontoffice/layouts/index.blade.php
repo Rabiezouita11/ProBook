@@ -790,7 +790,7 @@
                             @if (auth()->check())
                                 <div class="col-lg-2">
                                     <div class="user-inf">
-                                        <div class="folowerz">Followers: {{ auth()->user()->abonnes()->count() }}
+                                        <div class="folowerz">Followers:  {{ $followingCount }}
                                         </div>
                                         @php
                                             $followerCount = auth()->user()->abonnes()->count();

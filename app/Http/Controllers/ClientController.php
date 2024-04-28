@@ -2,28 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PrivateChannelUser;
 use App\Mail\VerificationCodeMail;
+use App\Models\Commentaire;
+use App\Models\jaime_publications;
+use App\Models\notifications;
+use App\Models\Publication;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Publication;
-use App\Models\jaime_publications;
-use App\Models\Commentaire;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use App\Events\PrivateChannelUser;
-use App\Models\notifications;
 
 class ClientController extends Controller
 {
+    public function showProfileUser()
+    {
+        $currentUser = auth()->user();
+
+        $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
+        $suggestedUsers = User::where('role', 'utilisateur')
+            ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+            ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+            ->where('id', '!=', $currentUser->id)
+            ->get();
+        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+            $query->where('user_id', $currentUser->id);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+            $query->where('abonne_id', $currentUser->id);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers = $followingUsers->union($followers)->get();
+
+        $followingCount = $followingUsers->count();
+
+        return view('frontoffice.profile.index', compact(
+            'publications',
+            'suggestedUsers',
+            'followingUsers',
+            'followingCount',
+        ));
+    }
+
     public function index()
     {
-        return view('frontoffice.home.index');
+        $currentUser = auth()->user();
+        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+            $query->where('user_id', $currentUser->id);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+            $query->where('abonne_id', $currentUser->id);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers = $followingUsers->union($followers)->get();
+
+        $followingCount = $followingUsers->count();
+
+        return view('frontoffice.home.index', [
+            'followingCount' => $followingCount
+        ]);
     }
 
     public function enter_verification_code()
@@ -36,11 +85,12 @@ class ClientController extends Controller
         // Retrieve notifications for the authenticated user
         $notifications = notifications::where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
-            ->limit(10) // Limit to 10 latest notifications
+            ->limit(10)  // Limit to 10 latest notifications
             ->get();
 
         return response()->json(['notifications' => $notifications]);
     }
+
     public function verify(Request $request)
     {
         // Validate the verification code
@@ -141,36 +191,6 @@ class ClientController extends Controller
         return response()->json(['success' => false, 'message' => 'Image upload failed.'], Response::HTTP_BAD_REQUEST);
     }
 
-    public function showProfileUser()
-    {
-        $currentUser = auth()->user();
-
-        $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
-        $suggestedUsers = User::where('role', 'utilisateur')
-            ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
-            ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id')) // Exclude users whom the current user is following
-
-            ->where('id', '!=', $currentUser->id)
-            ->get();
-        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
-            $query->where('user_id', $currentUser->id);
-        })->with('abonnes');
-
-        // Users who are following the current user
-        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
-            $query->where('abonne_id', $currentUser->id);
-        })->with('abonnements');
-
-        // Combine both queries using union
-        $followingUsers = $followingUsers->union($followers)->get();
-
-
-        $followingCount = $followingUsers->count();
-
-        return view('frontoffice.profile.index', compact('publications', 'suggestedUsers', 'followingUsers', 'followingCount', ));
-    }
-
-
     public function updateProfile(Request $request)
     {
         // Validate the request data
@@ -238,6 +258,7 @@ class ClientController extends Controller
         // Return error response if file is not uploaded
         return response()->json(['success' => false, 'message' => 'Cover photo upload failed.'], Response::HTTP_BAD_REQUEST);
     }
+
     public function changePassword(Request $request)
     {
         // Validate the request data
@@ -263,7 +284,6 @@ class ClientController extends Controller
         return response()->json(['message' => 'Password changed successfully']);
     }
 
-
     public function store(Request $request)
     {
         // Validate the form data
@@ -284,11 +304,11 @@ class ClientController extends Controller
                 File::makeDirectory($uploadPath, 0777, true, true);
             }
 
-            $imageName = time() . '.' . $request->file('image')->extension(); // Generate unique filename
-            $request->file('image')->move($uploadPath, $imageName); // Move uploaded file to 'public/images' folder
+            $imageName = time() . '.' . $request->file('image')->extension();  // Generate unique filename
+            $request->file('image')->move($uploadPath, $imageName);  // Move uploaded file to 'public/images' folder
         }
 
-        $publication->image = $imageName; // Assign the image name to the publication model
+        $publication->image = $imageName;  // Assign the image name to the publication model
 
         $publication->save();
 
@@ -325,7 +345,6 @@ class ClientController extends Controller
         }
         $likeCount = jaime_publications::where('publication_id', $request->publication_id)->count();
 
-
         return response()->json(['message' => $message, 'like_count' => $likeCount]);
     }
 
@@ -351,7 +370,7 @@ class ClientController extends Controller
         return response()->json([
             'success' => true,
             'comment' => $comment,
-            'publicationId' => $request->publication_id, // Include the publication ID in the response
+            'publicationId' => $request->publication_id,  // Include the publication ID in the response
             'totalComments' => $totalComments,
             'message' => 'Comment added successfully',
         ]);
@@ -363,17 +382,19 @@ class ClientController extends Controller
         $comments = $publication->commentaires()->with('user')->orderBy('created_at', 'desc')->get();
         return response()->json(['comments' => $comments]);
     }
+
     public function getCommentsCount($publicationId)
     {
         $publication = Publication::findOrFail($publicationId);
-        $commentsCount = $publication->commentaires()->count(); // Assuming you have a relationship set up between Publication and Comment models
+        $commentsCount = $publication->commentaires()->count();  // Assuming you have a relationship set up between Publication and Comment models
 
         return response()->json(['commentsCount' => $commentsCount]);
     }
+
     public function getLikesCount($publicationId)
     {
         $publication = Publication::findOrFail($publicationId);
-        $likesCount = $publication->jaime_publications()->count(); // Assuming you have a relationship set up between Publication and Like models
+        $likesCount = $publication->jaime_publications()->count();  // Assuming you have a relationship set up between Publication and Like models
 
         return response()->json(['likesCount' => $likesCount]);
     }
@@ -451,10 +472,8 @@ class ClientController extends Controller
         return redirect()->back()->with('success', 'Publication updated successfully.');
     }
 
-
     public function followUser(Request $request, $userId)
     {
-
         // Get the user to follow
         $userToFollow = User::find($userId);
 
@@ -462,23 +481,23 @@ class ClientController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        $currentUserId = auth()->id(); // Get the ID of the authenticated user
+        $currentUserId = auth()->id();  // Get the ID of the authenticated user
         $userToFollow->abonnements()->attach($userId, [
-            'abonne_id' => $currentUserId, // The current user's ID
-            'user_id' => $userToFollow->id   // The user being followed's ID
+            'abonne_id' => $currentUserId,  // The current user's ID
+            'user_id' => $userToFollow->id  // The user being followed's ID
         ]);
 
         $notification = new notifications();
         $notification->user_id = $userId;
         $notification->data = auth()->user()->name . ' is now following you';
         $notification->username = auth()->user()->name;
-        $notification->imageUrl = auth()->user()->image; // Adjust this according to your user model
+        $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
         $notification->save();
 
         $message = auth()->user()->name . ' is now following you';
         $username = auth()->user()->name;
         $userIdReceiver = $userToFollow->id;
-        $imageUrl = auth()->user()->image; // Assuming you have a field named 'image_url' in your user model
+        $imageUrl = auth()->user()->image;  // Assuming you have a field named 'image_url' in your user model
         event(new PrivateChannelUser($message, $username, $userIdReceiver, $imageUrl));
 
         return response()->json(['message' => 'You followed the user successfully'], 200);
@@ -492,16 +511,17 @@ class ClientController extends Controller
         // Delete records from the abonnements table where either user_id or abonne_id matches
         DB::table('abonnements')
             ->where(function ($query) use ($currentUserId, $userId) {
-                $query->where('user_id', $userId)
+                $query
+                    ->where('user_id', $userId)
                     ->where('abonne_id', $currentUserId);
             })
             ->orWhere(function ($query) use ($currentUserId, $userId) {
-                $query->where('user_id', $currentUserId)
+                $query
+                    ->where('user_id', $currentUserId)
                     ->where('abonne_id', $userId);
             })
             ->delete();
 
         return response()->json(['message' => 'You unfollowed the user successfully'], 200);
     }
-
 }
