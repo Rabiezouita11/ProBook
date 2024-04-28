@@ -55,24 +55,30 @@ class ClientController extends Controller
 
     public function index()
     {
-        $currentUser = auth()->user();
-        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
-            $query->where('user_id', $currentUser->id);
-        })->with('abonnes');
-
-        // Users who are following the current user
-        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
-            $query->where('abonne_id', $currentUser->id);
-        })->with('abonnements');
-
-        // Combine both queries using union
-        $followingUsers = $followingUsers->union($followers)->get();
-
-        $followingCount = $followingUsers->count();
-
-        return view('frontoffice.home.index', [
-            'followingCount' => $followingCount
-        ]);
+        if (auth()->check()) {
+            $currentUser = auth()->user();
+            
+            $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+                $query->where('user_id', $currentUser->id);
+            })->with('abonnes');
+    
+            // Users who are following the current user
+            $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+                $query->where('abonne_id', $currentUser->id);
+            })->with('abonnements');
+    
+            // Combine both queries using union
+            $followingUsers = $followingUsers->union($followers)->get();
+    
+            $followingCount = $followingUsers->count();
+    
+            return view('frontoffice.home.index', [
+                'followingCount' => $followingCount
+            ]);
+        }
+        
+        // If user is not authenticated, simply return the view without passing followingCount
+        return view('frontoffice.home.index');
     }
 
     public function enter_verification_code()

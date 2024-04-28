@@ -1767,6 +1767,11 @@
 
                                 $('#suggested-users li[data-user-id="' + userId +
                                     '"]').remove();
+                                // Update followers count
+                                var followersCount = $(response).find(
+                                    '#followers-count').text();
+                                $('#followers-count').text(followersCount);
+                                console.log("followersCount fi follow"+followersCount);
 
                                 // Update suggested users list
 
@@ -1833,7 +1838,10 @@
                                 var followingCount = $(response).find(
                                     '#following-count').text();
                                 $('#following-count').text(followingCount);
-
+                                var followersCount = $(response).find(
+                                    '#followers-count').text();
+                                $('#followers-count').text(followersCount);
+                                console.log("followersCount fi unfollow"+followersCount);
 
                                 // Assuming you receive the user ID from the response
 

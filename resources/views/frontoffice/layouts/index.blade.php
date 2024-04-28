@@ -790,7 +790,7 @@
                             @if (auth()->check())
                                 <div class="col-lg-2">
                                     <div class="user-inf">
-                                        <div class="folowerz">Followers:  {{ $followingCount }}
+                                    <div id="followers-count" class="folowerz">Followers: {{ $followingCount }}</div>
                                         </div>
                                         @php
                                             $followerCount = auth()->user()->abonnes()->count();
@@ -1705,70 +1705,73 @@
     <!-- custom scripts -->
 
     <script>
-        // Function to fetch notifications via AJAX
-        function fetchNotifications() {
-            $.ajax({
-                url: "{{ route('notifications.fetch') }}",
-                type: "GET",
-                success: function(response) {
-                    const notifications = response.notifications;
-                    const notificationList = $('.notificationz');
-                    notificationList.empty(); // Clear existing notifications
+    // Function to fetch notifications via AJAX
+    function fetchNotifications() {
+        $.ajax({
+            url: "{{ route('notifications.fetch') }}",
+            type: "GET",
+            success: function(response) {
+                const notifications = response.notifications;
+                const notificationList = $('.notificationz');
+                notificationList.empty(); // Clear existing notifications
 
-                    notifications.forEach(function(notification) {
-                        const createdAt = moment(notification.created_at).fromNow();
-                        const notificationItem = `
-                            <li>
-                                <figure>
-                                    <img src="users/${notification.imageurl}" alt="">
-                                </figure>
-                                <div class="mesg-info">
-                                    <span>${notification.username}</span>
-                                    <a href="#" title="">${notification.data}</a>
-                                    <span class="timestamp" data-timestamp="${notification.created_at}">${createdAt}</span>
-                                </div>
-                            </li>
-                        `;
-                        notificationList.append(notificationItem);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
-
-        // Call fetchNotifications when the page is ready
-        $(document).ready(function() {
-            fetchNotifications();
+                notifications.forEach(function(notification) {
+                    const createdAt = moment(notification.created_at).fromNow();
+                    const notificationItem = `
+                        <li>
+                            <figure>
+                                <img src="${notification.imageurl ? 'users/' + notification.imageurl : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(notification.username) + '&background=104d93&color=fff'}" alt="">
+                            </figure>
+                            <div class="mesg-info">
+                                <span>${notification.username}</span>
+                                <a href="#" title="">${notification.data}</a>
+                                <span class="timestamp" data-timestamp="${notification.created_at}">${createdAt}</span>
+                            </div>
+                        </li>
+                    `;
+                    notificationList.append(notificationItem);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
         });
+    }
 
-        // Listen for PrivateChannelUser event
-        const userId = '{{ Auth::id() }}'; // Get the authenticated user's ID
-        const echo = window.Echo.private(`private-channel.user.${userId}`);
+    // Call fetchNotifications when the page is ready
+    $(document).ready(function() {
+        fetchNotifications();
+    });
 
-        echo.listen('.App\\Events\\PrivateChannelUser', (e) => {
-            // Append the received message to the notifications div
-            const notificationList = $('.notificationz');
+    // Listen for PrivateChannelUser event
+    const userId = '{{ Auth::id() }}'; // Get the authenticated user's ID
+    const echo = window.Echo.private(`private-channel.user.${userId}`);
 
-            // Get current timestamp
-            const createdAt = moment().fromNow();
+    echo.listen('.App\\Events\\PrivateChannelUser', (e) => {
+        // Append the received message to the notifications div
+        const notificationList = $('.notificationz');
 
-            const notificationItem = `
-                <li>
-                    <figure>
-                        <img src="users/${e.imageUrl}" alt="">
-                    </figure>
-                    <div class="mesg-info">
-                        <span>${e.username}</span>
-                        <a href="#" title="">${e.message}</a>
-                        <span class="timestamp" data-timestamp="${moment()}">${createdAt}</span>
-                    </div>
-                </li>
-            `;
-            notificationList.prepend(notificationItem); // Prepend new notifications
-        });
-    </script>
+        // Get current timestamp
+        const createdAt = moment().fromNow();
+
+        const imageUrl = e.imageUrl ? 'users/' + e.imageUrl : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(e.username) + '&background=104d93&color=fff';
+
+        const notificationItem = `
+            <li>
+                <figure>
+                    <img src="${imageUrl}" alt="">
+                </figure>
+                <div class="mesg-info">
+                    <span>${e.username}</span>
+                    <a href="#" title="">${e.message}</a>
+                    <span class="timestamp" data-timestamp="${moment()}">${createdAt}</span>
+                </div>
+            </li>
+        `;
+        notificationList.prepend(notificationItem); // Prepend new notifications
+    });
+</script>
+
 
 </body>
 
