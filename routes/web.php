@@ -99,6 +99,9 @@ Route::delete('/publication/{id}', [App\Http\Controllers\ClientController::class
 Route::put('/publications', [App\Http\Controllers\ClientController::class, 'updatePublication'])->name('publications.update')->middleware(['auth', 'role:utilisateur']);
 
 
+// show page  user connected  
+
+Route::get('/profile/{user}', [App\Http\Controllers\ClientController::class, 'show'])->name('profile.show')->middleware('role:utilisateur');
 
 // delete comment 
 Route::delete('/publication/{publicationId}/comment/{commentId}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);

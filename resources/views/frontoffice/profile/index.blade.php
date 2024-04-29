@@ -143,8 +143,11 @@
                                                                 </div>
                                                                 <ins><a title=""
                                                                         href="time-line.html">{{ Auth::user()->name }}</a>
-                                                                    <span><i class="icofont-globe"></i> published:
-                                                                        {{ \Carbon\Carbon::parse($publication->created_at)->format('M, d Y') }}</span>
+                                                                    <span>
+                                                                        <i class="icofont-globe"></i>
+                                                                        published:
+                                                                        {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}
+                                                                    </span>
                                                             </div>
                                                             @php
 
@@ -583,7 +586,7 @@
                                                                         src="https://ui-avatars.com/api/?name={{ urlencode($following->name) }}&background=104d93&color=fff"
                                                                         alt=""></figure>
                                                             @endif
-                                                            <span><a href="#"
+                                                            <span><a href="{{ route('profile.show', $following) }}"
                                                                     title="">{{ $following->name }}</a></span>
                                                             <ins>{{ $following->institut }}</ins>
                                                             <a href="#" class="unfollow-button"
@@ -830,7 +833,8 @@
                                                                         alt="">
                                                                 @endif
                                                             </figure>
-                                                            <span>{{ $user->name }}</span>
+                                                            <span><a
+                                                                    href="{{ route('profile.show', $user) }}">{{ $user->name }}</a></span>
                                                             <ins>{{ $user->institut }}</ins>
                                                             <a href="#" title="" class="follow-button"
                                                                 data-ripple=""><i class="icofont-star"></i> Follow</a>
@@ -900,8 +904,9 @@
                                                         @endif
                                                         <div class="friend-meta">
                                                             <h4>
-                                                                <a title=""
-                                                                    href="time-line.html">{{ $user->name }}</a>
+                                                                <a
+                                                                    href="{{ route('profile.show', $user) }}">{{ $user->name }}</a>
+
                                                                 <span>{{ $user->institut }}</span>
                                                             </h4>
                                                             <a class="underline follow-link" title=""
@@ -1771,7 +1776,8 @@
                                 var followersCount = $(response).find(
                                     '#followers-count').text();
                                 $('#followers-count').text(followersCount);
-                                console.log("followersCount fi follow"+followersCount);
+                                console.log("followersCount fi follow" +
+                                    followersCount);
 
                                 // Update suggested users list
 
@@ -1841,7 +1847,8 @@
                                 var followersCount = $(response).find(
                                     '#followers-count').text();
                                 $('#followers-count').text(followersCount);
-                                console.log("followersCount fi unfollow"+followersCount);
+                                console.log("followersCount fi unfollow" +
+                                    followersCount);
 
                                 // Assuming you receive the user ID from the response
 

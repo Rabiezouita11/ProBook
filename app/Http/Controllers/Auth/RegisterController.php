@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Queue;
+use Monarobase\CountryList\CountryListFacade;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,16 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
+   /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $countries = CountryListFacade::getList('en');
+        return view('auth.register', compact('countries'));
+    }
     /**
      * Where to redirect users after registration.
      *
@@ -109,6 +119,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'diploma' => $data['diploma'],
             'institut' => $data['institut'],
+            'date_of_birth' => $data['date_of_birth'],
+            'location' => $data['country'],
 
             'role' => 'utilisateur', 
             'password' => Hash::make($data['password']),

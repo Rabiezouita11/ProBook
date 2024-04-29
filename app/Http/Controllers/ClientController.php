@@ -530,4 +530,35 @@ class ClientController extends Controller
 
         return response()->json(['message' => 'You unfollowed the user successfully'], 200);
     }
+
+    public function show(User $user)
+    {
+        $currentUserId = auth()->id();
+
+        $followingUsers = User::whereHas('abonnes', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers = User::whereHas('abonnements', function ($query) use ($user) {
+            $query->where('abonne_id', $user->id);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers = $followingUsers->union($followers)->get();
+
+        $followingCount = $followingUsers->count();
+        $mostLikedPost = Publication::withCount('jaime_publications')
+        ->where('user_id', $user->id) // Filter by user ID
+        ->orderByDesc('jaime_publications_count')
+        ->first();
+
+        $userConnected =  $user;
+        $suggestedUsers = User::where('role', 'utilisateur')
+        ->whereNotIn('id', $userConnected->abonnements()->pluck('abonne_id'))
+        ->whereNotIn('id', $userConnected->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+        ->where('id', '!=', $currentUserId)
+        ->get();
+        return view('frontoffice.ProfileUserConnected.index', ['user' => $user, 'followingCount' => $followingCount, 'mostLikedPost' => $mostLikedPost , 'suggestedUsers'=> $suggestedUsers]);
+    }
 }

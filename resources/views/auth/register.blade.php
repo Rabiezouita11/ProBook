@@ -41,14 +41,14 @@
                     data-vegas-options='{"delay":5000, "timer":false,"animation":"kenburns", "transition":"swirlLeft", "slides":[{"src": "/image1.jpg"}, {"src": "/image2.jpg"}, {"src": "/image3.jpg"}]}'>
 
                     <div class="fxt-page-switcher">
-                        <a href="{{route('login')}}" class="switcher-text1">Login</a>
-                        <a href="{{route('register')}}" class="switcher-text1 active">Register</a>
+                        <a href="{{ route('login') }}" class="switcher-text1">Login</a>
+                        <a href="{{ route('register') }}" class="switcher-text1 active">Register</a>
                     </div>
                 </div>
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">
                         <div class="fxt-header">
-                            <a href="{{route('login')}}" class="fxt-logo"><img
+                            <a href="{{ route('login') }}" class="fxt-logo"><img
                                     src="/template_Authentification/img/logo-29.png" alt="Logo"></a>
                         </div>
                         <div class="fxt-form">
@@ -68,11 +68,40 @@
                                             autofocus>
 
                                         @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                         <i class="flaticon-user"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <input id="date_of_birth" type="date" class="form-control"
+                                            placeholder="Date of Birth" name="date_of_birth"
+                                            value="{{ old('date_of_birth') }}" required>
+                                        @error('date_of_birth')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <select id="country" name="country" class="form-control" required>
+                                            <option value="">Select Country</option>
+                                            @foreach ($countries as $countryCode => $countryName)
+                                            <option value="{{ $countryName }}" @if ($countryName==='Tunisia' ) selected @endif>{{ $countryName }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('country')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <i class="fas fa-globe"></i>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -80,13 +109,13 @@
 
                                         <input id="email" type="email"
                                             class="form-control @error('email') is-invalid @enderror"
-                                            placeholder="Email Address" name="email" value="{{ old('email') }}" required
-                                            autocomplete="email">
+                                            placeholder="Email Address" name="email" value="{{ old('email') }}"
+                                            required autocomplete="email">
 
                                         @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                         <i class="flaticon-envelope"></i>
                                     </div>
@@ -94,14 +123,14 @@
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-1">
                                         <input id="diploma" type="text"
-                                            class="form-control  @error('diploma') is-invalid @enderror" placeholder="diploma"
-                                            name="diploma" value="{{ old('diploma') }}" required autocomplete="diploma"
-                                            autofocus>
+                                            class="form-control  @error('diploma') is-invalid @enderror"
+                                            placeholder="diploma" name="diploma" value="{{ old('diploma') }}"
+                                            required autocomplete="diploma" autofocus>
 
                                         @error('diploma')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
@@ -109,14 +138,14 @@
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-1">
                                         <input id="institut" type="text"
-                                            class="form-control  @error('institut') is-invalid @enderror" placeholder="institut"
-                                            name="institut" value="{{ old('institut') }}" required autocomplete="institut"
-                                            autofocus>
+                                            class="form-control  @error('institut') is-invalid @enderror"
+                                            placeholder="institut" name="institut" value="{{ old('institut') }}"
+                                            required autocomplete="institut" autofocus>
 
                                         @error('institut')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                         <i class="fas fa-university"></i>
                                     </div>
@@ -124,11 +153,12 @@
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-1">
                                         <input type="file" id="image" name="image"
-                                            class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                                            class="form-control @error('image') is-invalid @enderror"
+                                            accept="image/*">
                                         @error('image')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                     </div>
                                 </div>
@@ -136,30 +166,32 @@
                                     <div class="fxt-transformY-50 fxt-transition-delay-2">
                                         <input id="password" type="password"
                                             class="form-control @error('password') is-invalid @enderror"
-                                            placeholder="Password" name="password" required autocomplete="new-password">
-                                        <span id="password-toggle" class="password-toggle-icon" onclick="togglePassword('password')">
+                                            placeholder="Password" name="password" required
+                                            autocomplete="new-password">
+                                        <span id="password-toggle" class="password-toggle-icon"
+                                            onclick="togglePassword('password')">
                                             <i class="fas fa-eye"></i>
                                         </span>
                                         @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-2">
-                                        <input id="password-confirm" type="password"
-                                            class="form-control"
+                                        <input id="password-confirm" type="password" class="form-control"
                                             placeholder="Confirm Password" name="password_confirmation" required
                                             autocomplete="new-password">
-                                        <span id="password-confirm-toggle" class="password-toggle-icon" onclick="togglePassword('password-confirm')">
+                                        <span id="password-confirm-toggle" class="password-toggle-icon"
+                                            onclick="togglePassword('password-confirm')">
                                             <i class="fas fa-eye"></i>
                                         </span>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-3">
                                         <button type="submit" class="fxt-btn-fill">Register</button>
@@ -199,8 +231,8 @@
             }
         }
     </script>
-    
-    
+
+
 </body>
 
 </html>

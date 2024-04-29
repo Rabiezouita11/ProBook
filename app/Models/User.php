@@ -28,8 +28,9 @@ class User extends Authenticatable
         'email_verified',
         'institut',
         'diploma',
-        'cover_photo', // Add cover_photo here
-
+        'cover_photo',  // Add cover_photo here
+        'date_of_birth',
+        'location'
     ];
 
     /**
@@ -50,27 +51,34 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function publications()
     {
         return $this->hasMany(Publication::class);
     }
+
     public function commentaires()
     {
         return $this->hasMany(Commentaire::class);
     }
+
     public function abonnements()
     {
         return $this->belongsToMany(User::class, 'abonnements', 'user_id', 'abonne_id')->withTimestamps();
     }
-    
-/**
+
+    public function getTotalPostsAttribute()
+    {
+        return $this->publications()->count();
+    }
+
+    /**
      * Get the abonnes for the user.
      */
     public function abonnes()
     {
         return $this->hasMany(abonnements::class, 'abonne_id');
     }
-
 
     public function sentChats()
     {
@@ -81,8 +89,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(chats::class, 'receiver_id');
     }
+
     public function notifications()
     {
         return $this->hasMany(notifications::class);
     }
+    public function lastPost()
+    {
+        return $this->hasOne(Publication::class)->latest();
+    }
+    public function lastComment()
+    {
+        return $this->hasOne(Commentaire::class)->latest();
+    }
+    public function lastFriendAdded()
+    {
+        return $this->hasOne(abonnements::class, 'abonne_id')->latest();
+    }
+
 }
