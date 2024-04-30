@@ -24,9 +24,21 @@ class ClientController extends Controller
     public function showProfileUser()
     {
         $currentUser = auth()->user();
+        $userId = auth()->id();
 
-        $publications = auth()->user()->publications()->where('Activity_Feed', true)->latest()->get();
-        $suggestedUsers = User::where('role', 'utilisateur')
+        $publications = Publication::where('Activity_Feed', true)
+            ->where(function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                    ->whereNull('user_abonner_id');
+            })
+            ->orWhere(function ($query) use ($userId) {
+                $query->where('user_abonner_id', $userId)
+                    ->whereNotNull('user_id');
+            })
+            ->latest()
+            ->get();
+    
+            $suggestedUsers = User::where('role', 'utilisateur')
             ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
             ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
             ->where('id', '!=', $currentUser->id)
@@ -333,6 +345,52 @@ class ClientController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
+    public function storeUserAbonner(Request $request)
+    {
+        // Validate the form data
+
+        // Store the new publication in the database
+        $publication = new Publication();
+        $publication->user_id = auth()->id();
+        $publication->contenu = $request['contenu'];
+        $publication->user_abonner_id = $request['userprofile'];
+
+        $publication->story = $request->has('story') ? true : false;
+        $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
+
+        // Handle image upload if provided
+        $imageName = null;
+        if ($request->hasFile('image')) {
+            // Check if the 'public/images' folder exists, if not, create it
+            $uploadPath = public_path('images');
+            if (!File::isDirectory($uploadPath)) {
+                File::makeDirectory($uploadPath, 0777, true, true);
+            }
+
+            $imageName = time() . '.' . $request->file('image')->extension();  // Generate unique filename
+            $request->file('image')->move($uploadPath, $imageName);  // Move uploaded file to 'public/images' folder
+        }
+
+        $publication->image = $imageName;  // Assign the image name to the publication model
+
+        $publication->save();
+
+        // Determine the success message based on the scenario
+        if ($publication->story && $publication->Activity_Feed) {
+            $message = 'Publication and story created successfully!';
+        } elseif ($publication->story) {
+            $message = 'Story created successfully!';
+        } elseif ($publication->Activity_Feed) {
+            $message = 'Publication created successfully!';
+        } else {
+            $message = 'Publication created successfully!';
+        }
+
+        // Redirect to a success page or back to the creation form with success message
+        return redirect()->back()->with('success', $message);
+    }
+
+
     public function likePublication(Request $request)
     {
         $existingLike = jaime_publications::where('user_id', auth()->id())
@@ -559,6 +617,16 @@ class ClientController extends Controller
         ->whereNotIn('id', $userConnected->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
         ->where('id', '!=', $currentUserId)
         ->get();
-        return view('frontoffice.ProfileUserConnected.index', ['user' => $user, 'followingCount' => $followingCount, 'mostLikedPost' => $mostLikedPost , 'suggestedUsers'=> $suggestedUsers]);
+        $publications = Publication::with('user', 'user_abonner')
+        ->where(function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->orWhere('user_abonner_id', $user->id);
+        })
+        ->where('Activity_Feed', true)
+        ->orderBy('created_at')
+        ->get();
+        
+        return view('frontoffice.ProfileUserConnected.index', ['user' => $user, 'followingCount' => $followingCount, 'mostLikedPost' => $mostLikedPost , 'suggestedUsers'=> $suggestedUsers ,        'publications' => $publications,
+    ]);
     }
 }

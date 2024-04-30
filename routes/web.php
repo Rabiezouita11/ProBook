@@ -83,6 +83,11 @@ Route::post('/savepublications', [App\Http\Controllers\ClientController::class, 
 
 
 
+// button save publications into compte user abonne
+Route::post('/savepublicationsUser', [App\Http\Controllers\ClientController::class, 'storeUserAbonner'])->name('publicationsUser.store')->middleware(['auth', 'role:utilisateur']);
+
+
+
 // udpate comment in profile user 
 
 

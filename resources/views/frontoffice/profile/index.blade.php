@@ -94,15 +94,25 @@
                                                     <div class="user-post">
                                                         <div class="friend-info">
                                                             <figure>
-                                                                @if (Auth::user()->image)
-                                                                    <img alt=""
-                                                                        src="{{ asset('users/' . Auth::user()->image) }}">
+                                                                @if ($publication->user_abonner_id == auth()->id())
+                                                                    @if ($publication->user->image)
+                                                                        <img
+                                                                            src="{{ asset('users/' . $publication->user->image) }}">
+                                                                    @else
+                                                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($publication->user->name) }}&background=104d93&color=fff"
+                                                                            height="25px" width="25px" alt=""
+                                                                            class="mr-2" style="border-radius: 50%;">
+                                                                    @endif
                                                                 @else
-                                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=104d93&color=fff"
-                                                                        height="25px" width="25px" alt=""
-                                                                        class="mr-2" style="border-radius: 50%;">
+                                                                    @if (Auth::user()->image)
+                                                                        <img
+                                                                            src="{{ asset('users/' . Auth::user()->image) }}">
+                                                                    @else
+                                                                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=104d93&color=fff"
+                                                                            height="25px" width="25px" alt=""
+                                                                            class="mr-2" style="border-radius: 50%;">
+                                                                    @endif
                                                                 @endif
-
                                                             </figure>
                                                             <div class="friend-name">
                                                                 <div class="more">
@@ -117,11 +127,12 @@
                                                                                 class="feather feather-more-horizontal">
                                                                                 <circle cx="12" cy="12" r="1">
                                                                                 </circle>
-                                                                                <circle cx="19" cy="12" r="1">
-                                                                                </circle>
-                                                                                <circle cx="5" cy="12" r="1">
-                                                                                </circle>
-                                                                            </svg></i>
+                                                                                <circle cx="19" cy="12"
+                                                                                    r="1"></circle>
+                                                                                <circle cx="5" cy="12"
+                                                                                    r="1"></circle>
+                                                                            </svg>
+                                                                        </i>
                                                                         <ul>
                                                                             <li class="edit-post-btn"
                                                                                 data-publication-id="{{ $publication->id }}"
@@ -142,7 +153,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <ins><a title=""
-                                                                        href="time-line.html">{{ Auth::user()->name }}</a>
+                                                                        href="time-line.html">{{ $publication->user->name }}</a>
                                                                     <span>
                                                                         <i class="icofont-globe"></i>
                                                                         published:
@@ -150,7 +161,6 @@
                                                                     </span>
                                                             </div>
                                                             @php
-
                                                                 // Assuming $publication->created_at is your timestamp
                                                                 $created_at = \Carbon\Carbon::parse(
                                                                     $publication->created_at,
@@ -162,7 +172,6 @@
                                                             <style>
                                                                 .modal-content {
                                                                     overflow-y: auto;
-
                                                                 }
 
                                                                 .pop-item {
@@ -193,13 +202,8 @@
                                                                 </a>
                                                             @endif
 
-
-
                                                             <div class="post-meta">
-
-                                                                <p>
-                                                                    {{ $publication->contenu }}
-                                                                </p>
+                                                                <p>{{ $publication->contenu }}</p>
                                                                 <div class="we-video-info">
                                                                     <ul>
                                                                         <li>
@@ -222,10 +226,10 @@
                                                                                     <span
                                                                                         class="like-count unique-like-count-{{ $publication->id }}">
                                                                                         {{ $publication->jaime_publications->count() }}
-                                                                                    </span> </ins> </span>
+                                                                                    </span>
+                                                                                </ins>
+                                                                            </span>
                                                                         </li>
-
-
                                                                         <li>
                                                                             <span title="Comments" class="Recommend">
                                                                                 <i>
@@ -239,23 +243,23 @@
                                                                                         xmlns="http://www.w3.org/2000/svg">
                                                                                         <path
                                                                                             d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                                                    </svg></i>
-                                                                                <ins> <span
+                                                                                    </svg>
+                                                                                </i>
+                                                                                <ins>
+                                                                                    <span
                                                                                         class="commentaire-count unique-commentaire-count-{{ $publication->id }}">
                                                                                         {{ $publication->totalComments() }}
-                                                                                    </span> </ins>
+                                                                                    </span>
+                                                                                </ins>
                                                                             </span>
-
                                                                         </li>
-
-
                                                                     </ul>
-
                                                                 </div>
                                                                 <div class="stat-tools">
                                                                     <div class="box"
                                                                         data-publication-id="{{ $publication->id }}">
-                                                                        <div class="Like"><a class="Like__link"><i
+                                                                        <div class="Like">
+                                                                            <a class="Like__link"><i
                                                                                     class="icofont-like"></i> Like</a>
                                                                         </div>
                                                                     </div>
@@ -283,9 +287,6 @@
                                                                                 <!-- Existing comments will be dynamically added here -->
                                                                             </ul>
                                                                         </div>
-
-
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -305,33 +306,28 @@
                                                                 <div class="row merged">
                                                                     <div class="col-lg-9">
                                                                         <div class="pop-image">
-
-
                                                                             <figure>
                                                                                 <img id="modal-image" src=""
                                                                                     alt="">
                                                                             </figure>
                                                                             <div class="stat-tools">
-
                                                                                 <div class="box"
                                                                                     data-publication-id="{{ $publication->id }}">
-                                                                                    <div class="Like"><a
-                                                                                            class="Like__link"><i
+                                                                                    <div class="Like">
+                                                                                        <a class="Like__link"><i
                                                                                                 class="icofont-like"></i>
                                                                                             Like</a>
                                                                                     </div>
                                                                                 </div>
-
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-3">
                                                                         <div class="commentbar">
                                                                             <div class="user">
-                                                                                @if (Auth::user()->image)
+                                                                                @if ($publication->user_abonner_id == auth()->id())
                                                                                     <figure><img
-                                                                                            src="{{ asset('users/' . Auth::user()->image) }}"
+                                                                                            src="{{ asset('users/' . $publication->user->image) }}"
                                                                                             height="50px" width="50px"
                                                                                             alt=""></figure>
                                                                                 @else
@@ -342,15 +338,11 @@
                                                                                 <div class="user-information">
                                                                                     <h4>
                                                                                         <a href="{{ route('Profile_User') }}"
-                                                                                            title="">{{ auth::user()->name }}</a>
+                                                                                            title="">{{ $publication->user->name }}</a>
                                                                                     </h4>
-
                                                                                     <span><i class="icofont-globe"></i>
                                                                                         <span
                                                                                             id="modal-time"></span></span>
-
-
-
                                                                                 </div>
                                                                             </div>
                                                                             <div class="we-video-info">
@@ -376,7 +368,6 @@
                                                                                             </i>
                                                                                             <ins
                                                                                                 id="modal-jaime-count">0</ins>
-
                                                                                         </span>
                                                                                     </li>
                                                                                     <li>
@@ -402,9 +393,7 @@
                                                                                                 id="modal-comments-count">0</ins>
                                                                                         </span>
                                                                                     </li>
-
                                                                                 </ul>
-
                                                                             </div>
                                                                             <div class="new-comment"
                                                                                 style="display: block;">
@@ -415,12 +404,10 @@
                                                                                     <input type="hidden"
                                                                                         name="publication_id"
                                                                                         value="{{ $publication->id }}">
-
                                                                                     <input type="text" name="content"
                                                                                         placeholder="Write a comment">
-                                                                                    <button type="submit">
-                                                                                        <i class="icofont-paper-plane"></i>
-                                                                                    </button>
+                                                                                    <button type="submit"><i
+                                                                                            class="icofont-paper-plane"></i></button>
                                                                                 </form>
                                                                                 <div class="comments-area"
                                                                                     data-comments-publication-id="{{ $publication->id }}">
@@ -438,6 +425,7 @@
                                                 </div>
                                             @endforeach
                                         @endif
+
 
 
                                         <!-- share image with post -->
@@ -795,6 +783,79 @@
                                     </div>
 
                                 </div>
+                                @if (auth()->check())
+                                    <div class="post-new-popup">
+                                        <div class="popup" style="width: 800px;">
+                                            <span class="popup-closed">
+                                                <i class="icofont-close"></i>
+                                            </span>
+                                            <div class="popup-meta">
+                                                <div class="popup-head">
+                                                    <h5>
+                                                        <i>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="feather feather-plus">
+                                                                <line x1="12" y1="5" x2="12"
+                                                                    y2="19"></line>
+                                                                <line x1="5" y1="12" x2="19"
+                                                                    y2="12"></line>
+                                                            </svg>
+                                                        </i>Create New Post
+                                                    </h5>
+                                                </div>
+                                                <div class="post-new">
+
+
+                                                    <form method="post" action="{{ route('publications.store') }}"
+                                                        class="c-form" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <!-- This is important for Laravel to validate the form submission -->
+
+                                                        <div class="post-newmeta">
+                                                            <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?"></textarea>
+                                                            @error('contenu')
+                                                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="activity-post">
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" id="checkbox"
+                                                                    name="Activity_Feed" checked>
+                                                                <label for="checkbox">
+                                                                    <span>Activity Feed</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <input type="checkbox" id="checkbox2" name="story"
+                                                                    checked>
+                                                                <label for="checkbox2">
+                                                                    <span>My Story</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="post-newmeta">
+                                                            <input type="file" name="image">
+                                                            @error('image')
+                                                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                                                            @enderror
+                                                        </div>
+
+                                                        <button type="submit" class="main-btn">Publish</button>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- New post popup -->
+                                @endif
                                 <br>
                                 <div class="main-wraper">
                                     <div class="user-post">

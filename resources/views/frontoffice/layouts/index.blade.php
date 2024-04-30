@@ -1014,71 +1014,7 @@
         </div>
     </div>
     <!-- side slide message & popup -->
-    @if (auth()->check())
-        <div class="post-new-popup">
-            <div class="popup" style="width: 800px;">
-                <span class="popup-closed">
-                    <i class="icofont-close"></i>
-                </span>
-                <div class="popup-meta">
-                    <div class="popup-head">
-                        <h5>
-                            <i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </i>Create New Post
-                        </h5>
-                    </div>
-                    <div class="post-new">
-
-
-                        <form method="post" action="{{ route('publications.store') }}" class="c-form"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <!-- This is important for Laravel to validate the form submission -->
-
-                            <div class="post-newmeta">
-                                <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?"></textarea>
-                                @error('contenu')
-                                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="activity-post">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="checkbox" name="Activity_Feed" checked>
-                                    <label for="checkbox">
-                                        <span>Activity Feed</span>
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <input type="checkbox" id="checkbox2" name="story" checked>
-                                    <label for="checkbox2">
-                                        <span>My Story</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="post-newmeta">
-                                <input type="file" name="image">
-                                @error('image')
-                                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <button type="submit" class="main-btn">Publish</button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- New post popup -->
-    @endif
+  
     <div class="new-question-popup">
         <div class="popup">
             <span class="popup-closed">
