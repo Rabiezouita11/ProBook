@@ -151,20 +151,30 @@
                                                             <div class="main-wraper">
                                                                 <span class="new-title">Create New Post</span>
                                                                 <div class="new-post">
-                                                                    <?php if (auth()->check()) { ?>
+                                                                    <?php if (auth()->check()) {
+            $users = auth()->user();
+            $isFollowing = App\Models\abonnements::where('user_id', $user->id)
+                                                ->where('abonne_id', $users->id)
+                                                ->exists();
+            if($isFollowing) { ?>
                                                                     <form method="post">
                                                                         <i class="icofont-pen-alt-1"></i>
                                                                         <input type="text"
                                                                             placeholder="Create New Post">
                                                                     </form>
                                                                     <?php } else { ?>
+                                                                    <p class="login-message">You must follow {{$user->name}} to
+                                                                        make publications.</p>
+                                                                    <?php } 
+        } else { ?>
                                                                     <!-- Show message if user is not logged in -->
-                                                                    <p class="login-message">You must login to make
+                                                                    <p class="login-message">You must login  to make
                                                                         publications. <a href="/login"
                                                                             class="login-button">Login</a></p>
                                                                     <?php } ?>
                                                                 </div>
                                                             </div><!-- create new post -->
+
 
 
 
@@ -879,37 +889,38 @@
 
             // Submit comment form via AJAX
             $('#add-comment-form').submit(function(e) {
-    e.preventDefault();
-    console.log("aaa")
-    var formData = $(this).serialize();
+                e.preventDefault();
+                console.log("aaa")
+                var formData = $(this).serialize();
 
-    $.ajax({
-        type: 'POST',
-        url: $(this).attr('action'),
-        data: formData,
-        success: function(response) {
-            $('#add-comment-form input[name="content"]').val('');
-            showToast('success', 'Comment added successfully!');
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        $('#add-comment-form input[name="content"]').val('');
+                        showToast('success', 'Comment added successfully!');
 
-            console.log(response)
-            // Fetch and display comments after adding a new comment
-            fetchComments(response.publicationId);
-            $('#modal-comments-count').text(response.totalComments);
+                        console.log(response)
+                        // Fetch and display comments after adding a new comment
+                        fetchComments(response.publicationId);
+                        $('#modal-comments-count').text(response.totalComments);
 
-            var likeCountElement = $('.unique-commentaire-count-' + response.publicationId);
-            likeCountElement.text(response.totalComments);
+                        var likeCountElement = $('.unique-commentaire-count-' + response
+                            .publicationId);
+                        likeCountElement.text(response.totalComments);
 
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            var errorMessage = error;
-            if (xhr.status === 401) {
-                errorMessage = 'Unauthorized';
-            }
-            showToast('error', errorMessage);
-        }
-    });
-});
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        var errorMessage = error;
+                        if (xhr.status === 401) {
+                            errorMessage = 'Unauthorized';
+                        }
+                        showToast('error', errorMessage);
+                    }
+                });
+            });
 
         });
     </script>
