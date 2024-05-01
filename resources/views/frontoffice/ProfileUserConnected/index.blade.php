@@ -193,7 +193,45 @@
 
                                                                                 
                                                                                 <div class="friend-name">
-                                                                                    <div class="more"></div>
+                                                                                <div class="more">
+                                                                    @if ($publication->user->id == Auth::user()->id)
+                                                                    <div class="more-post-optns">
+                                                                        <i class="">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                stroke="currentColor" stroke-width="2"
+                                                                                stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                class="feather feather-more-horizontal">
+                                                                                <circle cx="12" cy="12" r="1">
+                                                                                </circle>
+                                                                                <circle cx="19" cy="12"
+                                                                                    r="1"></circle>
+                                                                                <circle cx="5" cy="12"
+                                                                                    r="1"></circle>
+                                                                            </svg>
+                                                                        </i>
+                                                                        <ul>
+                                                                            <li class="edit-post-btn"
+                                                                                data-publication-id="{{ $publication->id }}"
+                                                                                data-post-content="{{ $publication->contenu }}">
+                                                                                <i class="icofont-pen-alt-1"></i>Edit Post
+                                                                            </li>
+
+                                                                            <li>
+                                                                                <a href="#" class="delete-post-btn"
+                                                                                    data-publication-id="{{ $publication->id }}">
+                                                                                    <i class="icofont-ui-delete"></i>Delete
+                                                                                    Post
+                                                                                </a>
+
+                                                                            </li>
+
+                                                                        </ul>
+                                                                    </div>
+                                                                    @endif
+                                                                </div>
                                                                                     <ins><a title=""
                                                                                             href="time-line.html">{{ $publication->user->name }}</a>
                                                                                         <span><i class="icofont-globe"></i>
@@ -1173,4 +1211,94 @@
             });
         });
     </script>
+       <!-- delete post  -->
+       <script>
+        $(document).ready(function() {
+            $('.delete-post-btn').click(function(e) {
+                e.preventDefault();
+                var publicationId = $(this).data('publication-id');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/publication/' + publicationId,
+                    data: {
+                        _token: csrfToken
+                    },
+                    success: function(response) {
+                        // Handle success, for example, remove the deleted post from the DOM
+                        $('#publication-' + publicationId).remove();
+                        showToast('success', response.message);
+
+                        if ($('.main-wraper.unique-class').length === 0) {
+                            console.log("No publications found");
+                            // If no remaining publications with the unique class, show the "No posts found" message
+                            $('div.container').append(
+                                '<div style="text-align: center; font-size: 30px; font-weight: bold;"><p>No posts found.</p></div>'
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(error);
+                        showToast('error', 'An error occurred. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+       <!-- update post -->
+       <script>
+        $(document).ready(function() {
+            $('.edit-post-btn').click(function() {
+                // Retrieve the publication ID from the data attribute
+                var publicationId = $(this).data('publication-id');
+                console.log("Retrieved publicationId:", publicationId);
+
+                // Retrieve the post content from the data attribute
+                var postContent = $(this).data('post-content');
+                console.log("Retrieved postContent:", postContent);
+
+                // Update the hidden field value with the retrieved publication ID
+                $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
+                console.log("Updated publicationId in input field:", $('input[name="publication_id"]')
+                    .val());
+
+                // Update the textarea value with the retrieved post content
+                $('#updatePublicationModal #updatedContent').val(postContent);
+
+                // Show the modal
+                $('#updatePublicationModal').modal('show');
+            });
+        });
+    </script>
+<div class="modal fade" id="updatePublicationModal" tabindex="-1" role="dialog"
+        aria-labelledby="updatePublicationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updatePublicationModalLabel">Edit Publication</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updatePublicationForm" action="{{ route('publications.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="updatedContent">Updated Content:</label>
+                            <textarea class="form-control" id="updatedContent" name="contenu" rows="3"></textarea>
+                        </div>
+                        <!-- Hidden field to store publication ID -->
+                        <input type="hidden" id="publicationId" name="publication_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Publication</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

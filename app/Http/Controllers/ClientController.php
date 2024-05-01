@@ -341,7 +341,20 @@ class ClientController extends Controller
         } else {
             $message = 'Publication created successfully!';
         }
-
+        if ($publication->user_id) {
+            // Get the owner of the publication
+            $publicationOwner = User::find($publication->user_id);
+    
+            // Send notification
+            $notification = new notifications();
+            $notification->user_id = $publicationOwner->id;
+            $notification->data = auth()->user()->name . ' posted a publication on your profile';
+            $notification->username = auth()->user()->name;
+            $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
+            $notification->save();
+    
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+        }
         // Redirect to a success page or back to the creation form with success message
         return redirect()->back()->with('success', $message);
     }
