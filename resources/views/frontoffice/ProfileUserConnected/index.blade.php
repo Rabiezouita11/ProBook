@@ -194,6 +194,7 @@
                                                                                 
                                                                                 <div class="friend-name">
                                                                                 <div class="more">
+                                                                                @if (Auth::check())
                                                                     @if ($publication->user->id == Auth::user()->id)
                                                                     <div class="more-post-optns">
                                                                         <i class="">
@@ -230,6 +231,7 @@
 
                                                                         </ul>
                                                                     </div>
+                                                                    @endif
                                                                     @endif
                                                                 </div>
                                                                                     <ins><a title=""
