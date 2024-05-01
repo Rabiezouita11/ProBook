@@ -330,6 +330,21 @@ class ClientController extends Controller
         $publication->image = $imageName;  // Assign the image name to the publication model
 
         $publication->save();
+        if ($publication->user_abonner_id) {
+            // Get the user profile
+            $userProfile = User::find($publication->user_abonner_id);
+
+            // Send notification
+            $notification = new notifications();
+            $notification->user_id = $userProfile->id;
+            $notification->data = auth()->user()->name . ' posted a publication on your profile';
+            $notification->username =  auth()->user()->name;  // Use the name of the user profile
+            $notification->imageUrl = auth()->user()->image;  // Use the image of the user profile
+            $notification->save();
+
+            // Dispatch event
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+        }
 
         // Determine the success message based on the scenario
         if ($publication->story && $publication->Activity_Feed) {
@@ -341,20 +356,7 @@ class ClientController extends Controller
         } else {
             $message = 'Publication created successfully!';
         }
-        if ($publication->user_id) {
-            // Get the owner of the publication
-            $publicationOwner = User::find($publication->user_id);
-    
-            // Send notification
-            $notification = new notifications();
-            $notification->user_id = $publicationOwner->id;
-            $notification->data = auth()->user()->name . ' posted a publication on your profile';
-            $notification->username = auth()->user()->name;
-            $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
-            $notification->save();
-    
-            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
-        }
+
         // Redirect to a success page or back to the creation form with success message
         return redirect()->back()->with('success', $message);
     }
