@@ -191,49 +191,66 @@
                                                                                         style="border-radius: 50%;">
                                                                                 @endif
 
-                                                                                
+
                                                                                 <div class="friend-name">
-                                                                                <div class="more">
-                                                                                @if (Auth::check())
-                                                                    @if ($publication->user->id == Auth::user()->id)
-                                                                    <div class="more-post-optns">
-                                                                        <i class="">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                width="24" height="24"
-                                                                                viewBox="0 0 24 24" fill="none"
-                                                                                stroke="currentColor" stroke-width="2"
-                                                                                stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                class="feather feather-more-horizontal">
-                                                                                <circle cx="12" cy="12" r="1">
-                                                                                </circle>
-                                                                                <circle cx="19" cy="12"
-                                                                                    r="1"></circle>
-                                                                                <circle cx="5" cy="12"
-                                                                                    r="1"></circle>
-                                                                            </svg>
-                                                                        </i>
-                                                                        <ul>
-                                                                            <li class="edit-post-btn"
-                                                                                data-publication-id="{{ $publication->id }}"
-                                                                                data-post-content="{{ $publication->contenu }}">
-                                                                                <i class="icofont-pen-alt-1"></i>Edit Post
-                                                                            </li>
+                                                                                    <div class="more">
+                                                                                        @if (Auth::check())
+                                                                                            @if ($publication->user->id == Auth::user()->id)
+                                                                                                <div
+                                                                                                    class="more-post-optns">
+                                                                                                    <i class="">
+                                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                                            width="24"
+                                                                                                            height="24"
+                                                                                                            viewBox="0 0 24 24"
+                                                                                                            fill="none"
+                                                                                                            stroke="currentColor"
+                                                                                                            stroke-width="2"
+                                                                                                            stroke-linecap="round"
+                                                                                                            stroke-linejoin="round"
+                                                                                                            class="feather feather-more-horizontal">
+                                                                                                            <circle
+                                                                                                                cx="12"
+                                                                                                                cy="12"
+                                                                                                                r="1">
+                                                                                                            </circle>
+                                                                                                            <circle
+                                                                                                                cx="19"
+                                                                                                                cy="12"
+                                                                                                                r="1">
+                                                                                                            </circle>
+                                                                                                            <circle
+                                                                                                                cx="5"
+                                                                                                                cy="12"
+                                                                                                                r="1">
+                                                                                                            </circle>
+                                                                                                        </svg>
+                                                                                                    </i>
+                                                                                                    <ul>
+                                                                                                        <li class="edit-post-btn"
+                                                                                                            data-publication-id="{{ $publication->id }}"
+                                                                                                            data-post-content="{{ $publication->contenu }}">
+                                                                                                            <i
+                                                                                                                class="icofont-pen-alt-1"></i>Edit
+                                                                                                            Post
+                                                                                                        </li>
 
-                                                                            <li>
-                                                                                <a href="#" class="delete-post-btn"
-                                                                                    data-publication-id="{{ $publication->id }}">
-                                                                                    <i class="icofont-ui-delete"></i>Delete
-                                                                                    Post
-                                                                                </a>
+                                                                                                        <li>
+                                                                                                            <a href="#"
+                                                                                                                class="delete-post-btn"
+                                                                                                                data-publication-id="{{ $publication->id }}">
+                                                                                                                <i
+                                                                                                                    class="icofont-ui-delete"></i>Delete
+                                                                                                                Post
+                                                                                                            </a>
 
-                                                                            </li>
+                                                                                                        </li>
 
-                                                                        </ul>
-                                                                    </div>
-                                                                    @endif
-                                                                    @endif
-                                                                </div>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    </div>
                                                                                     <ins><a title=""
                                                                                             href="time-line.html">{{ $publication->user->name }}</a>
                                                                                         <span><i class="icofont-globe"></i>
@@ -812,8 +829,6 @@
                     url: '/publication/' + publicationId +
                         '/comments', // Replace this URL with your backend endpoint
                     success: function(response) {
-
-                        console.log("responseresponseresponse" + response)
                         var commentsList = $('.comments-area ul');
                         commentsList.empty(); // Clear existing comments
 
@@ -837,11 +852,17 @@
                                     '</div>';
 
                                 // Add update and delete options if the comment belongs to the current user
-                                if (comment.user.id === {{ auth()->id() }}) {
-                                    commentHtml +=
-                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
-                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
-                                }
+
+
+
+
+                                @if (Auth::check())
+                                    if (comment.user.id === {{ auth()->id() }}) {
+                                        commentHtml +=
+                                            '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                            '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                    }
+                                @endif
 
                                 commentHtml += '</li>';
 
@@ -858,34 +879,38 @@
 
             // Submit comment form via AJAX
             $('#add-comment-form').submit(function(e) {
-                e.preventDefault();
-                var formData = $(this).serialize();
+    e.preventDefault();
+    console.log("aaa")
+    var formData = $(this).serialize();
 
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function(response) {
-                        $('#add-comment-form input[name="content"]').val('');
-                        showToast('success', 'Comment added successfully!');
+    $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        data: formData,
+        success: function(response) {
+            $('#add-comment-form input[name="content"]').val('');
+            showToast('success', 'Comment added successfully!');
 
-                        console.log(response)
-                        // Fetch and display comments after adding a new comment
-                        fetchComments(response.publicationId);
-                        $('#modal-comments-count').text(response.totalComments);
+            console.log(response)
+            // Fetch and display comments after adding a new comment
+            fetchComments(response.publicationId);
+            $('#modal-comments-count').text(response.totalComments);
 
-                        var likeCountElement = $('.unique-commentaire-count-' +
-                            response.publicationId);
-                        likeCountElement.text(response.totalComments);
+            var likeCountElement = $('.unique-commentaire-count-' + response.publicationId);
+            likeCountElement.text(response.totalComments);
 
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        showToast('error', error);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            var errorMessage = error;
+            if (xhr.status === 401) {
+                errorMessage = 'Unauthorized';
+            }
+            showToast('error', errorMessage);
+        }
+    });
+});
 
-                    }
-                });
-            });
         });
     </script>
 
@@ -923,11 +948,16 @@
                                 '<span>' + createdAt + '</span>' +
                                 '<p>' + comment.contenu + '</p>' +
                                 '</div>';
-                            if (comment.user.id === {{ auth()->id() }}) {
-                                commentHtml +=
-                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
-                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
-                            }
+
+
+
+                            @if (Auth::check())
+                                if (comment.user.id === {{ auth()->id() }}) {
+                                    commentHtml +=
+                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                }
+                            @endif
 
                             commentHtml += '</li>';
                             commentsArea.find('ul').append(commentHtml);
@@ -1063,12 +1093,16 @@
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>';
-                                if (comment.user.id === {{ auth()->id() }}) {
 
-                                    commentHtml +=
-                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
-                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
-                                }
+
+
+                                @if (Auth::check())
+                                    if (comment.user.id === {{ auth()->id() }}) {
+                                        commentHtml +=
+                                            '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                            '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                    }
+                                @endif
 
                                 commentHtml += '</li>';
                                 commentsArea.find('ul').append(commentHtml);
@@ -1213,8 +1247,8 @@
             });
         });
     </script>
-       <!-- delete post  -->
-       <script>
+    <!-- delete post  -->
+    <script>
         $(document).ready(function() {
             $('.delete-post-btn').click(function(e) {
                 e.preventDefault();
@@ -1249,8 +1283,8 @@
             });
         });
     </script>
-       <!-- update post -->
-       <script>
+    <!-- update post -->
+    <script>
         $(document).ready(function() {
             $('.edit-post-btn').click(function() {
                 // Retrieve the publication ID from the data attribute
@@ -1274,7 +1308,7 @@
             });
         });
     </script>
-<div class="modal fade" id="updatePublicationModal" tabindex="-1" role="dialog"
+    <div class="modal fade" id="updatePublicationModal" tabindex="-1" role="dialog"
         aria-labelledby="updatePublicationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

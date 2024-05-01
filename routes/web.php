@@ -63,10 +63,10 @@ Route::post('/jaime-publication', [App\Http\Controllers\ClientController::class,
 
 /* button  pour commenter publications */
 
-Route::post('/add-comment', [App\Http\Controllers\ClientController::class, 'addComment'])->name('add-comment')->middleware(['auth', 'role:utilisateur']);
+Route::post('/add-comment', [App\Http\Controllers\ClientController::class, 'addComment'])->name('add-comment');
 /* button  pour afficher comments */
 
-Route::get('/publication/{publicationId}/comments', [App\Http\Controllers\ClientController::class, 'getComments'])->middleware(['auth', 'role:utilisateur']);
+Route::get('/publication/{publicationId}/comments', [App\Http\Controllers\ClientController::class, 'getComments']);
 
 
 /* methode to show count comments   */

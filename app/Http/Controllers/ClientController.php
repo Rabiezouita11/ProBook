@@ -398,6 +398,13 @@ class ClientController extends Controller
 
     public function addComment(Request $request)
     {
+        if (!auth()->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You need to be authenticated to add a comment',
+            ], 401); // Unauthorized status code
+        }
+    
         // Validate the incoming request
         $request->validate([
             'publication_id' => 'required|exists:publications,id',
