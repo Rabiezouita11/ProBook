@@ -1,6 +1,9 @@
 @extends('frontoffice.layouts.index')
 
 @section('content')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <section>
         <div class="gap">
             <div class="container">
@@ -124,120 +127,199 @@
                                                                     {{ session('success') }}
                                                                 </div>
                                                             @endif
+                                                            <style>
+                                                                .login-message {
+                                                                    margin-bottom: 10px;
+                                                                    font-size: 16px;
+                                                                }
+
+                                                                .login-button {
+                                                                    display: inline-block;
+                                                                    padding: 8px 16px;
+                                                                    background-color: #007bff;
+                                                                    color: #fff;
+                                                                    text-decoration: none;
+                                                                    border-radius: 5px;
+                                                                }
+
+                                                                .login-button:hover {
+                                                                    background-color: #0056b3;
+                                                                }
+                                                            </style>
+
+
                                                             <div class="main-wraper">
                                                                 <span class="new-title">Create New Post</span>
                                                                 <div class="new-post">
+                                                                    <?php if (auth()->check()) { ?>
                                                                     <form method="post">
                                                                         <i class="icofont-pen-alt-1"></i>
                                                                         <input type="text"
                                                                             placeholder="Create New Post">
                                                                     </form>
-
+                                                                    <?php } else { ?>
+                                                                    <!-- Show message if user is not logged in -->
+                                                                    <p class="login-message">You must login to make
+                                                                        publications. <a href="/login"
+                                                                            class="login-button">Login</a></p>
+                                                                    <?php } ?>
                                                                 </div>
                                                             </div><!-- create new post -->
 
+
+
                                                             @if ($publications->isEmpty())
-                                                            <div class="container" style="text-align: center; font-size: 30px; font-weight: bold;">
-                                                                <p>No posts found.</p>
-                                                            </div>
-                                                        @else
-                                                            @foreach ($publications->reverse() as $publication)
-                                                                <div class="main-wraper">
-                                                                    <div class="user-post">
-                                                                        <div class="friend-info">
-                                                                            @if ($publication->user->image)
-                                                                                <figure>
-                                                                                    <img alt="" src="{{ asset('users/' . $publication->user->image) }}">
-                                                                                </figure>
-                                                                            @else
-                                                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($publication->user->name) }}&background=104d93&color=fff"
-                                                                                    height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;">
-                                                                            @endif
-                                                                            <div class="friend-name">
-                                                                                <div class="more"></div>
-                                                                                <ins><a title="" href="time-line.html">{{ $publication->user->name }}</a> <span><i
-                                                                                            class="icofont-globe"></i> published:
-                                                                                        {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}</span>
-                                                                            </div>
-                                                        
-                                                                            @if ($publication->image)
-                                                                                <img src="{{ asset('images/' . $publication->image) }}" height="400px" width="600px" alt="">
-                                                                            @endif
-                                                        
-                                                                            <div class="post-meta">
-                                                                                <p>
+                                                                <div class="container"
+                                                                    style="text-align: center; font-size: 30px; font-weight: bold;">
+                                                                    <p>No posts found.</p>
+                                                                </div>
+                                                            @else
+                                                                @foreach ($publications->reverse() as $publication)
+                                                                    <div class="main-wraper unique-class "
+                                                                        id="publication-{{ $publication->id }}">
+                                                                        <div class="user-post">
+                                                                            <div class="friend-info">
+                                                                                @if ($publication->user->image)
+                                                                                    <figure>
+                                                                                        <img alt=""
+                                                                                            src="{{ asset('users/' . $publication->user->image) }}">
+                                                                                    </figure>
+                                                                                @else
+                                                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($publication->user->name) }}&background=104d93&color=fff"
+                                                                                        height="25px" width="25px"
+                                                                                        alt="" class="mr-2"
+                                                                                        style="border-radius: 50%;">
+                                                                                @endif
+
+                                                                                
+                                                                                <div class="friend-name">
+                                                                                    <div class="more"></div>
+                                                                                    <ins><a title=""
+                                                                                            href="time-line.html">{{ $publication->user->name }}</a>
+                                                                                        <span><i class="icofont-globe"></i>
+                                                                                            published:
+                                                                                            {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}</span>
+                                                                                </div>
+
+                                                                                @if ($publication->image)
+                                                                                    <img src="{{ asset('images/' . $publication->image) }}"
+                                                                                        height="400px" width="600px"
+                                                                                        alt="">
+                                                                                @endif
+
+                                                                                <div class="post-meta">
+                                                                                    <p>
                                                                                     <p>
                                                                                         @if ($publication->user_abonner_id)
-                                                                                        {{ $publication->contenu }}
+                                                                                            {{ $publication->contenu }}
                                                                                         @else
                                                                                             {{ $publication->contenu }}
                                                                                         @endif
                                                                                     </p>
-                                                                                </p>
-                                                                                <div class="we-video-info">
-                                                                                    <ul>
-                                                                                        <li>
-                                                                                            <span title="Likes" class="liked">
-                                                                                                <i>
-                                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                                                                        class="feather feather-thumbs-up">
-                                                                                                        <path
-                                                                                                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
-                                                                                                        </path>
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                                <ins>
-                                                                                                    <span class="like-count unique-like-count-{{ $publication->id }}">
-                                                                                                        {{ $publication->jaime_publications->count() }}
-                                                                                                    </span>
-                                                                                                </ins>
-                                                                                            </span>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <span title="Comments" class="Recommend">
-                                                                                                <i>
-                                                                                                    <svg class="feather feather-message-square" stroke-linejoin="round"
-                                                                                                        stroke-linecap="round" stroke-width="2" stroke="currentColor"
-                                                                                                        fill="none" viewBox="0 0 24 24" height="16" width="16"
-                                                                                                        xmlns="http://www.w3.org/2000/svg">
-                                                                                                        <path
-                                                                                                            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                                                                    </svg>
-                                                                                                </i>
-                                                                                                <ins> <span
-                                                                                                        class="commentaire-count unique-commentaire-count-{{ $publication->id }}">
-                                                                                                        {{ $publication->totalComments() }}
-                                                                                                    </span> </ins>
-                                                                                            </span>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                                <div class="stat-tools">
-                                                                                    <div class="box">
-                                                                                        <div class="Like"><a class="Like__link"><i class="icofont-like"></i> Like</a>
+                                                                                    </p>
+                                                                                    <div class="we-video-info">
+                                                                                        <ul>
+                                                                                            <li>
+                                                                                                <span title="Likes"
+                                                                                                    class="liked">
+                                                                                                    <i>
+                                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                                            width="16"
+                                                                                                            height="16"
+                                                                                                            viewBox="0 0 24 24"
+                                                                                                            fill="none"
+                                                                                                            stroke="currentColor"
+                                                                                                            stroke-width="2"
+                                                                                                            stroke-linecap="round"
+                                                                                                            stroke-linejoin="round"
+                                                                                                            class="feather feather-thumbs-up">
+                                                                                                            <path
+                                                                                                                d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
+                                                                                                            </path>
+                                                                                                        </svg>
+                                                                                                    </i>
+                                                                                                    <ins>
+                                                                                                        <span
+                                                                                                            class="like-count unique-like-count-{{ $publication->id }}">
+                                                                                                            {{ $publication->jaime_publications->count() }}
+                                                                                                        </span>
+                                                                                                    </ins>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                            <li>
+                                                                                                <span title="Comments"
+                                                                                                    class="Recommend">
+                                                                                                    <i>
+                                                                                                        <svg class="feather feather-message-square"
+                                                                                                            stroke-linejoin="round"
+                                                                                                            stroke-linecap="round"
+                                                                                                            stroke-width="2"
+                                                                                                            stroke="currentColor"
+                                                                                                            fill="none"
+                                                                                                            viewBox="0 0 24 24"
+                                                                                                            height="16"
+                                                                                                            width="16"
+                                                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                                                            <path
+                                                                                                                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                                                                                        </svg>
+                                                                                                    </i>
+                                                                                                    <ins> <span
+                                                                                                            class="commentaire-count unique-commentaire-count-{{ $publication->id }}">
+                                                                                                            {{ $publication->totalComments() }}
+                                                                                                        </span> </ins>
+                                                                                                </span>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="stat-tools">
+                                                                                        <div class="box"
+                                                                                            data-publication-id="{{ $publication->id }}">
+                                                                                            <div class="Like">
+                                                                                                <a class="Like__link"><i
+                                                                                                        class="icofont-like"></i>
+                                                                                                    Like</a>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <div class="box">
-                                                                                    </div>
-                                                                                    <a title="" href="#" class="comment-to"><i class="icofont-comment"></i> Comment</a>
-                                                                                    <div class="new-comment" style="display: none;">
-                                                                                        <form method="post">
-                                                                                            <input type="text" placeholder="write comment">
-                                                                                            <button type="submit"><i class="icofont-paper-plane"></i></button>
-                                                                                        </form>
-                                                                                        <div class="comments-area">
+                                                                                        <div class="box">
+                                                                                        </div>
+                                                                                        <a title="" href="#"
+                                                                                            class="comment-to"
+                                                                                            data-publication-id="{{ $publication->id }}">
+                                                                                            <i class="icofont-comment"></i>
+                                                                                            Comment
+                                                                                        </a>
+                                                                                        <div class="new-comment"
+                                                                                            style="display: none;">
+                                                                                            <form id="commentForm"
+                                                                                                action="{{ route('add-comment') }}"
+                                                                                                method="POST">
+                                                                                                @csrf
+                                                                                                <input type="hidden"
+                                                                                                    name="publication_id"
+                                                                                                    value="{{ $publication->id }}">
+                                                                                                <input type="text"
+                                                                                                    name="content"
+                                                                                                    placeholder="write comment">
+                                                                                                <button type="submit"><i
+                                                                                                        class="icofont-paper-plane"></i></button>
+                                                                                            </form>
+                                                                                            <div class="comments-area"
+                                                                                                data-comments-publication-id="{{ $publication->id }}">
+                                                                                                <!-- Comments will be loaded here -->
+                                                                                                <ul>
+                                                                                                    <!-- Existing comments will be dynamically added here -->
+                                                                                                </ul>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                </div><!-- share post without image -->
-                                                            @endforeach
-                                                        @endif
-                                                        
+                                                                    </div><!-- share post without image -->
+                                                                @endforeach
+                                                            @endif
+
 
 
 
@@ -282,7 +364,7 @@
                                                                                 enctype="multipart/form-data">
                                                                                 @csrf
                                                                                 <!-- This is important for Laravel to validate the form submission -->
-                                                                                <input type="text" name="userprofile"
+                                                                                <input type="hidden" name="userprofile"
                                                                                     value="{{ $user->id }}"
                                                                                     id="">
                                                                                 <div class="post-newmeta">
@@ -340,12 +422,12 @@
                                                                             title="" href="#"
                                                                             class="see-all">See All</a></h4>
 
-                                                                    <ul class="invitepage">
+                                                                    <ul class="invitepage" id="suggested-users">
                                                                         @if ($suggestedUsers->isEmpty())
                                                                             <p>No suggested users to display.</p>
                                                                         @else
                                                                             @foreach ($suggestedUsers as $user)
-                                                                                <li>
+                                                                                <li data-user-id="{{ $user->id }}">
                                                                                     @if ($user->image)
                                                                                         <figure>
                                                                                             <img alt=""
@@ -365,9 +447,9 @@
                                                                                                 href="{{ route('profile.show', $user) }}">{{ $user->name }}</a>
                                                                                         </figure>
                                                                                     @endif
-                                                                                    <button class="sug-like"><i
-                                                                                            class="invit">Follow</i><i
-                                                                                            class="icofont-check-alt"></i></button>
+                                                                                    <a class="underline follow-link"
+                                                                                        title="" href="#"
+                                                                                        data-user-id="{{ $user->id }}">Follow</a>
                                                                                 </li>
                                                                             @endforeach
                                                                         @endif
@@ -601,5 +683,494 @@
             </div>
         </div>
     </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
+    {{-- ajouter like  --}}
+    <script>
+        $(document).ready(function() {
+            $('.Like__link').click(function(e) {
+                e.preventDefault();
+
+                // Check if user is logged in
+                if (!isLoggedIn()) {
+                    showToast('info', 'You must login to like a publication.');
+                    return;
+                }
+
+                var publicationId = $(this).closest('.box').data('publication-id');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content'); // Récupérer le jeton CSRF
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/jaime-publication',
+                    data: {
+                        _token: csrfToken, // Ajouter le jeton CSRF à la demande
+                        publication_id: publicationId
+                    },
+                    success: function(response) {
+
+                        var likeCountElement = $('.unique-like-count-' + publicationId);
+                        likeCountElement.text(response.like_count);
+                        var likeCountElements = $('#modal-jaime-count');
+                        likeCountElements.text(response.like_count);
+                        if (response.message === "Publication unliked.") {
+                            showToast('warning', response.message);
+
+                        } else {
+                            showToast('success', response.message);
+
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        // Gérez les erreurs ou affichez un message d'erreur
+                        showToast('error', error);
+
+                    }
+                });
+            });
+        });
+
+        // Function to check if the user is logged in
+        function isLoggedIn() {
+            return '{{ auth()->check() }}' === '1';
+        }
+
+        function showToast(type, message) {
+            toastr.options = {
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                showMethod: 'slideDown', // Animation in
+                hideMethod: 'slideUp', // Animation out
+                timeOut: 5000, // Time before auto-dismiss
+            };
+
+            switch (type) {
+                case 'info':
+                    toastr.info(message);
+                    break;
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+            }
+        }
+    </script>
+    {{-- add comment in modal  --}}
+    <script>
+        $(document).ready(function() {
+            // Function to fetch and display comments
+            function fetchComments(publicationId) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId +
+                        '/comments', // Replace this URL with your backend endpoint
+                    success: function(response) {
+
+                        console.log("responseresponseresponse" + response)
+                        var commentsList = $('.comments-area ul');
+                        commentsList.empty(); // Clear existing comments
+
+                        if (response.comments.length === 0) {
+                            commentsList.append('<li>No comments yet.</li>');
+                        } else {
+                            $.each(response.comments, function(index, comment) {
+                                var createdAt = moment(comment.updated_at)
+                                    .fromNow(); // Format timestamp using moment.js
+                                var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                    '<figure><img src="' + (comment.user.image ? '/users/' +
+                                        comment.user.image :
+                                        'https://ui-avatars.com/api/?name=' +
+                                        encodeURIComponent(comment.user.name) +
+                                        '&background=104d93&color=fff') +
+                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                    '<div class="commenter">' +
+                                    '<h5><a href="#">' + comment.user.name + '</a></h5>' +
+                                    '<span>' + createdAt + '</span>' +
+                                    '<p>' + comment.contenu + '</p>' +
+                                    '</div>';
+
+                                // Add update and delete options if the comment belongs to the current user
+                                if (comment.user.id === {{ auth()->id() }}) {
+                                    commentHtml +=
+                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                }
+
+                                commentHtml += '</li>';
+
+                                commentsList.append(commentHtml);
+                            });
+
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            // Submit comment form via AJAX
+            $('#add-comment-form').submit(function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        $('#add-comment-form input[name="content"]').val('');
+                        showToast('success', 'Comment added successfully!');
+
+                        console.log(response)
+                        // Fetch and display comments after adding a new comment
+                        fetchComments(response.publicationId);
+                        $('#modal-comments-count').text(response.totalComments);
+
+                        var likeCountElement = $('.unique-commentaire-count-' +
+                            response.publicationId);
+                        likeCountElement.text(response.totalComments);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        showToast('error', error);
+
+                    }
+                });
+            });
+        });
+    </script>
+
+    {{-- delete comment --}}
+    <script>
+        function fetchAndDisplayComments(publicationId) {
+            var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
+
+            // Make an AJAX request to fetch comments for this publication
+            $.ajax({
+                type: 'GET',
+                url: '/publication/' + publicationId + '/comments',
+                success: function(response) {
+                    commentsArea.find('ul').empty(); // Clear existing comments
+
+                    // Check if there are comments in the response
+                    if (response.comments.length === 0) {
+                        commentsArea.find('ul').append('<li>No comments yet.</li>');
+                    } else {
+                        $.each(response.comments, function(index, comment) {
+                            var createdAt = moment(comment.updated_at)
+                                .fromNow(); // Format timestamp using moment.js
+
+                            var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                // Set data-comment-id attribute with comment ID
+                                '<figure><img alt="" src="' + (comment.user.image ?
+                                    '/users/' + comment.user.image :
+                                    'https://ui-avatars.com/api/?name=' +
+                                    encodeURIComponent(comment.user.name) +
+                                    '&background=104d93&color=fff') +
+                                '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                '<div class="commenter">' +
+                                '<h5><a title="" href="#">' + comment.user.name +
+                                '</a></h5>' +
+                                '<span>' + createdAt + '</span>' +
+                                '<p>' + comment.contenu + '</p>' +
+                                '</div>';
+                            if (comment.user.id === {{ auth()->id() }}) {
+                                commentHtml +=
+                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                            }
+
+                            commentHtml += '</li>';
+                            commentsArea.find('ul').append(commentHtml);
+                        });
+                    }
+                    commentsArea.show(); // Show the comments area
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        $(document).on('click', '.delete-comment', function(e) {
+            e.preventDefault();
+            var commentElement = $(this).closest('li');
+            var commentId = commentElement.data('comment-id');
+            var publicationId = commentElement.closest('.comments-area').data('comments-publication-id');
+
+            // Get the CSRF token from the meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/publication/' + publicationId + '/comment/' +
+                    commentId, // Adjust the URL according to your backend route
+                data: {
+                    _token: csrfToken // Include CSRF token in the data object
+                },
+                success: function(response) {
+                    if (response.success) {
+                        commentElement.remove();
+                        var likeCountElement = $('.unique-commentaire-count-' + publicationId);
+                        likeCountElement.text(response.totalComments);
+                        $('#modal-comments-count').text(response.totalComments);
+                        fetchAndDisplayComments(publicationId);
+
+                        showToast('success', 'Comment deleted successfully!');
+                    } else {
+                        console.error(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+    {{-- udpate comment --}}
+    <script>
+        $(document).on('click', '.update-comment', function(e) {
+            e.preventDefault();
+            var commentId = $(this).closest('li').data('comment-id');
+            var commentContent = $(this).closest('li').find('.commenter p').text();
+            console.log(commentId);
+            console.log(commentContent);
+
+            // Populate modal fields with comment ID and content
+            $('#commentId').val(commentId);
+            $('#updatedContent').val(commentContent);
+
+            // Show the update comment modal
+            $('#updateCommentModal').modal('show');
+
+            // Bring the update comment modal to the front
+            $('#updateCommentModal').css('z-index', 9999999999);
+        });
+    </script>
+
+    <!-- Update Comment Modal -->
+    <div class="modal fade" id="updateCommentModal" tabindex="-1" role="dialog"
+        aria-labelledby="updateCommentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateCommentModalLabel">Update Comment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updateCommentForm" action="{{ route('comment.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="commentId" name="comment_id">
+                    <input type="hidden" id="publicationId" name="publication_id">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="updatedContent">Updated Comment:</label>
+                            <textarea class="form-control" id="updatedContent" name="content" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- add comment in profile user --}}
+    <script>
+        $(document).ready(function() {
+            function fetchAndDisplayComments(publicationId) {
+                var commentsArea = $('.comments-area[data-comments-publication-id="' + publicationId + '"]');
+
+                // Make an AJAX request to fetch comments for this publication
+                $.ajax({
+                    type: 'GET',
+                    url: '/publication/' + publicationId + '/comments',
+                    success: function(response) {
+                        commentsArea.find('ul').empty(); // Clear existing comments
+
+                        // Check if there are comments in the response
+                        if (response.comments.length === 0) {
+                            commentsArea.find('ul').append('<li>No comments yet.</li>');
+                        } else {
+                            $.each(response.comments, function(index, comment) {
+                                var createdAt = moment(comment.updated_at)
+                                    .fromNow(); // Format timestamp using moment.js
+
+                                var commentHtml = '<li data-comment-id="' + comment.id + '">' +
+                                    // Set data-comment-id attribute with comment ID
+                                    '<figure><img alt="" src="' + (comment.user.image ?
+                                        '/users/' + comment.user.image :
+                                        'https://ui-avatars.com/api/?name=' +
+                                        encodeURIComponent(comment.user.name) +
+                                        '&background=104d93&color=fff') +
+                                    '" height="25px" width="25px" alt="" class="mr-2" style="border-radius: 50%;"></figure>' +
+                                    '<div class="commenter">' +
+                                    '<h5><a title="" href="#">' + comment.user.name +
+                                    '</a></h5>' +
+                                    '<span>' + createdAt + '</span>' +
+                                    '<p>' + comment.contenu + '</p>' +
+                                    '</div>';
+                                if (comment.user.id === {{ auth()->id() }}) {
+
+                                    commentHtml +=
+                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                }
+
+                                commentHtml += '</li>';
+                                commentsArea.find('ul').append(commentHtml);
+                            });
+                        }
+                        commentsArea.show(); // Show the comments area
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            // Submit comment form
+            $(document).on('submit', '#commentForm', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                var publicationId = $(this).find('input[name="publication_id"]').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            // Clear input field
+                            $('#commentForm input[name="content"]').val('');
+
+                            // Fetch and display comments for the publication
+                            fetchAndDisplayComments(publicationId);
+                            var likeCountElement = $('.unique-commentaire-count-' +
+                                publicationId);
+                            likeCountElement.text(response.totalComments);
+                            showToast('success', 'Comment added successfully!');
+
+                        } else {
+                            console.error(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            // Click event for fetching comments
+            $('.comment-to').click(function(e) {
+                e.preventDefault();
+                var publicationId = $(this).data('publication-id');
+                fetchAndDisplayComments(publicationId);
+            });
+        });
+
+        function showToast(type, message) {
+            toastr.options = {
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                showMethod: 'slideDown', // Animation in
+                hideMethod: 'slideUp', // Animation out
+                timeOut: 5000, // Time before auto-dismiss
+            };
+
+            switch (type) {
+                case 'info':
+                    toastr.info(message);
+                    break;
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+            }
+        }
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Event listener for the "Follow" link
+            $(document).on('click', '.follow-link', function(e) {
+                e.preventDefault();
+                var userId = $(this).data('user-id');
+
+                // Send AJAX request to follow the user
+                $.ajax({
+                    url: '/follow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+                        $.ajax({
+                            url: location.href,
+                            type: 'GET',
+                            success: function(response) {
+                                // Update following widget
+                                var followingWidgetHtml = $(response).find(
+                                    '#following-widget').html();
+                                $('#following-widget').html(followingWidgetHtml);
+
+                                var followingWidgetHtml = $(response).find(
+                                    '#follow').html();
+                                $('#follow').html(followingWidgetHtml);
+
+                                var followingCount = $(response).find(
+                                    '#following-count').text();
+                                $('#following-count').text(followingCount);
+
+                                $('#suggested-users li[data-user-id="' + userId +
+                                    '"]').remove();
+                                // Update followers count
+                                var followersCount = $(response).find(
+                                    '#followers-count').text();
+                                $('#followers-count').text(followersCount);
+                                console.log("followersCount fi follow" +
+                                    followersCount);
+
+                                // Update suggested users list
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors if needed
+                                console.error(xhr.responseText);
+                            }
+                        });
+
+                        // Optionally, update the UI to reflect the followed user
+                        // For example, you can remove the user from the list
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

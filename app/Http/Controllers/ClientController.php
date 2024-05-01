@@ -21,74 +21,30 @@ use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
-    public function showProfileUser()
-    {
-        $currentUser = auth()->user();
-        $userId = auth()->id();
-
-        $publications = Publication::where('Activity_Feed', true)
-            ->where(function ($query) use ($userId) {
-                $query->where('user_id', $userId)
-                    ->whereNull('user_abonner_id');
-            })
-            ->orWhere(function ($query) use ($userId) {
-                $query->where('user_abonner_id', $userId)
-                    ->whereNotNull('user_id');
-            })
-            ->latest()
-            ->get();
-    
-            $suggestedUsers = User::where('role', 'utilisateur')
-            ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
-            ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
-            ->where('id', '!=', $currentUser->id)
-            ->get();
-        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
-            $query->where('user_id', $currentUser->id);
-        })->with('abonnes');
-
-        // Users who are following the current user
-        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
-            $query->where('abonne_id', $currentUser->id);
-        })->with('abonnements');
-
-        // Combine both queries using union
-        $followingUsers = $followingUsers->union($followers)->get();
-
-        $followingCount = $followingUsers->count();
-
-        return view('frontoffice.profile.index', compact(
-            'publications',
-            'suggestedUsers',
-            'followingUsers',
-            'followingCount',
-        ));
-    }
-
     public function index()
     {
         if (auth()->check()) {
             $currentUser = auth()->user();
-            
+
             $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
                 $query->where('user_id', $currentUser->id);
             })->with('abonnes');
-    
+
             // Users who are following the current user
             $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
                 $query->where('abonne_id', $currentUser->id);
             })->with('abonnements');
-    
+
             // Combine both queries using union
             $followingUsers = $followingUsers->union($followers)->get();
-    
+
             $followingCount = $followingUsers->count();
-    
+
             return view('frontoffice.home.index', [
                 'followingCount' => $followingCount
             ]);
         }
-        
+
         // If user is not authenticated, simply return the view without passing followingCount
         return view('frontoffice.home.index');
     }
@@ -390,7 +346,6 @@ class ClientController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
-
     public function likePublication(Request $request)
     {
         $existingLike = jaime_publications::where('user_id', auth()->id())
@@ -406,7 +361,21 @@ class ClientController extends Controller
                 'publication_id' => $request->publication_id,
             ]);
             $message = 'Publication liked.';
+
+            // Send notification to the owner of the publication
+            $publicationOwner = Publication::find($request->publication_id)->user;
+            if ($publicationOwner->id != auth()->id()) {  // Don't send notification if liking own publication
+                $notification = new notifications();
+                $notification->user_id = $publicationOwner->id;
+                $notification->data = auth()->user()->name . ' liked your publication';
+                $notification->username = auth()->user()->name;
+                $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
+                $notification->save();
+
+                event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+            }
         }
+
         $likeCount = jaime_publications::where('publication_id', $request->publication_id)->count();
 
         return response()->json(['message' => $message, 'like_count' => $likeCount]);
@@ -426,6 +395,19 @@ class ClientController extends Controller
         $comment->contenu = $request->content;
         $comment->user_id = auth()->id();
         $comment->save();
+
+        // Send notification to the owner of the publication
+        $publicationOwner = Publication::find($request->publication_id)->user;
+        if ($publicationOwner->id != auth()->id()) {  // Don't send notification if commenting own publication
+            $notification = new notifications();
+            $notification->user_id = $publicationOwner->id;
+            $notification->data = auth()->user()->name . ' commented on your publication';
+            $notification->username = auth()->user()->name;
+            $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
+            $notification->save();
+
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+        }
 
         // Get the total number of comments for the publication
         $totalComments = Commentaire::where('publication_id', $request->publication_id)->count();
@@ -594,12 +576,12 @@ class ClientController extends Controller
         $currentUserId = auth()->id();
 
         $followingUsers = User::whereHas('abonnes', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+            $query->where('user_id', auth()->id());
         })->with('abonnes');
 
         // Users who are following the current user
         $followers = User::whereHas('abonnements', function ($query) use ($user) {
-            $query->where('abonne_id', $user->id);
+            $query->where('abonne_id', auth()->id());
         })->with('abonnements');
 
         // Combine both queries using union
@@ -607,26 +589,83 @@ class ClientController extends Controller
 
         $followingCount = $followingUsers->count();
         $mostLikedPost = Publication::withCount('jaime_publications')
-        ->where('user_id', $user->id) // Filter by user ID
-        ->orderByDesc('jaime_publications_count')
-        ->first();
+            ->where('user_id', $user->id)  // Filter by user ID
+            ->orderByDesc('jaime_publications_count')
+            ->first();
 
-        $userConnected =  $user;
-        $suggestedUsers = User::where('role', 'utilisateur')
-        ->whereNotIn('id', $userConnected->abonnements()->pluck('abonne_id'))
-        ->whereNotIn('id', $userConnected->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
-        ->where('id', '!=', $currentUserId)
-        ->get();
+        if (auth()->check()) {
+            $suggestedUsers = User::where('role', 'utilisateur')
+                ->whereNotIn('id', auth()->user()->abonnements()->pluck('abonne_id'))
+                ->whereNotIn('id', auth()->user()->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+                ->where('id', '!=', auth()->id())
+                ->get();
+        } else {
+            // If user is not logged in, show all users
+            $suggestedUsers = User::where('role', 'utilisateur')->get();
+        }
+
         $publications = Publication::with('user', 'user_abonner')
-        ->where(function ($query) use ($user) {
-            $query->where('user_id', $user->id)
-                ->orWhere('user_abonner_id', $user->id);
-        })
-        ->where('Activity_Feed', true)
-        ->orderBy('created_at')
-        ->get();
-        
-        return view('frontoffice.ProfileUserConnected.index', ['user' => $user, 'followingCount' => $followingCount, 'mostLikedPost' => $mostLikedPost , 'suggestedUsers'=> $suggestedUsers ,        'publications' => $publications,
-    ]);
+            ->where(function ($query) use ($user) {
+                $query
+                    ->where('user_id', $user->id)
+                    ->orWhere('user_abonner_id', $user->id);
+            })
+            ->where('Activity_Feed', true)
+            ->orderBy('created_at')
+            ->get();
+
+        return view('frontoffice.ProfileUserConnected.index', [
+            'user' => $user,
+            'followingCount' => $followingCount,
+            'mostLikedPost' => $mostLikedPost,
+            'suggestedUsers' => $suggestedUsers,
+            'publications' => $publications,
+        ]);
+    }
+
+    public function showProfileUser()
+    {
+        $currentUser = auth()->user();
+        $userId = auth()->id();
+
+        $publications = Publication::where('Activity_Feed', true)
+            ->where(function ($query) use ($userId) {
+                $query
+                    ->where('user_id', $userId)
+                    ->whereNull('user_abonner_id');
+            })
+            ->orWhere(function ($query) use ($userId) {
+                $query
+                    ->where('user_abonner_id', $userId)
+                    ->whereNotNull('user_id');
+            })
+            ->latest()
+            ->get();
+
+        $suggestedUsers = User::where('role', 'utilisateur')
+            ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+            ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+            ->where('id', '!=', $currentUser->id)
+            ->get();
+        $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+            $query->where('user_id', $currentUser->id);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+            $query->where('abonne_id', $currentUser->id);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers = $followingUsers->union($followers)->get();
+
+        $followingCount = $followingUsers->count();
+
+        return view('frontoffice.profile.index', compact(
+            'publications',
+            'suggestedUsers',
+            'followingUsers',
+            'followingCount',
+        ));
     }
 }

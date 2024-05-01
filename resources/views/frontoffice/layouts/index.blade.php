@@ -14,7 +14,10 @@
     <link rel="stylesheet" href="/frontoffice/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    @if ((auth()->check()))
     <script src="{{ asset('js/app.js') }}"></script>
+    @endif
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 
@@ -1632,7 +1635,7 @@
     <script src="/frontoffice/js/date-time.js"></script>
     <script src="/frontoffice/js/script.js"></script>
     <!-- custom scripts -->
-
+    @if ((auth()->check()))
     <script>
         // Function to fetch notifications via AJAX
         function fetchNotifications() {
@@ -1703,7 +1706,7 @@
             audio.play();
         });
     </script>
-
+@endif
 
 </body>
 

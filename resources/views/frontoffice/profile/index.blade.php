@@ -114,8 +114,11 @@
                                                                     @endif
                                                                 @endif
                                                             </figure>
+
+                                                        
                                                             <div class="friend-name">
                                                                 <div class="more">
+                                                                    @if ($publication->user->id == Auth::user()->id)
                                                                     <div class="more-post-optns">
                                                                         <i class="">
                                                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -151,6 +154,7 @@
 
                                                                         </ul>
                                                                     </div>
+                                                                    @endif
                                                                 </div>
                                                                 <ins><a title=""
                                                                         href="time-line.html">{{ $publication->user->name }}</a>
@@ -160,6 +164,7 @@
                                                                         {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}
                                                                     </span>
                                                             </div>
+                                                           
                                                             @php
                                                                 // Assuming $publication->created_at is your timestamp
                                                                 $created_at = \Carbon\Carbon::parse(
@@ -1153,12 +1158,14 @@
                                     '</a></h5>' +
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
-                                    '</div>' +
-                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                    '</div>';
 
-                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
-
-                                    '</li>';
+                                if (comment.user.id === {{ auth()->id() }}) {
+                                    commentHtml +=
+                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                }
+                                commentHtml += '</li>';
                                 commentsList.append(commentHtml);
                             });
                         }
@@ -1338,13 +1345,16 @@
                                     '</a></h5>' +
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
-                                    '</div>' +
-                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
-                                    // Update button
-                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
-                                    // Add delete icon
+                                    '</div>';
 
-                                    '</li>';
+                                // Add update and delete options if the comment belongs to the current user
+                                if (comment.user.id === {{ auth()->id() }}) {
+                                    commentHtml +=
+                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                }
+
+                                commentHtml += '</li>';
                                 commentsArea.find('ul').append(commentHtml);
                             });
                         }
@@ -1454,12 +1464,15 @@
                                     '<h5><a href="#">' + comment.user.name + '</a></h5>' +
                                     '<span>' + createdAt + '</span>' +
                                     '<p>' + comment.contenu + '</p>' +
-                                    '</div>' +
-                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                    '</div>';
+                                // Add update and delete options if the comment belongs to the current user
+                                if (comment.user.id === {{ auth()->id() }}) {
+                                    commentHtml +=
+                                        '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                        '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                                }
 
-                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
-
-                                    '</li>';
+                                commentHtml += '</li>';
                                 commentsList.append(commentHtml);
                             });
                         }
@@ -1536,13 +1549,15 @@
                                 '</a></h5>' +
                                 '<span>' + createdAt + '</span>' +
                                 '<p>' + comment.contenu + '</p>' +
-                                '</div>' +
-                                '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
-                                // Update button
-                                '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>' +
-                                // Add delete icon
+                                '</div>';
 
-                                '</li>';
+                            if (comment.user.id === {{ auth()->id() }}) {
+                                commentHtml +=
+                                    '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
+                                    '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
+                            }
+
+                            commentHtml += '</li>';
                             commentsArea.find('ul').append(commentHtml);
                         });
                     }
@@ -1640,6 +1655,9 @@
             </div>
         </div>
     </div>
+
+
+    <!-- delete post  -->
     <script>
         $(document).ready(function() {
             $('.delete-post-btn').click(function(e) {
@@ -1675,6 +1693,8 @@
             });
         });
     </script>
+
+    <!-- update post -->
     <script>
         $(document).ready(function() {
             $('.edit-post-btn').click(function() {
@@ -1733,6 +1753,8 @@
             </div>
         </div>
     </div>
+
+    <!-- button follow  -->
     <script>
         $(document).ready(function() {
 
@@ -1861,6 +1883,9 @@
             });
         });
     </script>
+
+
+    <!-- button unfollow -->
     <script>
         $(document).ready(function() {
             // Event listener for the "Unfollow" button
