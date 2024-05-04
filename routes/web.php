@@ -106,7 +106,7 @@ Route::put('/publications', [App\Http\Controllers\ClientController::class, 'upda
 
 // show page  user connected  
 
-Route::get('/profile/{user}', [App\Http\Controllers\ClientController::class, 'show'])->name('profile.show')->middleware('role:utilisateur');
+Route::get('/profile/{user}', [App\Http\Controllers\ClientController::class, 'show'])->name('profile.show');
 
 // delete comment 
 Route::delete('/publication/{publicationId}/comment/{commentId}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);

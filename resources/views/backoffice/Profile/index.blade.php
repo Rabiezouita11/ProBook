@@ -38,7 +38,7 @@
 							<nav class="responsive-tab style1">
 								<ul data-submenu-title="compounents"
 								uk-switcher="connect: #picturez ;animation: uk-animation-slide-left-medium, uk-animation-slide-right-medium" class="uk-grid" uk-sticky="offset:50;media : @m">
-                                <li><a href="#">Change Email/Name</a></li> <!-- New list item for changing email or name -->
+                                <li><a href="#">Profile</a></li> <!-- New list item for changing email or name -->
                                 <li><a href="#">Change Password</a></li> <!-- New list item for changing password -->	
 								</ul>
 							</nav>

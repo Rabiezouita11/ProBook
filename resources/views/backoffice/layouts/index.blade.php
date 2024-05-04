@@ -99,7 +99,7 @@
 				<ul class="web-elements">
 					<li>
 						<div class="user-dp">
-							<a href="profile-page2.html" title="">
+						<a title="profile.html" href="{{route('showProfile')}}">
 								<img src="/backoffice/images/resources/user.jpg" alt="">
 								<div class="name">
 									<h4  id="userName">{{ auth()->user()->name }}</h4>

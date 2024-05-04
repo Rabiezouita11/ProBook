@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Xmee | Login and Register Form Html Templates</title>
+    <title>Xchange | Login and Register Form Html Templates</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/favicon.png">
+    <!-- Xchange -->
+    <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/logoxchange.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/template_Authentification/css/bootstrap.min.css">
     <!-- Fontawesome CSS -->
@@ -16,7 +16,7 @@
     <!-- Vegas CSS -->
     <link rel="stylesheet" href="/template_Authentification/css/vegas.min.css">
     <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="/template_Authentification/font/flaticon.css">
+    <link rel="stylesheet" href="/template_Authentification/font/xchange.css">
     <!-- Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
@@ -49,7 +49,7 @@
                     <div class="fxt-content">
                         <div class="fxt-header">
                             <a href="{{ route('login') }}" class="fxt-logo"><img
-                                    src="/template_Authentification/img/logo-29.png" alt="Logo"></a>
+                                    src="/template_Authentification/img/xchange.png" alt="Logo"></a>
                         </div>
                         <div class="fxt-form">
                             <div class="fxt-transformY-50 fxt-transition-delay-1">

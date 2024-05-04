@@ -40,7 +40,7 @@
                                 </li>
                                 <li class="nav-item"><a class="" href="#about" data-toggle="tab">About</a></li>
                                 <li class="nav-item"><a class="" href="#profile" data-toggle="tab">Profile</a></li>
-                                <li class="nav-item"><a class="" href="#Changerpassword" data-toggle="tab">Change
+                                <li class="nav-item"><a class="" href="#Changerpassword" data-toggle="tab">Change 
                                         Password
                                     </a></li>
 
@@ -756,7 +756,7 @@
                                                 <input type="file" class="form-control-file" id="cover_photo"
                                                     name="cover_photo">
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary">Save Changes </button>
                                         </form>
                                     </div>
                                     <div class="tab-pane" id="Changerpassword">

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/template_Authentification/img/logoxchange.png">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/template_Authentification/css/bootstrap.min.css">
     <!-- Fontawesome CSS -->
@@ -49,7 +49,7 @@
                     <div class="fxt-content">
                         <div class="fxt-header">
                             <a href="login-29.html" class="fxt-logo"><img
-                                    src="/template_Authentification/img/logo-29.png" alt="Logo"></a>
+                                    src="/template_Authentification/img/xchange.png" alt="Logo"></a>
                         </div>
                         <div class="fxt-form">
                             <div class="fxt-transformY-50 fxt-transition-delay-1">
