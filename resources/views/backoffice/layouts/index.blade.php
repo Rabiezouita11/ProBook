@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<title>Administrateur</title>
+	<title>Admin</title>
 	<link rel="icon" href="/backoffice/images/fav.png" type="image/png" sizes="16x16">
 
 	<link rel="stylesheet" href="/backoffice/css/main.min.css">
@@ -89,7 +89,7 @@
 
 		<header class="">
 			<div class="topbar stick">
-				<div class="logo"><img alt="" src="/backoffice/images/logo.png"><span>Socimo</span></div>
+				<div class="logo"><img alt="" src="/backoffice/images/logo.png"><span>Xchange</span></div>
 				<div class="searches">
 					<form method="post">
 						<input type="text" placeholder="Search...">
@@ -141,17 +141,7 @@
 						</a>
 						<span></span>
 					</li>
-					<li>
-						<a class="create" href="#" title="Add New" data-toggle="tooltip">
-							<i>
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-									fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-									stroke-linejoin="round" class="feather feather-plus">
-									<line x1="12" y1="5" x2="12" y2="19"></line>
-									<line x1="5" y1="12" x2="19" y2="12"></line>
-								</svg></i>
-						</a>
-					</li>
+					
 					<li>
 						<a title="" href="#">
 							<i>
@@ -239,7 +229,7 @@
 								<path
 									d="M12 2a5 5 0 0 1 5 5c0 2.533-2.087 4.624-5 4.949V15c0 .955-.812 1.949-2 2H9c-1.188-.051-2-.045-2-2v-.051C6.087 11.623 4 9.532 4 7A5 5 0 0 1 12 2z" />
 								<path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-							</svg></i> utilisateurs
+							</svg></i> Users
 					</a>
 				</li>
 				
@@ -266,113 +256,7 @@
 						Profile
 					</a>
 				</li>
-				<li class="">
-					<a class="" href="reviews.html" title="">
-						<i class="">
-							<svg id="ab3" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-star">
-								<polygon
-									points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-								</polygon>
-							</svg></i>Reviews
-					</a>
-				</li>
-				<li class="">
-					<a class="" href="events.html" title=""><i class="">
-							<svg id="ab4" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-airplay">
-								<path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1">
-								</path>
-								<polygon points="12 15 17 21 7 21 12 15"></polygon>
-							</svg></i>Events
-					</a>
-				</li>
-				<li class="">
-					<a class="" href="products.html" title="">
-						<i class="">
-							<svg id="ab5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-shopping-bag">
-								<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-								<line x1="3" y1="6" x2="21" y2="6"></line>
-								<path d="M16 10a4 4 0 0 1-8 0"></path>
-							</svg></i>Products
-					</a>
-				</li>
-				<li class="">
-					<a class="" href="blog.html" title="">
-
-						<i class="">
-							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-coffee">
-								<path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-								<path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-								<line x1="6" y1="1" x2="6" y2="4"></line>
-								<line x1="10" y1="1" x2="10" y2="4"></line>
-								<line x1="14" y1="1" x2="14" y2="4"></line>
-							</svg>
-						</i>Blogs
-					</a>
-				</li>
-				<li class="">
-					<a class="" href="messages-inbox.html" title="">
-						<i class="">
-							<svg id="ab2" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-message-square">
-								<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-							</svg></i>Messages
-					</a>
-				</li>
-
-				<li class="">
-					<a class="" href="team.html" title="">
-						<i class="">
-
-							<svg id="team" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-smile">
-								<circle cx="12" cy="12" r="10"></circle>
-								<path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-								<line x1="9" y1="9" x2="9.01" y2="9"></line>
-								<line x1="15" y1="9" x2="15.01" y2="9"></line>
-							</svg></i>Team
-					</a>
-				</li>
-				<li class="">
-					<a class="" href="login-register.html" title="">
-						<i class="">
-							<svg id="ab9" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-								fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								stroke-linejoin="round" class="feather feather-lock">
-								<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-								<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-							</svg></i>Login/Register
-					</a>
-				</li>
-				<li class="menu-item-has-children">
-					<a class="" href="#" title="">
-						<i><svg id="ab8" class="feather feather-file" stroke-linejoin="round" stroke-linecap="round"
-								stroke-width="2" stroke="currentColor" fill="none" viewBox="0 0 24 24" height="14"
-								width="14" xmlns="http://www.w3.org/2000/svg">
-								<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-								<polyline points="13 2 13 9 20 9" />
-							</svg></i>Pages
-					</a>
-					<ul class="submenu">
-						<li><a href="404.html" title="">Error 404</a></li>
-						<li><a href="forgot-password.html" title="">Forgot Password</a></li>
-						<li><a href="loaders.html" title="">Loaders/spiners</a></li>
-						<li><a href="invoice-edit.html" title="">Invoice</a></li>
-						<li><a href="maps.html" title="">Google Maps</a></li>
-						<li><a href="http://wpkixx.com/html/socimo/development-elements.html" title="">Elements</a></li>
-						<li><a href="http://wpkixx.com/html/socimo/development-component.html" title="">Components</a>
-						</li>
-					</ul>
-				</li>
+				
 			</ul>
 		</nav><!-- sidebar -->
 

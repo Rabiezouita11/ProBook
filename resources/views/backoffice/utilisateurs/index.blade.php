@@ -16,7 +16,7 @@
                                 <table class="table manage-user table-default table-responsive-md">
                                     <thead>
                                         <tr>
-                                            <th> nom Utilisateur</th>
+                                            <th>Utilisateur</th>
                                             <th>Email</th>
                                             <th>Blocked</th>
                                         </tr>
