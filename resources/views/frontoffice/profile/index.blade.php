@@ -33,8 +33,7 @@
 
                             <ul class="nav nav-tabs post-detail-btn">
                                 <li class="nav-item"><a class="active" href="#timeline" data-toggle="tab">Timeline</a></li>
-                                <li class="nav-item"><a class="" href="#followers"
-                                        data-toggle="tab">Followers</a><span>23</span></li>
+                                
                                 <li class="nav-item"><a class="" href="#follow" data-toggle="tab">Follow</a><span
                                         id="following-count">{{ $followingCount }}</span>
                                 </li>
@@ -438,121 +437,7 @@
 
 
                                     </div>
-                                    <div class="tab-pane fade" id="followers">
-                                        <div class="row col-xs-6 merged-10">
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-1.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Amy Watson</a></span>
-                                                    <ins>Bz University, Pakistan</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-2.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Muhammad Khan</a></span>
-                                                    <ins>Oxford University, UK</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-3.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Sadia Gill</a></span>
-                                                    <ins>Wb University, USA</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-4.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Rjapal</a></span>
-                                                    <ins>Km University, India</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-5.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Amy watson</a></span>
-                                                    <ins>Oxford University, UK</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-6.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Bob Frank</a></span>
-                                                    <ins>WB University, Canada</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-7.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Amy Watson</a></span>
-                                                    <ins>Bz University, Pakistan</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-8.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Muhammad Khan</a></span>
-                                                    <ins>Oxford University, UK</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-6">
-                                                <div class="friendz">
-                                                    <figure><img src="/frontoffice/images/resources/speak-9.jpg"
-                                                            alt="">
-                                                    </figure>
-                                                    <span><a href="#" title="">Sadia Gill</a></span>
-                                                    <ins>WB University, USA</ins>
-                                                    <a href="#" title="" data-ripple=""><i
-                                                            class="icofont-star"></i>
-                                                        Follow</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="sp sp-bars"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
                                     <style>
                                         .no-users-message {
                                             font-size: 16px;
