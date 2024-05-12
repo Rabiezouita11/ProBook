@@ -93,7 +93,9 @@
                                         <select id="country" name="country" class="form-control" required>
                                             <option value="">Select Country</option>
                                             @foreach ($countries as $countryCode => $countryName)
-                                            <option value="{{ $countryName }}" @if ($countryName==='Tunisia' ) selected @endif>{{ $countryName }}</option>
+                                                <option value="{{ $countryName }}"
+                                                    @if ($countryName === 'Tunisia') selected @endif>
+                                                    {{ $countryName }}</option>
                                             @endforeach
                                         </select>
                                         @error('country')
@@ -122,25 +124,14 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-1">
-                                        <input id="diploma" type="text"
-                                            class="form-control  @error('diploma') is-invalid @enderror"
-                                            placeholder="diploma" name="diploma" value="{{ old('diploma') }}"
-                                            required autocomplete="diploma" autofocus>
-
-                                        @error('diploma')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
-                                        <input id="institut" type="text"
-                                            class="form-control  @error('institut') is-invalid @enderror"
-                                            placeholder="institut" name="institut" value="{{ old('institut') }}"
-                                            required autocomplete="institut" autofocus>
+                                        <select id="institut"
+                                            class="form-control @error('institut') is-invalid @enderror"
+                                            name="institut" required autocomplete="institut" autofocus>
+                                            <option value="">Select Institut</option>
+                                            <option value="isi_kef">ISI Kef</option>
+                                            <option value="isi_ariana">ISI Ariana</option>
+                                            <!-- Add more options if needed -->
+                                        </select>
 
                                         @error('institut')
                                             <span class="invalid-feedback" role="alert">
@@ -148,6 +139,24 @@
                                             </span>
                                         @enderror
                                         <i class="fas fa-university"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="fxt-transformY-50 fxt-transition-delay-1">
+                                        <select id="diploma"
+                                            class="form-control @error('diploma') is-invalid @enderror"
+                                            placeholder="Diploma" name="diploma" required autocomplete="diploma"
+                                            autofocus>
+                                            <option value="">Select Diploma</option>
+                                        </select>
+
+                                        @error('diploma')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <i class="fas fa-graduation-cap"></i>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -231,7 +240,27 @@
             }
         }
     </script>
+<script>
+    document.getElementById('institut').addEventListener('change', function() {
+        var institut = this.value;
+        var diplomaSelect = document.getElementById('diploma');
+        // Clear existing options
+        diplomaSelect.innerHTML = '<option value="">Select Diploma</option>';
 
+        if (institut === 'isi_kef') {
+            var option1 = new Option("Cette Licence Intitulé 'Computer Science' Comprend Deux Spécialités", "computer_science");
+            var option2 = new Option("Mastère de Recherche en Systèmes d'Informations et Web", "mastere_si_web");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        } else if (institut === 'isi_ariana') {
+            var option1 = new Option("Mastère Co-Construite en Nouvelles Technologies de l’Information et de la Communication dédiées à l'Innovation de l'Agriculture", "mastere_agriculture");
+            var option2 = new Option("Mastère Professionnel en Application Web Intelligente", "mastere_web");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        }
+        // Add more conditions/options as needed
+    });
+</script>
 
 </body>
 
