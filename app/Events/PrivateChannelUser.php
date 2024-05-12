@@ -15,18 +15,21 @@ class PrivateChannelUser implements ShouldBroadcastNow
     public $username;
     public $userId;
     public $imageUrl;
+    public $idNotifications;
+
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($message, $username, $userId, $imageUrl)
+    public function __construct($message, $username, $userId, $imageUrl,$idNotifications)
     {
         $this->message = $message;
         $this->username = $username;
         $this->userId = $userId;
         $this->imageUrl = $imageUrl;
+        $this->idNotifications = $idNotifications;
     }
 
     /**

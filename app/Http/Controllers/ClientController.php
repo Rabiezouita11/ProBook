@@ -568,12 +568,13 @@ class ClientController extends Controller
         $notification->username = auth()->user()->name;
         $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
         $notification->save();
+        $notificationId = $notification->id; // Retrieve the ID of the saved notification
 
         $message = auth()->user()->name . ' is now following you';
         $username = auth()->user()->name;
         $userIdReceiver = $userToFollow->id;
         $imageUrl = auth()->user()->image;  // Assuming you have a field named 'image_url' in your user model
-        event(new PrivateChannelUser($message, $username, $userIdReceiver, $imageUrl));
+        event(new PrivateChannelUser($message, $username, $userIdReceiver, $imageUrl, $notificationId));
 
         return response()->json(['message' => 'You followed the user successfully'], 200);
     }
@@ -699,5 +700,23 @@ class ClientController extends Controller
             'followingCount',
             'countries'
         ));
+    }
+
+
+    public function delete(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'notification_id' => 'required|exists:notifications,id'
+        ]);
+
+        // Find the notification by ID and delete it
+        $notification = notifications::find($request->notification_id);
+        if ($notification) {
+            $notification->delete();
+            return response()->json(['message' => 'Notification deleted successfully']);
+        } else {
+            return response()->json(['error' => 'Notification not found'], 404);
+        }
     }
 }

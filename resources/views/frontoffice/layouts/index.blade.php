@@ -14,9 +14,10 @@
     <link rel="stylesheet" href="/frontoffice/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
 
-    @if ((auth()->check()))
-    <script src="{{ asset('js/app.js') }}"></script>
+    @if (auth()->check())
+        <script src="{{ asset('js/app.js') }}"></script>
     @endif
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
@@ -200,7 +201,7 @@
                                 </a>
                             </div>
                         </li>
-                       
+
                         <li>
                             <a href="{{ route('home') }}" title="Home" data-toggle="tooltip">
                                 <i>
@@ -238,7 +239,7 @@
                                 </i>
                             </a>
                             <span></span>
-            
+
                         <li>
                             <a href="#" title="">
                                 <i>
@@ -921,7 +922,7 @@
                     <a class="active" href="#messages" data-toggle="tab">Messages</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="" href="#notifications" data-toggle="tab">Notifications</a>
+                    <a class="" href="#notifications" data-toggle="tab">Notifications <span id="notification-count">(0)</span></a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -983,7 +984,7 @@
                 </div>
                 <div class="tab-pane fade" id="notifications">
                     <h4>
-                        <i class="icofont-bell-alt"></i> Notifications
+                        <i class="icofont-bell-alt"></i> Notifications 
                     </h4>
                     <ul class="notificationz">
                         <!-- Notification items will be appended here -->
@@ -994,8 +995,11 @@
             </div>
         </div>
     </div>
+    <style>
+
+    </style>
     <!-- side slide message & popup -->
-  
+
     <div class="new-question-popup">
         <div class="popup">
             <span class="popup-closed">
@@ -1612,9 +1616,63 @@
     <!-- vendors merged files -->
     <script src="/frontoffice/js/date-time.js"></script>
     <script src="/frontoffice/js/script.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!-- custom scripts -->
-    @if ((auth()->check()))
+    @if (auth()->check())
     <script>
+        let notificationCount = 0; // Initialize notification count
+    
+        function showToast(type, message) {
+            toastr.options = {
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                showMethod: 'slideDown', // Animation in
+                hideMethod: 'slideUp', // Animation out
+                timeOut: 5000, // Time before auto-dismiss
+            };
+    
+            switch (type) {
+                case 'info':
+                    toastr.info(message);
+                    break;
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+            }
+        }
+    
+        function deleteNotification(notificationId, element) {
+            $.ajax({
+                url: "{{ route('notifications.delete') }}",
+                type: "DELETE",
+                data: {
+                    notification_id: notificationId
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    var audio = new Audio('audio.wav');
+                    audio.play();
+                    // Find the parent li element and remove it
+                    $(element).closest('li').remove();
+                    fetchNotifications();
+                    showToast('success', response.message); // Show success toast
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    showToast('error', "Failed to delete notification"); // Show error toast
+                }
+            });
+        }
+    
         // Function to fetch notifications via AJAX
         function fetchNotifications() {
             $.ajax({
@@ -1624,7 +1682,8 @@
                     const notifications = response.notifications;
                     const notificationList = $('.notificationz');
                     notificationList.empty(); // Clear existing notifications
-
+                    notificationCount = notifications.length; // Update notification count
+                    $('#notification-count').text(`(${notificationCount})`);
                     notifications.forEach(function(notification) {
                         const createdAt = moment(notification.created_at).fromNow();
                         const notificationItem = `
@@ -1636,6 +1695,9 @@
                                 <span>${notification.username}</span>
                                 <a href="#" title="">${notification.data}</a>
                                 <span class="timestamp" data-timestamp="${notification.created_at}">${createdAt}</span>
+                                <button class="delete-notification-btn" onclick="deleteNotification(${notification.id}, this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </li>
                     `;
@@ -1647,26 +1709,28 @@
                 }
             });
         }
-
+    
         // Call fetchNotifications when the page is ready
         $(document).ready(function() {
             fetchNotifications();
         });
-
+    
         // Listen for PrivateChannelUser event
         const userId = '{{ Auth::id() }}'; // Get the authenticated user's ID
         const echo = window.Echo.private(`private-channel.user.${userId}`);
-
+    
         echo.listen('.App\\Events\\PrivateChannelUser', (e) => {
             // Append the received message to the notifications div
+            notificationCount++; // Increment notification count
+            $('#notification-count').text(`(${notificationCount})`);
             const notificationList = $('.notificationz');
-
+    
             // Get current timestamp
             const createdAt = moment().fromNow();
-
+    
             const imageUrl = e.imageUrl ? 'users/' + e.imageUrl : 'https://ui-avatars.com/api/?name=' +
                 encodeURIComponent(e.username) + '&background=104d93&color=fff';
-
+    
             const notificationItem = `
             <li>
                 <figure>
@@ -1676,6 +1740,9 @@
                     <span>${e.username}</span>
                     <a href="#" title="">${e.message}</a>
                     <span class="timestamp" data-timestamp="${moment()}">${createdAt}</span>
+                    <button class="delete-notification-btn" onclick="deleteNotification(${e.idNotifications}, this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </li>
         `;
@@ -1684,7 +1751,8 @@
             audio.play();
         });
     </script>
-@endif
+    
+    @endif
 
 </body>
 

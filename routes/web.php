@@ -118,6 +118,11 @@ Route::get('/home', [App\Http\Controllers\ClientController::class, 'index'])->na
 
 Route::post('/upload-image', [App\Http\Controllers\ClientController::class, 'upload'])->name('upload.image')->middleware(['auth', 'role:utilisateur']);
 
+/* button supprimer notifications */
+
+Route::delete('/notifications/delete', [App\Http\Controllers\ClientController::class, 'delete'] )->name('notifications.delete');
+
+
 
 /* Show profile frontoffice  */
 
