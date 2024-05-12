@@ -33,13 +33,13 @@
 
                             <ul class="nav nav-tabs post-detail-btn">
                                 <li class="nav-item"><a class="active" href="#timeline" data-toggle="tab">Timeline</a></li>
-                                
+
                                 <li class="nav-item"><a class="" href="#follow" data-toggle="tab">Follow</a><span
                                         id="following-count">{{ $followingCount }}</span>
                                 </li>
                                 <li class="nav-item"><a class="" href="#about" data-toggle="tab">About</a></li>
                                 <li class="nav-item"><a class="" href="#profile" data-toggle="tab">Profile</a></li>
-                                <li class="nav-item"><a class="" href="#Changerpassword" data-toggle="tab">Change 
+                                <li class="nav-item"><a class="" href="#Changerpassword" data-toggle="tab">Change
                                         Password
                                     </a></li>
 
@@ -114,45 +114,49 @@
                                                                 @endif
                                                             </figure>
 
-                                                        
+
                                                             <div class="friend-name">
                                                                 <div class="more">
                                                                     @if ($publication->user->id == Auth::user()->id)
-                                                                    <div class="more-post-optns">
-                                                                        <i class="">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                width="24" height="24"
-                                                                                viewBox="0 0 24 24" fill="none"
-                                                                                stroke="currentColor" stroke-width="2"
-                                                                                stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                class="feather feather-more-horizontal">
-                                                                                <circle cx="12" cy="12" r="1">
-                                                                                </circle>
-                                                                                <circle cx="19" cy="12"
-                                                                                    r="1"></circle>
-                                                                                <circle cx="5" cy="12"
-                                                                                    r="1"></circle>
-                                                                            </svg>
-                                                                        </i>
-                                                                        <ul>
-                                                                            <li class="edit-post-btn"
-                                                                                data-publication-id="{{ $publication->id }}"
-                                                                                data-post-content="{{ $publication->contenu }}">
-                                                                                <i class="icofont-pen-alt-1"></i>Edit Post
-                                                                            </li>
-
-                                                                            <li>
-                                                                                <a href="#" class="delete-post-btn"
-                                                                                    data-publication-id="{{ $publication->id }}">
-                                                                                    <i class="icofont-ui-delete"></i>Delete
+                                                                        <div class="more-post-optns">
+                                                                            <i class="">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="24" height="24"
+                                                                                    viewBox="0 0 24 24" fill="none"
+                                                                                    stroke="currentColor" stroke-width="2"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    class="feather feather-more-horizontal">
+                                                                                    <circle cx="12" cy="12"
+                                                                                        r="1">
+                                                                                    </circle>
+                                                                                    <circle cx="19" cy="12"
+                                                                                        r="1"></circle>
+                                                                                    <circle cx="5" cy="12"
+                                                                                        r="1"></circle>
+                                                                                </svg>
+                                                                            </i>
+                                                                            <ul>
+                                                                                <li class="edit-post-btn"
+                                                                                    data-publication-id="{{ $publication->id }}"
+                                                                                    data-post-content="{{ $publication->contenu }}">
+                                                                                    <i class="icofont-pen-alt-1"></i>Edit
                                                                                     Post
-                                                                                </a>
+                                                                                </li>
 
-                                                                            </li>
+                                                                                <li>
+                                                                                    <a href="#"
+                                                                                        class="delete-post-btn"
+                                                                                        data-publication-id="{{ $publication->id }}">
+                                                                                        <i
+                                                                                            class="icofont-ui-delete"></i>Delete
+                                                                                        Post
+                                                                                    </a>
 
-                                                                        </ul>
-                                                                    </div>
+                                                                                </li>
+
+                                                                            </ul>
+                                                                        </div>
                                                                     @endif
                                                                 </div>
                                                                 <ins><a title=""
@@ -163,7 +167,7 @@
                                                                         {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}
                                                                     </span>
                                                             </div>
-                                                           
+
                                                             @php
                                                                 // Assuming $publication->created_at is your timestamp
                                                                 $created_at = \Carbon\Carbon::parse(
@@ -437,7 +441,7 @@
 
 
                                     </div>
-                                   
+
                                     <style>
                                         .no-users-message {
                                             font-size: 16px;
@@ -625,6 +629,34 @@
                                                     placeholder="Enter your institute"
                                                     value="{{ Auth::user()->institut }}" name="institute">
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="location">Location</label>
+                                                <select id="country" name="country" class="form-control" required>
+
+                                                    @foreach ($countries as $countryCode => $countryName)
+                                                        <option value="{{ $countryName }}"
+                                                            @if (Auth::user()->location === $countryName) selected @endif>
+                                                            {{ $countryName }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <style>
+                                                #country {
+                                                    display: block !important;
+                                                }
+
+                                                .chosen-container-single {
+                                                    display: none;
+                                                }
+                                            </style>
+                                            <div class="form-group">
+                                                <label for="date_of_birth">Date of Birth</label>
+                                                <input type="date" class="form-control" id="date_of_birth"
+                                                    name="date_of_birth"
+                                                    value="{{ date('Y-m-d', strtotime(Auth::user()->date_of_birth)) }}">
+                                            </div>
+
                                             <div class="form-group">
                                                 <label for="diploma">Diploma</label>
                                                 <input type="text" class="form-control" id="diploma"

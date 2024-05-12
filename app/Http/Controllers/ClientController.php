@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Monarobase\CountryList\CountryListFacade;
 
 class ClientController extends Controller
 {
@@ -175,6 +176,9 @@ class ClientController extends Controller
             'diploma' => 'nullable|string|max:255',
             'profile_image' => 'nullable|image|max:2048',
             'cover_photo' => 'nullable|image|max:2048',
+            'date_of_birth' => 'nullable|string|max:255',
+
+
         ]);
 
         // Get the current authenticated user
@@ -185,7 +189,10 @@ class ClientController extends Controller
         $user->email = $request->email;
         $user->institut = $request->institute;
         $user->diploma = $request->diploma;
+        $user->date_of_birth = $request->date_of_birth; 
+        $user->location = $request->country; 
 
+        
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $imageName = time() . '.' . $request->file('profile_image')->extension();
@@ -647,6 +654,8 @@ class ClientController extends Controller
 
     public function showProfileUser()
     {
+
+        $countries = CountryListFacade::getList('en');
         $currentUser = auth()->user();
         $userId = auth()->id();
 
@@ -688,6 +697,7 @@ class ClientController extends Controller
             'suggestedUsers',
             'followingUsers',
             'followingCount',
+            'countries'
         ));
     }
 }
