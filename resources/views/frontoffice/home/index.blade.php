@@ -168,8 +168,7 @@
                         <div class="col-lg-6">
                             <ul class="filtr-tabs">
                                 <li><a class="active" href="#" title="">Home</a></li>
-                                <li><a href="#" title="">Recent</a></li>
-                                <li><a href="#" title="">Favourit</a></li>
+                               
                             </ul><!-- tab buttons -->
                             @if (auth()->check())
                             <div class="main-wraper">
