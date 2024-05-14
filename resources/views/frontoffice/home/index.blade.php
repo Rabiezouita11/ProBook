@@ -161,12 +161,7 @@
                                                 <span>Feeling/Activity</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="live-stream.html" title="">
-                                                <i><img src="/frontoffice/images/live-stream.png" alt=""></i>
-                                                <span>Live Stream</span>
-                                            </a>
-                                        </li>
+                                       
                                     </ul>
                                 </div>
                             </div><!-- create new post -->
