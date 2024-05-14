@@ -131,38 +131,8 @@
                                     </ul>
                                 </div><!-- recent blog -->
 
-                                @if (auth()->check())
-                                <div class="widget">
-                                    <h4 class="widget-title">Your profile has a new Experience section</h4>
-                                    <p>
-                                        Showcase your professional experience and education to help potential
-                                        employers and collaborators find and contact you about career opportunities.
-                                    </p>
-                                    <a class="main-btn" href="profile.html" title="" data-ripple="">view
-                                        profile</a>
-                                </div><!-- your profile -->
-                                @endif
-                                <div class="widget web-links stick-widget">
-                                    <h4 class="widget-title">Useful Links <a title="" href="#" class="see-all">See
-                                            All</a></h4>
-                                    <ul>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">about</a></li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">career</a></li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">advertise</a></li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">socimo
-                                                Apps</a></li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">socimo
-                                                Blog</a></li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">Help</a></li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">socimo Gifts</a>
-                                        </li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">content policy</a>
-                                        </li>
-                                        <li><i class="icofont-dotted-right"></i> <a title="" href="#">User Policy</a>
-                                        </li>
-                                    </ul>
-                                    <p>&copy; Socimo 2020. All Rights Reserved.</p>
-                                </div><!-- links -->
+                             
+                                
                             </aside>
                         </div>
                         <div class="col-lg-6">
@@ -249,83 +219,7 @@
 
                             <br>
                             <br>
-                            @if (auth()->check())
-                            <div class="story-card">
-                                <div class="story-title">
-                                    <h5>Recent Stories</h5>
-                                    <a href="#" title="">See all</a>
-                                </div>
-                                <div class="story-wraper ">
-                                    <img src="/frontoffice/images/resources/story-card5.jpg" alt="">
-                                    <div class="users-dp">
-                                        <img src="/frontoffice/images/resources/user3.jpg" alt="">
-                                    </div>
-                                    <a class="add-new-stry" href="#" title=""><i class="icofont-plus"></i></a>
-                                    <span>Add Your Story</span>
-                                </div>
-                                <div class="story-wraper">
-                                    <img src="/frontoffice/images/resources/story-card.jpg" alt="">
-                                    <div class="users-dp">
-                                        <img src="/frontoffice/images/resources/user6.jpg" alt="">
-                                    </div>
-                                    <span>Tamana Bhatia</span>
-                                </div>
-                                <div class="story-wraper">
-                                    <img src="/frontoffice/images/resources/story-card2.jpg" alt="">
-                                    <div class="users-dp">
-                                        <img src="/frontoffice/images/resources/user7.jpg" alt="">
-                                    </div>
-                                    <span>Emily Caros</span>
-                                </div>
-                                <div class="story-wraper">
-                                    <img src="/frontoffice/images/resources/story-card3.jpg" alt="">
-                                    <div class="users-dp">
-                                        <img src="/frontoffice/images/resources/user8.jpg" alt="">
-                                    </div>
-                                    <span>Daniel Cardos</span>
-                                </div>
-                                <div class="story-wraper">
-                                    <img src="/frontoffice/images/resources/story-card4.jpg" alt="">
-                                    <div class="users-dp">
-                                        <img src="/frontoffice/images/resources/user4.jpg" alt="">
-                                    </div>
-                                    <span>Emma Watson</span>
-                                </div>
-                            </div><!-- stories -->
-                            @else
-                            <div class="story-card">
-                                <div class="story-title">
-                                    <h5>Login or Register to View Stories</h5>
-                                </div>
-                                <div class="story-title">
-                                    <div class="login-register-message">
-                                        <p>Please <a href="{{ route('login') }}">log in</a> or <a
-                                                href="{{ route('register') }}">register</a> to view stories or add
-                                            your own.</p>
-                                    </div>
-                                </div>
-                            </div><!-- stories -->
-                            @endif
-                            <style>
-                                .story-title {
-                                    margin-bottom: 10px;
-                                }
-
-                                .login-register-message p {
-                                    font-size: 16px;
-                                    color: #333;
-                                    margin: 0;
-                                }
-
-                                .login-register-message a {
-                                    color: #007bff;
-                                    text-decoration: none;
-                                }
-
-                                .login-register-message a:hover {
-                                    text-decoration: underline;
-                                }
-                            </style>
+                            
                             @if (auth()->check())
                             <div class="main-wraper">
                                 <div class="chatroom-title">

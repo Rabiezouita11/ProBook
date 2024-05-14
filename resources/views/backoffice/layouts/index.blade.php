@@ -157,15 +157,7 @@
 						</a>
 						<ul class="dropdown">
 							<li><a href="{{route('showProfile')}}" title=""><i class="icofont-user-alt-3"></i> Your Profile</a></li>
-							<li><a href="add-new-course.html" title=""><i class="icofont-plus"></i> New Course</a></li>
-							<li><a class="invite-new" href="#" title=""><i class="icofont-brand-slideshare"></i> Invite
-									Collegue</a></li>
-							<li><a href="pay-out.html" title=""><i class="icofont-price"></i> Payout</a></li>
-							<li><a href="price-plan.html" title=""><i class="icofont-flash"></i> Upgrade</a></li>
-							<li><a href="help-faq.html" title=""><i class="icofont-question-circle"></i> Help</a></li>
-							<li><a href="settings.html" title=""><i class="icofont-gear"></i> Setting</a></li>
-							<li><a href="privacy-n-policy.html" title=""><i class="icofont-notepad"></i> Privacy</a>
-							</li>
+							
 							<li><a class="dark-mod" title="" href="#"><i class="icofont-moon"></i> Dark Mode</a></li>
 							<li class="logout"><a href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();" title=""><i class="icofont-power"></i>
