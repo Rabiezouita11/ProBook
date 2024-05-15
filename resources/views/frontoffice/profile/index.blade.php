@@ -705,9 +705,11 @@
                                     </div>
 
                                 </div>
+
+                                
                                 @if (auth()->check())
                                     <div class="post-new-popup">
-                                        <div class="popup" style="width: 800px;">
+                                        <div class="popup" >
                                             <span class="popup-closed">
                                                 <i class="icofont-close"></i>
                                             </span>
@@ -736,12 +738,12 @@
                                                         @csrf
                                                         <!-- This is important for Laravel to validate the form submission -->
 
-                                                        <div class="post-newmeta">
-                                                            <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?"></textarea>
+                                                     
+                                                            <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
                                                             @error('contenu')
                                                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                                                             @enderror
-                                                        </div>
+                                                    
 
                                                         <div class="activity-post">
                                                             <div class="checkbox">
@@ -759,7 +761,27 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-
+                                                        <div class="form-group">
+                                                            <label for="domain">Domain</label>
+                                                            <select id="domain" name="domain" class="form-control" required>
+            
+                                                                <option value="">Select Domain</option>
+                                                                <option value="Informatique">Informatique</option>
+                                                                <option value="Gestion/économie">Gestion/économie</option>
+                                                                <option value="Mécanique">Mécanique</option>
+                                                                <option value="Électrique">Électrique</option>
+                                                                <option value="Science">Science</option>
+                                                            </select>
+                                                        </div>
+                                                        <style>
+                                                            #domain {
+                                                                display: block !important;
+                                                            }
+            
+                                                            .chosen-container-single {
+                                                                display: none;
+                                                            }
+                                                        </style>
                                                         <div class="post-newmeta">
                                                             <input type="file" name="image">
                                                             @error('image')

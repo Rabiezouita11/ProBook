@@ -273,6 +273,7 @@ class ClientController extends Controller
         $publication = new Publication();
         $publication->user_id = auth()->id();
         $publication->contenu = $request['contenu'];
+        $publication->domain = $request['domain'];
         $publication->story = $request->has('story') ? true : false;
         $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
 

@@ -16,6 +16,7 @@ class Publication extends Model
         'Activity_Feed',
         'story',
         'user_abonner_id',  // Add the user_abonner_id column here
+        'domain'
     ];
 
     public function user()

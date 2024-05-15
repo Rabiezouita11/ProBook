@@ -18,7 +18,7 @@ return new class extends Migration
             $table->longText('contenu')->nullable();    
             $table->boolean('story');
             $table->boolean('Activity_Feed');
-
+            $table->string('domain')->nullable();
             $table->string('image')->nullable();   
 
             $table->timestamps();
