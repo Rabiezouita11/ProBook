@@ -73,6 +73,13 @@
 
                                 </div>
                             </form>
+                            <div class="text-center">
+                                <form id="logoutForm" method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="fxt-btn-fill fxt-btn-fill--secondary">Logout</button>
+                                </form>
+                            </div>
+
                         </div>
                         <!-- Social Media Links -->
                     </div>
