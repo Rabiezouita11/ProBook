@@ -542,6 +542,8 @@ class ClientController extends Controller
         // Update the publication with the new content
         $publication->update([
             'contenu' => $request->input('contenu'),
+            'domain' => $request->input('domaine'),
+
         ]);
 
         // Redirect back or return a response as needed

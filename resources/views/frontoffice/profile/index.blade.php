@@ -82,7 +82,7 @@
                                             <!-- Your existing publication HTML here -->
                                         </div>
                                         @if ($publications->isEmpty())
-                                            <div class="container"
+                                            <div class="container" id="unique-container"
                                                 style="text-align: center; font-size: 30px; font-weight: bold;">
                                                 <p>No posts found.</p>
                                             </div>
@@ -139,7 +139,8 @@
                                                                             <ul>
                                                                                 <li class="edit-post-btn"
                                                                                     data-publication-id="{{ $publication->id }}"
-                                                                                    data-post-content="{{ $publication->contenu }}">
+                                                                                    data-post-content="{{ $publication->contenu }}"
+                                                                                    data-post-domain="{{ $publication->domain }}">
                                                                                     <i class="icofont-pen-alt-1"></i>Edit
                                                                                     Post
                                                                                 </li>
@@ -212,6 +213,10 @@
 
                                                             <div class="post-meta">
                                                                 <p>{{ $publication->contenu }}</p>
+                                                                @if (!empty($publication->domain))
+                                                                    <p><strong>Domain:</strong> {{ $publication->domain }}
+                                                                    </p>
+                                                                @endif
                                                                 <div class="we-video-info">
                                                                     <ul>
                                                                         <li>
@@ -706,10 +711,10 @@
 
                                 </div>
 
-                                
+
                                 @if (auth()->check())
                                     <div class="post-new-popup">
-                                        <div class="popup" >
+                                        <div class="popup">
                                             <span class="popup-closed">
                                                 <i class="icofont-close"></i>
                                             </span>
@@ -738,12 +743,12 @@
                                                         @csrf
                                                         <!-- This is important for Laravel to validate the form submission -->
 
-                                                     
-                                                            <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
-                                                            @error('contenu')
-                                                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                                                            @enderror
-                                                    
+
+                                                        <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
+                                                        @error('contenu')
+                                                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                                                        @enderror
+
 
                                                         <div class="activity-post">
                                                             <div class="checkbox">
@@ -763,8 +768,9 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="domain">Domain</label>
-                                                            <select id="domain" name="domain" class="form-control" required>
-            
+                                                            <select id="domain" name="domain" class="form-control"
+                                                                required>
+
                                                                 <option value="">Select Domain</option>
                                                                 <option value="Informatique">Informatique</option>
                                                                 <option value="Gestion/économie">Gestion/économie</option>
@@ -777,7 +783,7 @@
                                                             #domain {
                                                                 display: block !important;
                                                             }
-            
+
                                                             .chosen-container-single {
                                                                 display: none;
                                                             }
@@ -874,7 +880,7 @@
                                             <a class="ask-qst" href="#" title="">Ask a question</a>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="widget stick-widget" id="following-widget">
                                         <h4 class="widget-title">Who's following</h4>
                                         <ul class="followers">
@@ -1602,7 +1608,7 @@
                         if ($('.main-wraper.unique-class').length === 0) {
                             console.log("No publications found");
                             // If no remaining publications with the unique class, show the "No posts found" message
-                            $('div.container').append(
+                            $('#unique-container').html(
                                 '<div style="text-align: center; font-size: 30px; font-weight: bold;"><p>No posts found.</p></div>'
                             );
                         }
@@ -1627,15 +1633,19 @@
 
                 // Retrieve the post content from the data attribute
                 var postContent = $(this).data('post-content');
-                console.log("Retrieved postContent:", postContent);
+                var postDomain = $(this).data('post-domain');
+                console.log("Retrieved postContent:", postDomain);
 
                 // Update the hidden field value with the retrieved publication ID
                 $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
                 console.log("Updated publicationId in input field:", $('input[name="publication_id"]')
-                    .val());
+                .val());
 
                 // Update the textarea value with the retrieved post content
                 $('#updatePublicationModal #updatedContent').val(postContent);
+
+                // Set the selected option in the select dropdown
+                $('#updatedDomain').val(postDomain);
 
                 // Show the modal
                 $('#updatePublicationModal').modal('show');
@@ -1665,6 +1675,27 @@
                             <label for="updatedContent">Updated Content:</label>
                             <textarea class="form-control" id="updatedContent" name="contenu" rows="3"></textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="updatedDomain">Domain:</label>
+                            <select class="form-control" id="updatedDomain" name="domaine">
+                                <option value="Informatique">Informatique</option>
+                                <option value="Gestion/économie">Gestion/économie</option>
+                                <option value="Mécanique">Mécanique</option>
+                                <option value="Électrique">Électrique</option>
+                                <option value="Science">Science</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <style>
+                            #updatedDomain {
+                                display: block !important;
+                            }
+
+                            .chosen-container-single {
+                                display: none;
+                            }
+                        </style>
+
                         <!-- Hidden field to store publication ID -->
                         <input type="hidden" id="publicationId" name="publication_id">
                     </div>
@@ -1676,6 +1707,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- button follow  -->
     <script>
