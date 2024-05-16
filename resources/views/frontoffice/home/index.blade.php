@@ -215,74 +215,7 @@
                             <br>
                             <br>
                             
-                            @if (auth()->check())
-                            <div class="main-wraper">
-                                <div class="chatroom-title">
-                                    <i>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-tv">
-                                            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-                                            <polyline points="17 2 12 7 7 2"></polyline>
-                                        </svg></i>
-                                    <span>Chat Rooms <em>Video chat with friends</em></span>
-                                    <a class="create-newroom" href="#" title="">Create Room</a>
-                                </div>
-                                <ul class="chat-rooms">
-                                    <li>
-                                        <div class="room-avatar">
-                                            <img src="/frontoffice/images/resources/user2.jpg" alt="">
-                                            <span class="status online"></span>
-                                        </div>
-                                        <span>Sara's Room</span>
-                                        <a class="join" href="#" title="Join Room">Join</a>
-                                        <a class="say-hi send-mesg" href="#" title="Send Message"><i
-                                                class="icofont-facebook-messenger"></i></a>
-                                    </li>
-                                    <li>
-                                        <div class="room-avatar">
-                                            <img src="/frontoffice/images/resources/user3.jpg" alt="">
-                                            <span class="status offline"></span>
-                                        </div>
-                                        <span>jawad's Room</span>
-                                        <a class="join" href="#" title="Join Room">Join</a>
-                                        <a class="say-hi send-mesg" href="#" title="Send Message"><i
-                                                class="icofont-facebook-messenger"></i></a>
-                                    </li>
-                                    <li>
-                                        <div class="room-avatar">
-                                            <img src="/frontoffice/images/resources/user4.jpg" alt="">
-                                            <span class="status away"></span>
-                                        </div>
-                                        <span>Jack's Room</span>
-                                        <a class="join" href="#" title="Join Room">Join</a>
-                                        <a class="say-hi send-mesg" href="#" title="Send Message"><i
-                                                class="icofont-facebook-messenger"></i></a>
-                                    </li>
-                                    <li>
-                                        <div class="room-avatar">
-                                            <img src="/frontoffice/images/resources/user5.jpg" alt="">
-                                            <span class="status online"></span>
-                                        </div>
-                                        <span>jobidn's Room</span>
-                                        <a class="join" href="#" title="Join Room">Join</a>
-                                        <a class="say-hi send-mesg" href="#" title="Send Message"><i
-                                                class="icofont-facebook-messenger"></i></a>
-                                    </li>
-                                    <li>
-                                        <div class="room-avatar">
-                                            <img src="/frontoffice/images/resources/user6.jpg" alt="">
-                                            <span class="status offline"></span>
-                                        </div>
-                                        <span>Emily's Room</span>
-                                        <a class="join" href="#" title="Join Room">Join</a>
-                                        <a class="say-hi send-mesg" href="#" title="Send Message"><i
-                                                class="icofont-facebook-messenger"></i></a>
-                                    </li>
-                                </ul>
-                            </div><!-- chat rooms -->
-                            @endif
-
+                          
                             @if (auth()->check())
                             <div class="main-wraper">
                                 <div class="user-post">
