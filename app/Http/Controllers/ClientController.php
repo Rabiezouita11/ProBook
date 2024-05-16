@@ -317,6 +317,8 @@ class ClientController extends Controller
         $publication = new Publication();
         $publication->user_id = auth()->id();
         $publication->contenu = $request['contenu'];
+        $publication->domain = $request['domain'];
+
         $publication->user_abonner_id = $request['userprofile'];
 
         $publication->story = $request->has('story') ? true : false;
@@ -349,9 +351,9 @@ class ClientController extends Controller
             $notification->username =  auth()->user()->name;  // Use the name of the user profile
             $notification->imageUrl = auth()->user()->image;  // Use the image of the user profile
             $notification->save();
-
+            $notificationId = $notification->id; // Retrieve the ID of the saved notification
             // Dispatch event
-            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl , $notificationId));
         }
 
         // Determine the success message based on the scenario
@@ -394,8 +396,8 @@ class ClientController extends Controller
                 $notification->username = auth()->user()->name;
                 $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
                 $notification->save();
-
-                event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+                $notificationId = $notification->id; // Retrieve the ID of the saved notification
+                event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl,$notificationId));
             }
         }
 
@@ -435,8 +437,8 @@ class ClientController extends Controller
             $notification->username = auth()->user()->name;
             $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
             $notification->save();
-
-            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl));
+            $notificationId = $notification->id; // Retrieve the ID of the saved notification
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl,  $notificationId));
         }
 
         // Get the total number of comments for the publication

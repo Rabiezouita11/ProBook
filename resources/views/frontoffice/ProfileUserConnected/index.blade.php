@@ -148,37 +148,47 @@
                                                             </style>
 
 
-<div class="main-wraper">
-    <span class="new-title">Create New Post</span>
-    <div class="new-post">
-        @if (auth()->check())
-            @php
-                $userId = auth()->id();
-                $User = $user->id;
-                $isFollowing = App\Models\abonnements::where('user_id', $userId)
-                                                    ->where('abonne_id', $User )
-                                                    ->orWhere(function($query) use ( $User, $userId) {
-                                                        $query->where('user_id',  $User)
-                                                              ->where('abonne_id', $userId);
-                                                    })
-                                                    ->exists();
-            @endphp
+                                                            <div class="main-wraper">
+                                                                <span class="new-title">Create New Post</span>
+                                                                <div class="new-post">
+                                                                    @if (auth()->check())
+                                                                        @php
+                                                                            $userId = auth()->id();
+                                                                            $User = $user->id;
+                                                                            $isFollowing = App\Models\abonnements::where(
+                                                                                'user_id',
+                                                                                $userId,
+                                                                            )
+                                                                                ->where('abonne_id', $User)
+                                                                                ->orWhere(function ($query) use (
+                                                                                    $User,
+                                                                                    $userId,
+                                                                                ) {
+                                                                                    $query
+                                                                                        ->where('user_id', $User)
+                                                                                        ->where('abonne_id', $userId);
+                                                                                })
+                                                                                ->exists();
+                                                                        @endphp
 
-            @if ( $isFollowing)
-                <form method="post">
-                    <i class="icofont-pen-alt-1"></i>
-                    <input type="text" placeholder="Create New Post">
-                </form>
-            @else
-                <p class="login-message">You must follow this user to make publications.</p>
-            @endif
-
-        @else
-            <!-- Show message if user is not logged in -->
-            <p class="login-message">You must login to make publications. <a href="/login" class="login-button">Login</a></p>
-        @endif
-    </div>
-</div><!-- create new post -->
+                                                                        @if ($isFollowing)
+                                                                            <form method="post">
+                                                                                <i class="icofont-pen-alt-1"></i>
+                                                                                <input type="text"
+                                                                                    placeholder="Create New Post">
+                                                                            </form>
+                                                                        @else
+                                                                            <p class="login-message">You must follow this
+                                                                                user to make publications.</p>
+                                                                        @endif
+                                                                    @else
+                                                                        <!-- Show message if user is not logged in -->
+                                                                        <p class="login-message">You must login to make
+                                                                            publications. <a href="/login"
+                                                                                class="login-button">Login</a></p>
+                                                                    @endif
+                                                                </div>
+                                                            </div><!-- create new post -->
 
 
 
@@ -245,7 +255,8 @@
                                                                                                     <ul>
                                                                                                         <li class="edit-post-btn"
                                                                                                             data-publication-id="{{ $publication->id }}"
-                                                                                                            data-post-content="{{ $publication->contenu }}">
+                                                                                                            data-post-content="{{ $publication->contenu }}"
+                                                                                                            data-post-domain="{{ $publication->domain }}">
                                                                                                             <i
                                                                                                                 class="icofont-pen-alt-1"></i>Edit
                                                                                                             Post
@@ -285,8 +296,17 @@
                                                                                     <p>
                                                                                         @if ($publication->user_abonner_id)
                                                                                             {{ $publication->contenu }}
+
+                                                                                            @if (!empty($publication->domain))
+                                                                                            <p><strong>Domain:</strong> {{ $publication->domain }}
+                                                                                            </p>
+                                                                                        @endif
                                                                                         @else
                                                                                             {{ $publication->contenu }}
+                                                                                             @if (!empty($publication->domain))
+                                                                                            <p><strong>Domain:</strong> {{ $publication->domain }}
+                                                                                            </p>
+                                                                                        @endif
                                                                                         @endif
                                                                                     </p>
                                                                                     </p>
@@ -466,7 +486,19 @@
                                                                                         </label>
                                                                                     </div>
                                                                                 </div>
-
+                                                                                <div class="form-group">
+                                                                                    <label for="domain">Domain</label>
+                                                                                    <select id="domain" name="domain" class="form-control"
+                                                                                        required>
+                        
+                                                                                        <option value="">Select Domain</option>
+                                                                                        <option value="Informatique">Informatique</option>
+                                                                                        <option value="Gestion/économie">Gestion/économie</option>
+                                                                                        <option value="Mécanique">Mécanique</option>
+                                                                                        <option value="Électrique">Électrique</option>
+                                                                                        <option value="Science">Science</option>
+                                                                                    </select>
+                                                                                </div>
                                                                                 <div class="post-newmeta">
                                                                                     <input type="file" name="image">
                                                                                     @error('image')
@@ -895,37 +927,38 @@
 
             // Submit comment form via AJAX
             $('#add-comment-form').submit(function(e) {
-    e.preventDefault();
-    console.log("aaa")
-    var formData = $(this).serialize();
+                e.preventDefault();
+                console.log("aaa")
+                var formData = $(this).serialize();
 
-    $.ajax({
-        type: 'POST',
-        url: $(this).attr('action'),
-        data: formData,
-        success: function(response) {
-            $('#add-comment-form input[name="content"]').val('');
-            showToast('success', 'Comment added successfully!');
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        $('#add-comment-form input[name="content"]').val('');
+                        showToast('success', 'Comment added successfully!');
 
-            console.log(response)
-            // Fetch and display comments after adding a new comment
-            fetchComments(response.publicationId);
-            $('#modal-comments-count').text(response.totalComments);
+                        console.log(response)
+                        // Fetch and display comments after adding a new comment
+                        fetchComments(response.publicationId);
+                        $('#modal-comments-count').text(response.totalComments);
 
-            var likeCountElement = $('.unique-commentaire-count-' + response.publicationId);
-            likeCountElement.text(response.totalComments);
+                        var likeCountElement = $('.unique-commentaire-count-' + response
+                            .publicationId);
+                        likeCountElement.text(response.totalComments);
 
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            var errorMessage = error;
-            if (xhr.status === 401) {
-                errorMessage = 'Unauthorized';
-            }
-            showToast('error', errorMessage);
-        }
-    });
-});
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        var errorMessage = error;
+                        if (xhr.status === 401) {
+                            errorMessage = 'Unauthorized';
+                        }
+                        showToast('error', errorMessage);
+                    }
+                });
+            });
 
         });
     </script>
@@ -1309,15 +1342,19 @@
 
                 // Retrieve the post content from the data attribute
                 var postContent = $(this).data('post-content');
-                console.log("Retrieved postContent:", postContent);
+                var postDomain = $(this).data('post-domain');
+                console.log("Retrieved postContent:", postDomain);
 
                 // Update the hidden field value with the retrieved publication ID
                 $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
                 console.log("Updated publicationId in input field:", $('input[name="publication_id"]')
-                    .val());
+                .val());
 
                 // Update the textarea value with the retrieved post content
                 $('#updatePublicationModal #updatedContent').val(postContent);
+
+                // Set the selected option in the select dropdown
+                $('#updatedDomain').val(postDomain);
 
                 // Show the modal
                 $('#updatePublicationModal').modal('show');
@@ -1342,6 +1379,27 @@
                             <label for="updatedContent">Updated Content:</label>
                             <textarea class="form-control" id="updatedContent" name="contenu" rows="3"></textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="updatedDomain">Domain:</label>
+                            <select class="form-control" id="updatedDomain" name="domaine">
+                                <option value="Informatique">Informatique</option>
+                                <option value="Gestion/économie">Gestion/économie</option>
+                                <option value="Mécanique">Mécanique</option>
+                                <option value="Électrique">Électrique</option>
+                                <option value="Science">Science</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <style>
+                            #updatedDomain {
+                                display: block !important;
+                            }
+
+                            .chosen-container-single {
+                                display: none;
+                            }
+                        </style>
+
                         <!-- Hidden field to store publication ID -->
                         <input type="hidden" id="publicationId" name="publication_id">
                     </div>
