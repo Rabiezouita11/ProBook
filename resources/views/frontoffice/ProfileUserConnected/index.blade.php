@@ -1415,6 +1415,32 @@
                 var followCount = parseInt($('#follow-count').text());
                              $('#follow-count').text(followCount + 1);
                 // Load only the new post form
+
+
+              
+
+                                // Update following widget
+                                var followingWidgetHtml = $(response).find(
+                                    '#following-widget').html();
+                                $('#following-widget').html(followingWidgetHtml);
+
+                                var followingWidgetHtml = $(response).find(
+                                    '#follow').html();
+                                $('#follow').html(followingWidgetHtml);
+
+                                var followingCount = $(response).find(
+                                    '#following-count').text();
+                                $('#following-count').text(followingCount);
+
+                                $('#suggested-users li[data-user-id="' + userId +
+                                    '"]').remove();
+                                // Update followers count
+                                var followersCount = $(response).find(
+                                    '#followers-count').text();
+                                $('#followers-count').text(followersCount);
+                                console.log("followersCount fi follow" +
+                                    followersCount);
+                
                 $('.new-post').load(location.href + ' .new-post > *', function() {
                     // Bind click event for the form to trigger the modal
                     $('.new-post form').click(function(e) {
