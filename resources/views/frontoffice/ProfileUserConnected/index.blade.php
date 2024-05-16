@@ -165,9 +165,9 @@
                                                             </style>
 
 
-                                                            <div class="main-wraper" id="new-post-container" >
+                                                            <div class="main-wraper" id="new-post-container">
                                                                 <span class="new-title">Create New Post</span>
-                                                                <div class="new-post" >
+                                                                <div class="new-post">
                                                                     @if (auth()->check())
                                                                         @php
                                                                             $userId = auth()->id();
@@ -187,7 +187,7 @@
                                                                                 })
                                                                                 ->exists();
                                                                         @endphp
-                                                                           
+
                                                                         @if ($isFollowing)
                                                                             <form method="post">
                                                                                 <i class="icofont-pen-alt-1"></i>
@@ -527,7 +527,7 @@
                                                                                         #domain {
                                                                                             display: block !important;
                                                                                         }
-                            
+
                                                                                         .chosen-container-single {
                                                                                             display: none;
                                                                                         }
@@ -609,7 +609,7 @@
                                                                 Friends</a></li>
 
                                                     </ul>
-                                                    <div class="row merged-10 col-xs-6">
+                                                    <div class="row merged-10 col-xs-6" id="listamis">
 
                                                         @foreach ($followingUsers2 as $following)
                                                             <div class="col-lg-4 col-md-4 col-sm-6">
@@ -1166,74 +1166,7 @@
     </script>
 
 
-    <script>
-        $(document).ready(function() {
-            // Event listener for the "Follow" link
-            $(document).on('click', '.follow-link', function(e) {
-                e.preventDefault();
-                var userId = $(this).data('user-id');
 
-                // Send AJAX request to follow the user
-                $.ajax({
-                    url: '/follow/' + userId,
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Handle success response
-                        showToast('success', response.message);
-                        $.ajax({
-                            url: location.href,
-                            type: 'GET',
-                            success: function(response) {
-
-                                $('#new-post-container').load(location.href +
-                                    ' #new-post-container > *');
-
-                                // Update following widget
-                                var followingWidgetHtml = $(response).find(
-                                    '#following-widget').html();
-                                $('#following-widget').html(followingWidgetHtml);
-
-                                var followingWidgetHtml = $(response).find(
-                                    '#follow').html();
-                                $('#follow').html(followingWidgetHtml);
-
-                                var followingCount = $(response).find(
-                                    '#following-count').text();
-                                $('#following-count').text(followingCount);
-
-                                $('#suggested-users li[data-user-id="' + userId +
-                                    '"]').remove();
-                                // Update followers count
-                                var followersCount = $(response).find(
-                                    '#followers-count').text();
-                                $('#followers-count').text(followersCount);
-                                console.log("followersCount fi follow" +
-                                    followersCount);
-
-                                // Update suggested users list
-
-                            },
-                            error: function(xhr, status, error) {
-                                // Handle errors if needed
-                                console.error(xhr.responseText);
-                            }
-                        });
-
-                        // Optionally, update the UI to reflect the followed user
-                        // For example, you can remove the user from the list
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error response
-                        console.error(error);
-                        showToast('error', error);
-                    }
-                });
-            });
-        });
-    </script>
     <!-- delete post  -->
     <script>
         $(document).ready(function() {
@@ -1375,8 +1308,13 @@
                         button.attr('data-user-id', userId);
                         $('#new-post-container').load(location.href +
                             ' #new-post-container > *');
-                        var followCount = parseInt($('#follow-count').text());
-                        $('#follow-count').text(followCount - 1);
+                        $('#listamis').load(location.href +
+                            ' #listamis > *');
+                            // $('#follow-count').load(location.href +
+                            // ' #follow-count > *');
+
+
+                  
                         $('#suggested-users').load(location.href + ' #suggested-users > *');
 
                     },
@@ -1390,35 +1328,33 @@
         });
     </script>
     <script>
-      $(document).ready(function() {
-    $(document).on('click', '.follow-button', function(e) {
-        e.preventDefault();
+        $(document).ready(function() {
+            // Event listener for the "Follow" link
+            $(document).on('click', '.follow-link', function(e) {
+                e.preventDefault();
+                var userId = $(this).data('user-id');
 
-        var button = $(this);
-        var userId = button.data('user-id');
-
-        // Send AJAX request to follow the user
-        $.ajax({
-            url: '/follow/' + userId,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                // Handle success response
-                showToast('success', response.message);
-                // Update button to "Follow"
-                button.removeClass('follow-button').addClass('unfollow-button').html('<i class="icofont-star"></i>unfollow');
-                // Update data attributes
-                button.attr('class', 'unfollow-button');
-                button.attr('data-user-id', userId);
-                var followCount = parseInt($('#follow-count').text());
-                             $('#follow-count').text(followCount + 1);
-                // Load only the new post form
+                // Send AJAX request to follow the user
+                $.ajax({
+                    url: '/follow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+                        $.ajax({
+                            url: location.href,
+                            type: 'GET',
+                            success: function(response) {
 
 
-              
 
+                                $('#new-post-container').load(location.href +
+                                    ' #new-post-container > *');
+                                $('#listamis').load(location.href +
+                                    ' #listamis > *');
                                 // Update following widget
                                 var followingWidgetHtml = $(response).find(
                                     '#following-widget').html();
@@ -1440,24 +1376,122 @@
                                 $('#followers-count').text(followersCount);
                                 console.log("followersCount fi follow" +
                                     followersCount);
-                
-                $('.new-post').load(location.href + ' .new-post > *', function() {
-                    // Bind click event for the form to trigger the modal
-                    $('.new-post form').click(function(e) {
-                        e.preventDefault();
-                        $('.post-new-popup').modal('show').addClass('active'); // Show the modal and add 'active' class
-                    });
-                });
-            },
-            error: function(xhr, status, error) {
-                // Handle error response
-                console.error(error);
-                showToast('error', error);
-            }
-        });
-    });
-});
 
+                                button.removeClass('follow-button').addClass(
+                                    'unfollow-button').html(
+                                    '<i class="icofont-star"></i>unfollow');
+                                // Update data attributes
+                                button.attr('class', 'unfollow-button');
+                                button.attr('data-user-id', userId);
+
+                                // Update suggested users list
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors if needed
+                                console.error(xhr.responseText);
+                            }
+                        });
+
+                        // Optionally, update the UI to reflect the followed user
+                        // For example, you can remove the user from the list
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.follow-button', function(e) {
+                e.preventDefault();
+
+                var button = $(this);
+                var userId = button.data('user-id');
+
+                // Send AJAX request to follow the user
+                $.ajax({
+                    url: '/follow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+
+
+
+
+
+
+                        $('#listamis').load(location.href +
+                            ' #listamis > *');
+
+
+
+
+                        // Update button to "Follow"
+                        button.removeClass('follow-button').addClass('unfollow-button').html(
+                            '<i class="icofont-star"></i>unfollow');
+                        // Update data attributes
+                        button.attr('class', 'unfollow-button');
+                        button.attr('data-user-id', userId);
+                        // var followCount = parseInt($('#follow-count').text());
+                        // $('#follow-count').text(followCount + 1);
+
+                        var followcount = $(response).find(
+                            '#follow-count').html();
+                        $('#follow-count').html(followcount);
+                        // Load only the new post form
+
+
+
+
+                        // Update following widget
+                        var followingWidgetHtml = $(response).find(
+                            '#following-widget').html();
+                        $('#following-widget').html(followingWidgetHtml);
+
+                        var followingWidgetHtml = $(response).find(
+                            '#follow').html();
+                        $('#follow').html(followingWidgetHtml);
+
+                        var followingCount = $(response).find(
+                            '#following-count').text();
+                        $('#following-count').text(followingCount);
+
+                        $('#suggested-users li[data-user-id="' + userId +
+                            '"]').remove();
+                        // Update followers count
+                        var followersCount = $(response).find(
+                            '#followers-count').text();
+                        $('#followers-count').text(followersCount);
+                        console.log("followersCount fi follow" +
+                            followersCount);
+
+                        $('.new-post').load(location.href + ' .new-post > *', function() {
+                            // Bind click event for the form to trigger the modal
+                            $('.new-post form').click(function(e) {
+                                e.preventDefault();
+                                $('.post-new-popup').modal('show').addClass(
+                                    'active'
+                                ); // Show the modal and add 'active' class
+                            });
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
     </script>
 
 @endsection
