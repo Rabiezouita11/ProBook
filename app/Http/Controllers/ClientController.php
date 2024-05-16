@@ -608,7 +608,7 @@ class ClientController extends Controller
 
     public function show(User $user)
     {
-        $currentUserId = auth()->id();
+        $currentUserId =$user->id;
 
         $followingUsers = User::whereHas('abonnes', function ($query) use ($user) {
             $query->where('user_id', auth()->id());
@@ -649,9 +649,30 @@ class ClientController extends Controller
             ->orderBy('created_at')
             ->get();
 
+
+
+
+
+
+            $followingUsers2 = User::whereHas('abonnes', function ($query) use ($currentUserId) {
+                $query->where('user_id', $currentUserId);
+            })->with('abonnes');
+    
+            // Users who are following the current user
+            $followers2 = User::whereHas('abonnements', function ($query) use ($currentUserId) {
+                $query->where('abonne_id', $currentUserId);
+            })->with('abonnements');
+    
+            // Combine both queries using union
+            $followingUsers2 = $followingUsers2->union($followers2)->get();
+    
+            $followingCount2 = $followingUsers2->count();
+
         return view('frontoffice.ProfileUserConnected.index', [
             'user' => $user,
+            'followingUsers2' => $followingUsers2,
             'followingCount' => $followingCount,
+            'followingCount2' => $followingCount2,
             'mostLikedPost' => $mostLikedPost,
             'suggestedUsers' => $suggestedUsers,
             'publications' => $publications,

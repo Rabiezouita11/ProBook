@@ -67,7 +67,7 @@
                                         <ul class="joined-info">
                                             <li><span>Joined:</span>
                                                 {{ \Carbon\Carbon::parse($user->created_at)->format('F Y') }}</li>
-                                            <li><span>Follow:</span> {{ $followingCount }}</li>
+                                            <li><span>Follow:</span> {{ $followingCount2 }}</li>
                                             <li><span>Posts:</span> {{ $user->totalPosts }}</li>
                                         </ul>
                                         <ul class="nav nav-tabs about-btn">
@@ -298,15 +298,17 @@
                                                                                             {{ $publication->contenu }}
 
                                                                                             @if (!empty($publication->domain))
-                                                                                            <p><strong>Domain:</strong> {{ $publication->domain }}
-                                                                                            </p>
-                                                                                        @endif
+                                                                                                <p><strong>Domain:</strong>
+                                                                                                    {{ $publication->domain }}
+                                                                                                </p>
+                                                                                            @endif
                                                                                         @else
                                                                                             {{ $publication->contenu }}
-                                                                                             @if (!empty($publication->domain))
-                                                                                            <p><strong>Domain:</strong> {{ $publication->domain }}
-                                                                                            </p>
-                                                                                        @endif
+                                                                                            @if (!empty($publication->domain))
+                                                                                                <p><strong>Domain:</strong>
+                                                                                                    {{ $publication->domain }}
+                                                                                                </p>
+                                                                                            @endif
                                                                                         @endif
                                                                                     </p>
                                                                                     </p>
@@ -488,15 +490,21 @@
                                                                                 </div>
                                                                                 <div class="form-group">
                                                                                     <label for="domain">Domain</label>
-                                                                                    <select id="domain" name="domain" class="form-control"
-                                                                                        required>
-                        
-                                                                                        <option value="">Select Domain</option>
-                                                                                        <option value="Informatique">Informatique</option>
-                                                                                        <option value="Gestion/économie">Gestion/économie</option>
-                                                                                        <option value="Mécanique">Mécanique</option>
-                                                                                        <option value="Électrique">Électrique</option>
-                                                                                        <option value="Science">Science</option>
+                                                                                    <select id="domain" name="domain"
+                                                                                        class="form-control" required>
+
+                                                                                        <option value="">Select
+                                                                                            Domain</option>
+                                                                                        <option value="Informatique">
+                                                                                            Informatique</option>
+                                                                                        <option value="Gestion/économie">
+                                                                                            Gestion/économie</option>
+                                                                                        <option value="Mécanique">Mécanique
+                                                                                        </option>
+                                                                                        <option value="Électrique">
+                                                                                            Électrique</option>
+                                                                                        <option value="Science">Science
+                                                                                        </option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div class="post-newmeta">
@@ -569,149 +577,49 @@
 
 
                                                 <div class="tab-pane fade" id="friends">
-                                                    <h5 class="tab-title">Friends <span>102</span></h5>
+                                                    <h5 class="tab-title">Friends <span>{{ $followingCount2 }}</span></h5>
                                                     <ul class="pix-filter">
                                                         <li><a title="" href="#" class="active">All
                                                                 Friends</a></li>
-                                                        <li><a title="" href="#">Family Friends</a></li>
-                                                        <li><a title="" href="#">Close Friends</a></li>
-                                                        <li><a title="" href="#">Mutual Friends</a></li>
+
                                                     </ul>
                                                     <div class="row merged-10 col-xs-6">
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-10.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Amy
-                                                                        Watson</a></span>
-                                                                <ins>Bz University, Pakistan</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i>Unfollow</a>
+
+                                                        @foreach ($followingUsers2 as $following)
+                                                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                                                <div class="friendz">
+                                                                    @if ($following->image)
+                                                                        <figure><img
+                                                                                src="{{ asset('users/' . $following->image) }}"
+                                                                                alt=""></figure>
+                                                                    @else
+                                                                        <figure><img
+                                                                                src="https://ui-avatars.com/api/?name={{ urlencode($following->name) }}&background=104d93&color=fff"
+                                                                                alt=""></figure>
+                                                                    @endif
+                                                                    <span><a href="{{ route('profile.show', $following) }}"
+                                                                            title="">{{ $following->name }}</a></span>
+                                                                    <ins>{{ $following->institut }}</ins>
+                                                                    @if ($following->id !== auth()->id())
+                                                                        @if ($following->abonnements->contains(auth()->id()))
+                                                                            <a href="#" class="unfollow-button"
+                                                                                data-user-id="{{ $following->id }}"
+                                                                                title="" data-ripple=""><i
+                                                                                    class="icofont-star"></i>Unfollow</a>
+                                                                        @else
+                                                                            <a href="#" class="follow-button"
+                                                                                data-user-id="{{ $following->id }}"
+                                                                                title="" data-ripple=""><i
+                                                                                    class="icofont-star"></i>Follow</a>
+                                                                        @endif
+                                                                    @else
+                                                                        <p>Your Account</p>
+                                                                    @endif
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-11.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Muhammad
-                                                                        Khan</a></span>
-                                                                <ins>Oxford University, UK</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-12.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Sadia
-                                                                        Gill</a></span>
-                                                                <ins>WB University, USA</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-4.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Rjapal</a></span>
-                                                                <ins>Km University, India</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-1.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Amy
-                                                                        watson</a></span>
-                                                                <ins>Oxford University, UK</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-2.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Bob
-                                                                        Frank</a></span>
-                                                                <ins>WB University, Canada</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-5.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Amy
-                                                                        Watson</a></span>
-                                                                <ins>Bz University, Pakistan</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-7.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Muhammad
-                                                                        Khan</a></span>
-                                                                <ins>Oxford University, UK</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-10.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Sadia
-                                                                        Gill</a></span>
-                                                                <ins>WB University, USA</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-2.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Bob
-                                                                        Frank</a></span>
-                                                                <ins>WB University, Canada</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="friendz">
-                                                                <figure><img
-                                                                        src="/frontoffice/images/resources/speak-11.jpg"
-                                                                        alt=""></figure>
-                                                                <span><a href="#" title="">Muhammad
-                                                                        Khan</a></span>
-                                                                <ins>Oxford University, UK</ins>
-                                                                <a href="#" title="" data-ripple=""><i
-                                                                        class="icofont-star"></i> Unfollow</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <div class="sp sp-bars"></div>
-                                                        </div>
+                                                        @endforeach
+
+
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="about">
@@ -1348,7 +1256,7 @@
                 // Update the hidden field value with the retrieved publication ID
                 $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
                 console.log("Updated publicationId in input field:", $('input[name="publication_id"]')
-                .val());
+                    .val());
 
                 // Update the textarea value with the retrieved post content
                 $('#updatePublicationModal #updatedContent').val(postContent);
@@ -1411,4 +1319,74 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            // Event listener for the "Unfollow" button
+            $(document).on('click', '.unfollow-button', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var userId = button.data('user-id');
+
+                // Send AJAX request to unfollow the user
+                $.ajax({
+                    url: '/unfollow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+                        // Update button to "Follow"
+                        button.removeClass('unfollow-button').addClass('follow-button').html(
+                            '<i class="icofont-star"></i>Follow');
+                        // Update data attributes
+                        button.attr('class', 'follow-button');
+                        button.attr('data-user-id', userId);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $(document).on('click', '.follow-button', function(e) {
+                e.preventDefault();
+
+                var button = $(this);
+                var userId = button.data('user-id');
+
+                // Send AJAX request to follow the user
+                $.ajax({
+                    url: '/follow/' + userId,
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showToast('success', response.message);
+                        // Update button to "Follow"
+                        button.removeClass('follow-button').addClass('unfollow-button').html(
+                            '<i class="icofont-star"></i>unfollow');
+                        // Update data attributes
+                        button.attr('class', 'unfollow-button');
+                        button.attr('data-user-id', userId);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                        showToast('error', error);
+                    }
+                });
+            });
+        });
+    </script>
+
 @endsection
