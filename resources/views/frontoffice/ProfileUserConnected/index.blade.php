@@ -50,8 +50,20 @@
 
                                         <img src="{{ $user->cover_photo ? asset('cover_photos/' . $user->cover_photo) : asset('noimagecouvrture.jpg') }}"
                                             alt="" width="200px" height="200px">
-                                        <a href="#" title=""><i class="icofont-check-circled"></i>Follow</a>
-
+                                        {{-- <a href="#" title=""><i class="icofont-check-circled"></i>Follow</a> --}}
+                                        @if (auth()->check())
+                                            @if ($user->abonnements->contains(auth()->id()))
+                                                <a href="#" class="unfollow-button" data-user-id="{{ $user->id }}"
+                                                    title="" data-ripple=""><i class="icofont-star"></i>Unfollow</a>
+                                            @else
+                                                <a href="#" class="follow-button" data-user-id="{{ $user->id }}"
+                                                    title="" data-ripple=""><i class="icofont-star"></i>Follow</a>
+                                            @endif
+                                        @else
+                                            <!-- If the user is not logged in, show follow button -->
+                                            <a href="#" class="follow-button" data-user-id="{{ $user->id }}"
+                                                title="" data-ripple=""><i class="icofont-star"></i>Follow</a>
+                                        @endif
                                         @if ($user->image)
                                             <figure class="group-dp"><img src="{{ asset('users/' . $user->image) }}"
                                                     alt="">
@@ -104,11 +116,14 @@
                                                         </li>
                                                         <li><img src="/frontoffice/images/badges/badge4.png" alt="">
                                                         </li>
-                                                        <li><img src="/frontoffice/images/badges/badge5.png" alt="">
+                                                        <li><img src="/frontoffice/images/badges/badge5.png"
+                                                                alt="">
                                                         </li>
-                                                        <li><img src="/frontoffice/images/badges/badge7.png" alt="">
+                                                        <li><img src="/frontoffice/images/badges/badge7.png"
+                                                                alt="">
                                                         </li>
-                                                        <li><img src="/frontoffice/images/badges/badge8.png" alt="">
+                                                        <li><img src="/frontoffice/images/badges/badge8.png"
+                                                                alt="">
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -148,7 +163,7 @@
                                                             </style>
 
 
-                                                            <div class="main-wraper">
+                                                            <div class="main-wraper" id="new-post-container">
                                                                 <span class="new-title">Create New Post</span>
                                                                 <div class="new-post">
                                                                     @if (auth()->check())
@@ -1343,6 +1358,8 @@
                         // Update data attributes
                         button.attr('class', 'follow-button');
                         button.attr('data-user-id', userId);
+                        $('#new-post-container').load(location.href + ' #new-post-container > *');
+
                     },
                     error: function(xhr, status, error) {
                         // Handle error response
@@ -1378,6 +1395,8 @@
                         // Update data attributes
                         button.attr('class', 'unfollow-button');
                         button.attr('data-user-id', userId);
+                        $('#new-post-container').load(location.href + ' #new-post-container > *');
+
                     },
                     error: function(xhr, status, error) {
                         // Handle error response
