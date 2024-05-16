@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
@@ -28,6 +29,11 @@ class AdminController extends Controller
 
     public function index()
     {
+
+        $mostPublishedDomain = Publication::select('domain', DB::raw('count(*) as count'))
+        ->groupBy('domain')
+        ->orderByDesc('count')
+        ->first();
         // Count records in each table
         $abonnementsCount = abonnements::count();
         $commentairesCount = Commentaire::count();
@@ -43,6 +49,7 @@ class AdminController extends Controller
             'jaimePublicationsCount' => $jaimePublicationsCount,
             'publicationsCount' => $publicationsCount,
             'userCount' => $userCount,
+            'mostPublishedDomain' => $mostPublishedDomain
         ]);
     }
 

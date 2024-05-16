@@ -34,7 +34,23 @@
 							</div>
 						</div>
 					</div>
-
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="d-widget soft-green">
+							<div class="d-widget-title">
+								<h5>Most Published Domain</h5>
+							</div>
+							<div class="d-widget-content" style="height: 100px;">
+								<ul class="list-group">
+									<li class="list-group-item d-flex justify-content-between align-items-center">
+										{{ $mostPublishedDomain->domain }}
+										<span class="badge badge-primary badge-pill">{{ $mostPublishedDomain->count }}</span>
+									</li>
+								</ul>
+								<i class="icofont-newspaper"></i> <!-- Updated icon class -->
+							</div>
+						</div>
+					</div>
+					
 					<div class="col-lg-4 col-md-4 col-sm-4">
 						<div class="d-widget soft-green">
 							<div class="d-widget-title">
