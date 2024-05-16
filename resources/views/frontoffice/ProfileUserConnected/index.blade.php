@@ -74,13 +74,14 @@
                                                     alt=""></figure>
                                         @endif
                                     </div>
-                                    <div class="grp-info about" >
+                                    <div class="grp-info about">
                                         <h4>{{ $user->name }}<span>@ {{ $user->name }}</span></h4>
                                         <ul class="joined-info">
                                             <li><span>Joined:</span>
                                                 {{ \Carbon\Carbon::parse($user->created_at)->format('F Y') }}</li>
-                                                <li id="follow-count-container"><span>Follow:</span> <span id="follow-count">{{ $followingCount2 }}</span></li>
-                                                <li><span>Posts:</span> {{ $user->totalPosts }}</li>
+                                            <li id="follow-count-container"><span>Follow:</span> <span
+                                                    id="follow-count">{{ $followingCount2 }}</span></li>
+                                            <li><span>Posts:</span> {{ $user->totalPosts }}</li>
                                         </ul>
                                         <ul class="nav nav-tabs about-btn">
                                             <li class="nav-item"><a class="active" href="#posts"
@@ -114,7 +115,8 @@
                                                         </li>
                                                         <li><img src="/frontoffice/images/badges/badge3.png" alt="">
                                                         </li>
-                                                        <li><img src="/frontoffice/images/badges/badge4.png" alt="">
+                                                        <li><img src="/frontoffice/images/badges/badge4.png"
+                                                                alt="">
                                                         </li>
                                                         <li><img src="/frontoffice/images/badges/badge5.png"
                                                                 alt="">
@@ -163,9 +165,9 @@
                                                             </style>
 
 
-                                                            <div class="main-wraper" id="new-post-container">
+                                                            <div class="main-wraper" id="new-post-container" >
                                                                 <span class="new-title">Create New Post</span>
-                                                                <div class="new-post">
+                                                                <div class="new-post" >
                                                                     @if (auth()->check())
                                                                         @php
                                                                             $userId = auth()->id();
@@ -185,7 +187,7 @@
                                                                                 })
                                                                                 ->exists();
                                                                         @endphp
-
+                                                                           
                                                                         @if ($isFollowing)
                                                                             <form method="post">
                                                                                 <i class="icofont-pen-alt-1"></i>
@@ -521,6 +523,15 @@
                                                                                         <option value="Science">Science
                                                                                         </option>
                                                                                     </select>
+                                                                                    <style>
+                                                                                        #domain {
+                                                                                            display: block !important;
+                                                                                        }
+                            
+                                                                                        .chosen-container-single {
+                                                                                            display: none;
+                                                                                        }
+                                                                                    </style>
                                                                                 </div>
                                                                                 <div class="post-newmeta">
                                                                                     <input type="file" name="image">
@@ -1177,7 +1188,8 @@
                             type: 'GET',
                             success: function(response) {
 
-                                $('#new-post-container').load(location.href + ' #new-post-container > *');
+                                $('#new-post-container').load(location.href +
+                                    ' #new-post-container > *');
 
                                 // Update following widget
                                 var followingWidgetHtml = $(response).find(
@@ -1361,10 +1373,11 @@
                         // Update data attributes
                         button.attr('class', 'follow-button');
                         button.attr('data-user-id', userId);
-                        $('#new-post-container').load(location.href + ' #new-post-container > *');
+                        $('#new-post-container').load(location.href +
+                            ' #new-post-container > *');
                         var followCount = parseInt($('#follow-count').text());
-                             $('#follow-count').text(followCount - 1);
-                             $('#suggested-users').load(location.href + ' #suggested-users > *');
+                        $('#follow-count').text(followCount - 1);
+                        $('#suggested-users').load(location.href + ' #suggested-users > *');
 
                     },
                     error: function(xhr, status, error) {
@@ -1377,46 +1390,48 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
+      $(document).ready(function() {
+    $(document).on('click', '.follow-button', function(e) {
+        e.preventDefault();
 
-            $(document).on('click', '.follow-button', function(e) {
-                e.preventDefault();
+        var button = $(this);
+        var userId = button.data('user-id');
 
-                var button = $(this);
-                var userId = button.data('user-id');
-
-                // Send AJAX request to follow the user
-                $.ajax({
-                    url: '/follow/' + userId,
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // Handle success response
-                        showToast('success', response.message);
-                        // Update button to "Follow"
-                        button.removeClass('follow-button').addClass('unfollow-button').html(
-                            '<i class="icofont-star"></i>unfollow');
-                        // Update data attributes
-                        button.attr('class', 'unfollow-button');
-                        button.attr('data-user-id', userId);
-                        $('#new-post-container').load(location.href + ' #new-post-container > *');
-                        $('#suggested-users').load(location.href + ' #suggested-users > *');
-
-                        var followCount = parseInt($('#follow-count').text());
+        // Send AJAX request to follow the user
+        $.ajax({
+            url: '/follow/' + userId,
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                // Handle success response
+                showToast('success', response.message);
+                // Update button to "Follow"
+                button.removeClass('follow-button').addClass('unfollow-button').html('<i class="icofont-star"></i>unfollow');
+                // Update data attributes
+                button.attr('class', 'unfollow-button');
+                button.attr('data-user-id', userId);
+                var followCount = parseInt($('#follow-count').text());
                              $('#follow-count').text(followCount + 1);
-
-                        
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error response
-                        console.error(error);
-                        showToast('error', error);
-                    }
+                // Load only the new post form
+                $('.new-post').load(location.href + ' .new-post > *', function() {
+                    // Bind click event for the form to trigger the modal
+                    $('.new-post form').click(function(e) {
+                        e.preventDefault();
+                        $('.post-new-popup').modal('show').addClass('active'); // Show the modal and add 'active' class
+                    });
                 });
-            });
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                console.error(error);
+                showToast('error', error);
+            }
         });
+    });
+});
+
     </script>
 
 @endsection
