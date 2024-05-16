@@ -74,13 +74,13 @@
                                                     alt=""></figure>
                                         @endif
                                     </div>
-                                    <div class="grp-info about">
+                                    <div class="grp-info about" >
                                         <h4>{{ $user->name }}<span>@ {{ $user->name }}</span></h4>
                                         <ul class="joined-info">
                                             <li><span>Joined:</span>
                                                 {{ \Carbon\Carbon::parse($user->created_at)->format('F Y') }}</li>
-                                            <li><span>Follow:</span> {{ $followingCount2 }}</li>
-                                            <li><span>Posts:</span> {{ $user->totalPosts }}</li>
+                                                <li id="follow-count-container"><span>Follow:</span> <span id="follow-count">{{ $followingCount2 }}</span></li>
+                                                <li><span>Posts:</span> {{ $user->totalPosts }}</li>
                                         </ul>
                                         <ul class="nav nav-tabs about-btn">
                                             <li class="nav-item"><a class="active" href="#posts"
@@ -1176,6 +1176,9 @@
                             url: location.href,
                             type: 'GET',
                             success: function(response) {
+
+                                $('#new-post-container').load(location.href + ' #new-post-container > *');
+
                                 // Update following widget
                                 var followingWidgetHtml = $(response).find(
                                     '#following-widget').html();
@@ -1359,6 +1362,9 @@
                         button.attr('class', 'follow-button');
                         button.attr('data-user-id', userId);
                         $('#new-post-container').load(location.href + ' #new-post-container > *');
+                        var followCount = parseInt($('#follow-count').text());
+                             $('#follow-count').text(followCount - 1);
+                             $('#suggested-users').load(location.href + ' #suggested-users > *');
 
                     },
                     error: function(xhr, status, error) {
@@ -1396,7 +1402,12 @@
                         button.attr('class', 'unfollow-button');
                         button.attr('data-user-id', userId);
                         $('#new-post-container').load(location.href + ' #new-post-container > *');
+                        $('#suggested-users').load(location.href + ' #suggested-users > *');
 
+                        var followCount = parseInt($('#follow-count').text());
+                             $('#follow-count').text(followCount + 1);
+
+                        
                     },
                     error: function(xhr, status, error) {
                         // Handle error response
