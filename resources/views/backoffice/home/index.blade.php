@@ -56,7 +56,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="d-widget soft-green">
                                 <div class="d-widget-title">
-                                    <h5>Number of Followers</h5>
+                                    <h5>Number of Published Domains</h5>
                                 </div>
                                 <div class="d-widget-content" style="height: 100px;"> <!-- Fixed height -->
                                     <span class="realtime-ico pulse"></span>
