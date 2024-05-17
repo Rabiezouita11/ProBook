@@ -1,6 +1,8 @@
 @extends('backoffice.layouts.index')
 
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -65,11 +67,19 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div >
+                                <div class="d-widget-title">
+                                    <h5>Number of Followers</h5>
+                                    <canvas id="domainChart" width="400" height="400"></canvas>
+                                </div>
+
+                            </div>
+                        </div>
+
                 
-                        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
                         <!-- Chart container -->
-                        <div id="mostPublishedDomainChartContainer" style="height: 250px;"></div>
                     </div>
 
                 </div>
@@ -77,36 +87,59 @@
         </div>
     </div><!-- main content -->
     <script>
-        // Extract data for chart
-        var domainData = [];
-        var countData = [];
-        @foreach($mostPublishedDomains as $domain)
-            domainData.push("{!! addslashes($domain->domain) !!}");
-            countData.push({{ $domain->count() }});
-        @endforeach
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('domainChart').getContext('2d');
+            var domainData = @json($domainData);
     
-        console.log("Domain Data: ", domainData);
-        console.log("Count Data: ", countData);
+            var labels = domainData.map(item => item.domain);
+            var data = domainData.map(item => item.count);
     
-        // Chart options
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 250
-            },
-            series: [{
-                name: 'Count',
-                data: countData
-            }],
-            xaxis: {
-                categories: domainData
-            }
-        };
-    
-        // Wait for the DOM to be fully loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            var chart = new ApexCharts(document.querySelector("#mostPublishedDomainChartContainer"), options);
-            chart.render();
+            var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Domain Distribution',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    var label = tooltipItem.label || '';
+                                    var value = tooltipItem.raw;
+                                    var total = data.reduce((acc, val) => acc + val, 0);
+                                    var percentage = ((value / total) * 100).toFixed(2);
+                                    return label + ': ' + value + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         });
     </script>
     

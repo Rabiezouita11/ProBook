@@ -30,10 +30,13 @@ class AdminController extends Controller
     public function index()
     {
 
-        $mostPublishedDomains = Publication::select('domain', DB::raw('count(*) as count'))
+        $domainData = Publication::select('domain', DB::raw('count(*) as count'))
         ->groupBy('domain')
-        ->orderByDesc('count')
-        ->get();
+        ->get()
+        ->map(function($item) {
+            $item->percentage = ($item->count / Publication::count()) * 100;
+            return $item;
+        });
         // Count records in each table
         $abonnementsCount = abonnements::count();
         $commentairesCount = Commentaire::count();
@@ -49,7 +52,7 @@ class AdminController extends Controller
             'jaimePublicationsCount' => $jaimePublicationsCount,
             'publicationsCount' => $publicationsCount,
             'userCount' => $userCount,
-            'mostPublishedDomains' => $mostPublishedDomains
+            'domainData' => $domainData
         ]);
     }
 
