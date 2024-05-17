@@ -94,6 +94,11 @@ Route::post('/savepublicationsUser', [App\Http\Controllers\ClientController::cla
 Route::put('/comment', [App\Http\Controllers\ClientController::class, 'update'])->name('comment.update')->middleware(['auth', 'role:utilisateur']);
 
 
+//
+
+Route::get('/getLikedUsers/{publicationId}', [App\Http\Controllers\ClientController::class, 'getLikedUsers']);
+
+
 //delete publication of user 
 Route::delete('/publication/{id}', [App\Http\Controllers\ClientController::class, 'destroyPublication'])->name('publication.delete')->middleware(['auth', 'role:utilisateur']);
 

@@ -26,28 +26,28 @@ class ClientController extends Controller
     {
         if (auth()->check()) {
             $currentUser = auth()->user();
-    
+
             $suggestedUsers = User::where('role', 'utilisateur')
                 ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
                 ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
                 ->where('id', '!=', $currentUser->id)
                 ->get();
-    
+
             $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
                 $query->where('user_id', $currentUser->id);
             })->with('abonnes');
-    
+
             // Users who are following the current user
             $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
                 $query->where('abonne_id', $currentUser->id);
             })->with('abonnements');
-    
+
             // Combine both queries using union
             $followingUsers = $followingUsers->union($followers)->get();
-    
+
             $followingCount = $followingUsers->count();
             $publications = Publication::orderBy('created_at', 'asc')->get();
-    
+
             return view('frontoffice.home.index', [
                 'followingCount' => $followingCount,
                 'publications' => $publications,
@@ -56,16 +56,16 @@ class ClientController extends Controller
         } else {
             // If user is not logged in, show all users
             $suggestedUsers = User::where('role', 'utilisateur')->get();
-    
+
             $publications = Publication::orderBy('created_at', 'desc')->get();
-    
+
             return view('frontoffice.home.index', [
                 'publications' => $publications,
                 'suggestedUsers' => $suggestedUsers,
             ]);
         }
     }
-    
+
 
     public function enter_verification_code()
     {
@@ -206,10 +206,10 @@ class ClientController extends Controller
         $user->email = $request->email;
         $user->institut = $request->institute;
         $user->diploma = $request->diploma;
-        $user->date_of_birth = $request->date_of_birth; 
-        $user->location = $request->country; 
+        $user->date_of_birth = $request->date_of_birth;
+        $user->location = $request->country;
 
-        
+
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
             $imageName = time() . '.' . $request->file('profile_image')->extension();
@@ -365,12 +365,12 @@ class ClientController extends Controller
             $notification = new notifications();
             $notification->user_id = $userProfile->id;
             $notification->data = auth()->user()->name . ' posted a publication on your profile';
-            $notification->username =  auth()->user()->name;  // Use the name of the user profile
+            $notification->username = auth()->user()->name;  // Use the name of the user profile
             $notification->imageUrl = auth()->user()->image;  // Use the image of the user profile
             $notification->save();
             $notificationId = $notification->id; // Retrieve the ID of the saved notification
             // Dispatch event
-            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl , $notificationId));
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl, $notificationId));
         }
 
         // Determine the success message based on the scenario
@@ -414,7 +414,7 @@ class ClientController extends Controller
                 $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
                 $notification->save();
                 $notificationId = $notification->id; // Retrieve the ID of the saved notification
-                event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl,$notificationId));
+                event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl, $notificationId));
             }
         }
 
@@ -431,7 +431,7 @@ class ClientController extends Controller
                 'message' => 'You need to be authenticated to add a comment',
             ], 401); // Unauthorized status code
         }
-    
+
         // Validate the incoming request
         $request->validate([
             'publication_id' => 'required|exists:publications,id',
@@ -455,7 +455,7 @@ class ClientController extends Controller
             $notification->imageUrl = auth()->user()->image;  // Adjust this according to your user model
             $notification->save();
             $notificationId = $notification->id; // Retrieve the ID of the saved notification
-            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl,  $notificationId));
+            event(new PrivateChannelUser($notification->data, $notification->username, $notification->user_id, $notification->imageUrl, $notificationId));
         }
 
         // Get the total number of comments for the publication
@@ -625,7 +625,7 @@ class ClientController extends Controller
 
     public function show(User $user)
     {
-        $currentUserId =$user->id;
+        $currentUserId = $user->id;
 
         $followingUsers = User::whereHas('abonnes', function ($query) use ($user) {
             $query->where('user_id', auth()->id());
@@ -671,19 +671,19 @@ class ClientController extends Controller
 
 
 
-            $followingUsers2 = User::whereHas('abonnes', function ($query) use ($currentUserId) {
-                $query->where('user_id', $currentUserId);
-            })->with('abonnes');
-    
-            // Users who are following the current user
-            $followers2 = User::whereHas('abonnements', function ($query) use ($currentUserId) {
-                $query->where('abonne_id', $currentUserId);
-            })->with('abonnements');
-    
-            // Combine both queries using union
-            $followingUsers2 = $followingUsers2->union($followers2)->get();
-    
-            $followingCount2 = $followingUsers2->count();
+        $followingUsers2 = User::whereHas('abonnes', function ($query) use ($currentUserId) {
+            $query->where('user_id', $currentUserId);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers2 = User::whereHas('abonnements', function ($query) use ($currentUserId) {
+            $query->where('abonne_id', $currentUserId);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers2 = $followingUsers2->union($followers2)->get();
+
+        $followingCount2 = $followingUsers2->count();
 
         return view('frontoffice.ProfileUserConnected.index', [
             'user' => $user,
@@ -742,7 +742,8 @@ class ClientController extends Controller
             'followingUsers',
             'followingCount',
             'countries'
-        ));
+        )
+        );
     }
 
 
@@ -762,4 +763,28 @@ class ClientController extends Controller
             return response()->json(['error' => 'Notification not found'], 404);
         }
     }
+
+    public function getLikedUsers($publicationId)
+    {
+        // Find the publication by its ID
+        $publication = Publication::findOrFail($publicationId);
+    
+        // Retrieve the liked users for the publication using the relationship
+        $likedUsers = $publication->jaime_publications()->with('user')->get();
+    
+        // Modify the liked users data to include name, image, institution, and profile link
+        $likedUsersData = $likedUsers->map(function ($like) {
+            return [
+                'name' => $like->user->name,
+                'image' => $like->user->image ? asset('users/' . $like->user->image) : 'https://ui-avatars.com/api/?name=' . urlencode($like->user->name) . '&background=104d93&color=fff',
+                'institut' => $like->user->institut,
+                'profileLink' => route('profile.show', $like->user) // Construct the profile link
+            ];
+        });
+    
+        // Return the list of liked users as JSON response
+        return response()->json(['likedUsers' => $likedUsersData]);
+    }
+    
+    
 }

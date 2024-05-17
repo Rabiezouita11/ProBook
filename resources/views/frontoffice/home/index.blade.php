@@ -383,7 +383,8 @@
                                                         <div class="we-video-info">
                                                             <ul>
                                                                 <li>
-                                                                    <span title="Likes" class="liked">
+                                                                    <span title="Likes" class="liked like-button"
+                                                                        data-publication-id="{{ $publication->id }}">
                                                                         <i>
                                                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                                                 width="16" height="16"
@@ -468,6 +469,8 @@
                                         </div><!-- share post without image -->
                                     @endforeach
                                 @endif
+
+                                <!-- HTML code for the modal -->
 
 
                                 {{-- <div class="loadmore">
@@ -1537,5 +1540,77 @@
             </div>
         </div>
     </div>
+
+
+
+    <script>
+        $(document).ready(function() {
+            // Event listener for the like button
+            $('.like-button').click(function() {
+                var publicationId = $(this).data('publication-id');
+
+                // Send AJAX request to fetch liked users
+                $.ajax({
+                    url: '/getLikedUsers/' + publicationId,
+                    type: 'GET',
+                    success: function(response) {
+                        // Populate the modal with the list of liked users
+                        $('#likedUsersList').empty();
+                        response.likedUsers.forEach(function(user) {
+                            $('#likedUsersList').append(
+                                '<li class="list-group-item">' +
+                                '<div class="d-flex justify-content-between align-items-center">' +
+                                '<div class="d-flex align-items-center">' +
+                                '<img src="' + user.image +
+                                '" class="rounded-circle me-3" alt="User Image" width="50">' +
+                                '<div>' +
+                                '<h5 class="mb-0"><a href="' + user.profileLink +
+                                '">' + user.name + '</a></h5>' +
+                                '<p class="mb-0">Institution: ' + user.institut +
+                                '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                // '<a href="#" class="btn btn-primary ms-auto">Follow</a>' +
+                                '</div>' +
+                                '</li>'
+                            );
+                        });
+
+                        // Show the modal
+                        $('#likeModal').css('display', 'block');
+                    },
+
+
+
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('Failed to fetch liked users.');
+                    }
+                });
+            });
+
+            // Close the modal when the close button is clicked
+            $('.close').click(function() {
+                $('#likeModal').css('display', 'none');
+            });
+        });
+    </script>
+    <div id="likeModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Liked Users</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="likedUsersList"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
 @endsection
