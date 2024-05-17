@@ -26,29 +26,46 @@ class ClientController extends Controller
     {
         if (auth()->check()) {
             $currentUser = auth()->user();
-
+    
+            $suggestedUsers = User::where('role', 'utilisateur')
+                ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+                ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+                ->where('id', '!=', $currentUser->id)
+                ->get();
+    
             $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
                 $query->where('user_id', $currentUser->id);
             })->with('abonnes');
-
+    
             // Users who are following the current user
             $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
                 $query->where('abonne_id', $currentUser->id);
             })->with('abonnements');
-
+    
             // Combine both queries using union
             $followingUsers = $followingUsers->union($followers)->get();
-
+    
             $followingCount = $followingUsers->count();
-
+            $publications = Publication::orderBy('created_at', 'asc')->get();
+    
             return view('frontoffice.home.index', [
-                'followingCount' => $followingCount
+                'followingCount' => $followingCount,
+                'publications' => $publications,
+                'suggestedUsers' => $suggestedUsers,
+            ]);
+        } else {
+            // If user is not logged in, show all users
+            $suggestedUsers = User::where('role', 'utilisateur')->get();
+    
+            $publications = Publication::orderBy('created_at', 'desc')->get();
+    
+            return view('frontoffice.home.index', [
+                'publications' => $publications,
+                'suggestedUsers' => $suggestedUsers,
             ]);
         }
-
-        // If user is not authenticated, simply return the view without passing followingCount
-        return view('frontoffice.home.index');
     }
+    
 
     public function enter_verification_code()
     {

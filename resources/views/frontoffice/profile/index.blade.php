@@ -807,7 +807,7 @@
                                     <!-- New post popup -->
                                 @endif
                                 <br>
-                                <div class="main-wraper">
+                                {{-- <div class="main-wraper">
                                     <div class="user-post">
                                         <div class="friend-info">
                                             <figure>
@@ -859,7 +859,7 @@
 
                                         </div>
                                     </div>
-                                </div><!-- suggested friends -->
+                                </div><!-- suggested friends --> --}}
                             </div>
                             <div class="col-lg-4">
                                 <aside class="sidebar static right">
@@ -1774,7 +1774,7 @@
 
 
 
-
+{{-- follow link  --}}
     <script>
         $(document).ready(function() {
             // Event listener for the "Follow" link
