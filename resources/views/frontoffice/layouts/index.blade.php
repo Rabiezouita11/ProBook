@@ -110,7 +110,7 @@
             <div class="topbar stick">
                 <div class="logo">
                     <img src="/frontoffice/images/logo.png" alt="">
-                    <span>Socimo</span>
+                    <span>Xchange</span>
                 </div>
                 <div class="searches">
                     <form method="post">
@@ -471,7 +471,7 @@
                 </div>
                 <div class="invitation-meta">
                     <p>
-                        Enter an email address to invite a colleague or co-author to join you on socimo. They will
+                        Enter an email address to invite a colleague or co-author to join you on Xchange. They will
                         receive an email and, in some cases, up to two reminders.
                     </p>
                     <form method="post" class="c-form">

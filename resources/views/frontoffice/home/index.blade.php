@@ -15,7 +15,7 @@
                                     <div class="widget whitish low-opacity">
                                         <img src="/frontoffice/images/time-clock.png" alt="">
                                         <div class="bg-image"
-                                            style="background-image: url(/frontoffice/images/resources/time-bg.jpg)"></div>
+                                            style="background-image: url(/frontoffice/images/resources/time-bg.jpeg)"></div>
                                         <div class="date-time">
                                             <div class="realtime">
                                                 <span id="hours">00</span>
@@ -134,7 +134,7 @@
                                                         src="/frontoffice/images/resources/recentlink-3.jpg">
                                                 </figure>
                                                 <div class="re-links-meta">
-                                                    <h6><a title="" href="#">The socimo over watch scandals.</a>
+                                                    <h6><a title="" href="#">The Xchange over watch scandals.</a>
                                                     </h6>
                                                     <span>1 day before</span>
                                                 </div>
