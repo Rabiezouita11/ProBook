@@ -512,15 +512,17 @@
 
                                                                                         <option value="">Select
                                                                                             Domain</option>
-                                                                                        <option value="Informatique">
-                                                                                            Informatique</option>
-                                                                                        <option value="Gestion/économie">
-                                                                                            Gestion/économie</option>
-                                                                                        <option value="Mécanique">Mécanique
+                                                                                        <option value="Computer science">
+                                                                                        Computer science</option>
+                                                                                        <option value="Management/economics">
+                                                                                            Management/economics</option>
+                                                                                        <option value="Mechanical">Mechanical
                                                                                         </option>
-                                                                                        <option value="Électrique">
-                                                                                            Électrique</option>
+                                                                                        <option value="Electric">
+                                                                                        Electric</option>
                                                                                         <option value="Science">Science
+                                                                                        </option>
+                                                                                        <option value="Lettre">Lettre
                                                                                         </option>
                                                                                     </select>
                                                                                     <style>
@@ -1253,11 +1255,13 @@
                         <div class="form-group">
                             <label for="updatedDomain">Domain:</label>
                             <select class="form-control" id="updatedDomain" name="domaine">
-                                <option value="Informatique">Informatique</option>
-                                <option value="Gestion/économie">Gestion/économie</option>
-                                <option value="Mécanique">Mécanique</option>
-                                <option value="Électrique">Électrique</option>
-                                <option value="Science">Science</option>
+                            <option value="">Select Domain</option>
+                            <option value="Computer science">Computer science</option>
+                            <option value="Management/economics">Management/economics</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="lectric">Electric</option>
+                            <option value="Science">Science</option>
+                            <option value="Lettre">Letter</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>
