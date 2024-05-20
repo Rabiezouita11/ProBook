@@ -63,7 +63,7 @@
             <strong>{{ $message }}</strong>
         </span>
     @enderror
-</div>
+</div> 
 
                                 <!-- Submit Button -->
                                 <div class="form-group">
@@ -149,7 +149,9 @@
                         showToast('error', errorMessage);
                     } else {
                         var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
-                        showToast('error', errorMessage);
+                        showToast('error',"aaa"+ errorMessage);
+                        window.location.href = '/login';
+
                     }
                 }
             });
