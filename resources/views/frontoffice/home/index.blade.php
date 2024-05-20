@@ -1261,17 +1261,10 @@
             // Submit comment form
             $(document).on('submit', '#commentForm', function(e) {
                 e.preventDefault();
+              
                 var formData = $(this).serialize();
                 var publicationId = $(this).find('input[name="publication_id"]').val();
-                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-                        if (!isAuthenticated) {
-                            showToast('error', 'You need to log in to follow users.');
-                            // Optionally, redirect to the login page
-                            setTimeout(function() {
-                                window.location.href = '{{ route('login') }}';
-                            }, 2000); // Redirect after 2 seconds
-                            return;
-                        }
+              
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),
@@ -1280,7 +1273,7 @@
                         if (response.success) {
                             // Clear input field
                             $('#commentForm input[name="content"]').val('');
-
+                          
                             // Fetch and display comments for the publication
                             fetchAndDisplayComments(publicationId);
                             var likeCountElement = $('.unique-commentaire-count-' +
@@ -1289,7 +1282,14 @@
                             showToast('success', 'Comment added successfully!');
 
                         } else {
-                            console.error(response.message);
+                         
+                            showToast('error', 'You need to log in to follow users.');
+                            // Optionally, redirect to the login page
+                            setTimeout(function() {
+                                window.location.href = '{{ route('login') }}';
+                            }, 2000); // Redirect after 2 seconds
+                            return;
+                        
                         }
                     },
                     error: function(xhr, status, error) {
