@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('users:delete-unverified')->cron('*/2 * * * *');
+        $schedule->command('users:delete-unverified')->cron('*/1 * * * *');
     }
 
     /**
