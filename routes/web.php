@@ -161,6 +161,9 @@ Route::get('/notifications/fetch', [ClientController::class, 'fetch'])->name('no
 /* show page dashboard admin*/
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
+
+Route::get('/analytics', [App\Http\Controllers\AdminController::class, 'analytics'])->name('analytics');
+
 /* show page utilisateurs admin*/
 Route::get('/utilisateurs', [App\Http\Controllers\AdminController::class, 'showPageUtilisateurs'])->name('showPageUtilisateurs');
 /* button bloquer debloquer utilisateurs admin*/

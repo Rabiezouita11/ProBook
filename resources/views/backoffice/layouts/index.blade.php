@@ -227,7 +227,7 @@
 				
 
 				<li class="">
-					<a class="" href="analytics.html" title="">
+					<a class="" href="{{route('analytics')}}" title="">
 						<i class=""><svg id="ab7" class="feather feather-zap" stroke-linejoin="round"
 								stroke-linecap="round" stroke-width="2" stroke="currentColor" fill="none"
 								viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">

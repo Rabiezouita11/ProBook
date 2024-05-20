@@ -9,12 +9,13 @@ use App\Models\jaime_commentaires;
 use App\Models\jaime_publications;
 use App\Models\Publication;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
+
 class AdminController extends Controller
 {
     /**
@@ -27,16 +28,44 @@ class AdminController extends Controller
         $this->middleware(['auth', 'role:admin']);
     }
 
+    public function analytics()
+    {
+        // Get domain data
+        $domainData = Publication::select('domain', DB::raw('count(*) as count'))
+            ->groupBy('domain')
+            ->get()
+            ->map(function ($item) {
+                $item->percentage = ($item->count / Publication::count()) * 100;
+                return $item;
+            });
+
+        // Get data on users who added publications
+        $userData = Publication::select('user_id', DB::raw('count(*) as count'))
+            ->groupBy('user_id')
+            ->orderByDesc('count')
+            ->limit(1)  // Limit the result to 1 to get the user with the most publications
+            ->get()
+            ->map(function ($item) {
+                $user = User::find($item->user_id);
+                $item->username = $user ? $user->name : 'Unknown';
+                return $item;
+            });
+
+        return view('backoffice.analytics.index', [
+            'domainData' => $domainData,
+            'userData' => $userData
+        ]);
+    }
+
     public function index()
     {
-
         $domainData = Publication::select('domain', DB::raw('count(*) as count'))
-        ->groupBy('domain')
-        ->get()
-        ->map(function($item) {
-            $item->percentage = ($item->count / Publication::count()) * 100;
-            return $item;
-        });
+            ->groupBy('domain')
+            ->get()
+            ->map(function ($item) {
+                $item->percentage = ($item->count / Publication::count()) * 100;
+                return $item;
+            });
         // Count records in each table
         $abonnementsCount = abonnements::count();
         $commentairesCount = Commentaire::count();
@@ -87,51 +116,51 @@ class AdminController extends Controller
     }
 
     public function updateEmailName(Request $request)
-{
-    // Validate the incoming request data
-    $validatedData = $request->validate([
-        'email' => 'required|email',
-        'name' => 'required|string|max:255',
-    ]);
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'name' => 'required|string|max:255',
+        ]);
 
-    // Get the authenticated user
-    $user = Auth::user();
+        // Get the authenticated user
+        $user = Auth::user();
 
-    // Update the user's email and name
-    $user->email = $validatedData['email'];
-    $user->name = $validatedData['name'];
+        // Update the user's email and name
+        $user->email = $validatedData['email'];
+        $user->name = $validatedData['name'];
 
-    // Save the updated user to the database
-    $user->save();
+        // Save the updated user to the database
+        $user->save();
 
-    // Show a success toast message
-    return response()->json(['message' => 'Email and name updated successfully.']);
-}
-
-public function updatePassword(Request $request)
-{
-    // Validate the incoming request data
-    $validatedData = $request->validate([
-        'current_password' => 'required',
-        'password' => 'required|string|min:8|confirmed',
-    ]);
-
-    // Check if the current password matches the authenticated user's password
-    if (!Hash::check($request->current_password, Auth::user()->password)) {
-        return response()->json([
-            'message' => 'The given data was invalid.',
-            'errors' => [
-                'current_password' => ['Current password is incorrect.'],
-            ],
-        ], 422);
+        // Show a success toast message
+        return response()->json(['message' => 'Email and name updated successfully.']);
     }
 
-    // Update the user's password
-    $user = Auth::user();
-    $user->password = Hash::make($request->password);
-    $user->save();
+    public function updatePassword(Request $request)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
 
-    // Return a success response
-    return response()->json(['message' => 'Password updated successfully.']);
-}
+        // Check if the current password matches the authenticated user's password
+        if (!Hash::check($request->current_password, Auth::user()->password)) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'current_password' => ['Current password is incorrect.'],
+                ],
+            ], 422);
+        }
+
+        // Update the user's password
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Return a success response
+        return response()->json(['message' => 'Password updated successfully.']);
+    }
 }
