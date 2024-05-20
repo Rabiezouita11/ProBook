@@ -134,7 +134,8 @@
                                                         src="/frontoffice/images/resources/recentlink-3.jpg">
                                                 </figure>
                                                 <div class="re-links-meta">
-                                                    <h6><a title="" href="#">The Xchange over watch scandals.</a>
+                                                    <h6><a title="" href="#">The Xchange over watch
+                                                            scandals.</a>
                                                     </h6>
                                                     <span>1 day before</span>
                                                 </div>
@@ -1017,7 +1018,15 @@
                 e.preventDefault();
                 var publicationId = $(this).closest('.box').data('publication-id');
                 var csrfToken = $('meta[name="csrf-token"]').attr('content'); // Récupérer le jeton CSRF
-
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
                 $.ajax({
                     type: 'POST',
                     url: '/jaime-publication',
@@ -1168,6 +1177,15 @@
     <script>
         $(document).on('click', '.update-comment', function(e) {
             e.preventDefault();
+            var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+            if (!isAuthenticated) {
+                showToast('error', 'You need to log in to follow users.');
+                // Optionally, redirect to the login page
+                setTimeout(function() {
+                    window.location.href = '{{ route('login') }}';
+                }, 2000); // Redirect after 2 seconds
+                return;
+            }
             var commentId = $(this).closest('li').data('comment-id');
             var commentContent = $(this).closest('li').find('.commenter p').text();
             console.log(commentId);
@@ -1245,7 +1263,15 @@
                 e.preventDefault();
                 var formData = $(this).serialize();
                 var publicationId = $(this).find('input[name="publication_id"]').val();
-
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                        if (!isAuthenticated) {
+                            showToast('error', 'You need to log in to follow users.');
+                            // Optionally, redirect to the login page
+                            setTimeout(function() {
+                                window.location.href = '{{ route('login') }}';
+                            }, 2000); // Redirect after 2 seconds
+                            return;
+                        }
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),
@@ -1512,12 +1538,12 @@
                         <div class="form-group">
                             <label for="updatedDomain">Domain:</label>
                             <select class="form-control" id="updatedDomain" name="domaine">
-                            <option value="Computer science">Computer science</option>
-                            <option value="Management/economics">Management/economics</option>
-                            <option value="Mechanical">Mechanical</option>
-                            <option value="Electric">Electric</option>
-                            <option value="Science">Science</option>
-                            <option value="Lettre">Lettre</option>
+                                <option value="Computer science">Computer science</option>
+                                <option value="Management/economics">Management/economics</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Science">Science</option>
+                                <option value="Lettre">Lettre</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>
@@ -1550,7 +1576,15 @@
             // Event listener for the like button
             $('.like-button').click(function() {
                 var publicationId = $(this).data('publication-id');
-
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
                 // Send AJAX request to fetch liked users
                 $.ajax({
                     url: '/getLikedUsers/' + publicationId,
@@ -1613,6 +1647,6 @@
             </div>
         </div>
     </div>
-    
+
 
 @endsection
