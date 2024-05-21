@@ -1120,7 +1120,7 @@
                                 '<p>' + comment.contenu + '</p>' +
                                 '</div>';
 
-                            if (comment.user.id === {{ auth()->id() }}) {
+                            if (isAuthenticated && comment.user.id === authenticatedUserId) {
                                 commentHtml +=
                                     '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
                                     '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
@@ -1202,7 +1202,10 @@
             $('#updateCommentModal').css('z-index', 9999999999);
         });
     </script>
-
+    <script>
+        var authenticatedUserId = {{ auth()->check() ? auth()->id() : 'null' }};
+        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+    </script>
     {{-- add comment in profile user --}}
     <script>
         $(document).ready(function() {
@@ -1240,7 +1243,8 @@
                                     '</div>';
 
                                 // Add update and delete options if the comment belongs to the current user
-                                if (comment.user.id === {{ auth()->id() }}) {
+                                if (isAuthenticated && comment.user.id ===
+                                    authenticatedUserId) {
                                     commentHtml +=
                                         '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
                                         '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';
@@ -1261,10 +1265,10 @@
             // Submit comment form
             $(document).on('submit', '#commentForm', function(e) {
                 e.preventDefault();
-              
+
                 var formData = $(this).serialize();
                 var publicationId = $(this).find('input[name="publication_id"]').val();
-              
+
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),
@@ -1273,7 +1277,7 @@
                         if (response.success) {
                             // Clear input field
                             $('#commentForm input[name="content"]').val('');
-                          
+
                             // Fetch and display comments for the publication
                             fetchAndDisplayComments(publicationId);
                             var likeCountElement = $('.unique-commentaire-count-' +
@@ -1282,18 +1286,18 @@
                             showToast('success', 'Comment added successfully!');
 
                         } else {
-                         
-                            showToast('error', 'You need to log in to follow users.');
-                            // Optionally, redirect to the login page
-                            setTimeout(function() {
-                                window.location.href = '{{ route('login') }}';
-                            }, 2000); // Redirect after 2 seconds
-                            return;
-                        
+
+
+
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error(error);
+                        showToast('error', 'You need to log in to follow users.');
+                        // Optionally, redirect to the login page
+                        setTimeout(function() {
+                            window.location.href = '{{ route('login') }}';
+                        }, 2000); // Redirect after 2 seconds
+                        return;
                     }
                 });
             });
@@ -1499,7 +1503,8 @@
                                     '<p>' + comment.contenu + '</p>' +
                                     '</div>';
 
-                                if (comment.user.id === {{ auth()->id() }}) {
+                                if (isAuthenticated && comment.user.id ===
+                                    authenticatedUserId) {
                                     commentHtml +=
                                         '<a title="Update" href="#" class="update-comment"><i class="icofont-ui-edit"></i></a>' +
                                         '<a title="Delete" href="#" class="delete-comment"><i class="icofont-trash"></i></a>';

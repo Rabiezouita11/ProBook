@@ -57,7 +57,7 @@ class ClientController extends Controller
             // If user is not logged in, show all users
             $suggestedUsers = User::where('role', 'utilisateur')->get();
 
-            $publications = Publication::orderBy('created_at', 'desc')->get();
+            $publications = Publication::orderBy('created_at', 'asc')->get();
 
             return view('frontoffice.home.index', [
                 'publications' => $publications,
