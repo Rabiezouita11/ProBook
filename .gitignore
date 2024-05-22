@@ -7,6 +7,7 @@
 /public/users
 /public/uploads
 /public/images
+/public/formations_images
 /vendor
 .env
 .env.backup

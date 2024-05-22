@@ -49,6 +49,17 @@ Auth::routes();
 Route::any('/search', [ClientController::class, 'search'])->name('search');
 
 
+
+/* page affiche formations  */
+
+Route::get('/Formations', [App\Http\Controllers\ClientController::class, 'formations'])->name('formations');
+
+
+/* button ajouter formations */
+
+Route::post('/formations',  [ClientController::class, 'storeFormation'])->name('formations.store')->middleware(['auth', 'role:utilisateur']);;
+
+
 /* page affiche pour valider email*/
 
 Route::get('/enter_verification_code', [App\Http\Controllers\ClientController::class, 'enter_verification_code'])->name('enter_verification_code');

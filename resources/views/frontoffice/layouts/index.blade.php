@@ -42,7 +42,7 @@
         <div class="responsive-header">
             <div class="logo res">
                 <img src="/frontoffice/images/logo.png" alt="">
-                <span>Xchange</span>
+                <a href="{{route('home')}}"><span>Xchange</span></a> 
             </div>
             @if (Auth::check())
                 <div class="user-avatar mobile">

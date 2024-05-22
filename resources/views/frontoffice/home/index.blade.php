@@ -76,35 +76,53 @@
 
 
 
-
+                                    <style>
+                                        .no-formations-message {
+                                            background-color: #f8d7da;
+                                            /* Light red background */
+                                            color: #721c24;
+                                            /* Dark red text color */
+                                            padding: 10px;
+                                            border: 1px solid #f5c6cb;
+                                            /* Dark red border */
+                                            border-radius: 4px;
+                                            /* Rounded corners */
+                                        }
+                                    </style>
                                     <div class="widget">
-                                        <h4 class="widget-title"><i class="icofont-flame-torch"></i> Popular Courses</h4>
-                                        <ul class="premium-course">
-                                            <li>
-                                                <figure>
-                                                    <img src="/frontoffice/images/resources/course-5.jpg" alt="">
+                                        <a href="{{ route('formations') }}" title="View All Formations">
+                                            <h4 class="widget-title"><i class="icofont-flame-torch"></i> Formation</h4>
+                                        </a>                                        <ul class="premium-course">
+                                            @if ($formations->isEmpty())
+                                                <li>
+                                                    <div class="no-formations-message">
+                                                        No formations available
+                                                    </div>
+                                                </li>
+                                            @else
+                                                @foreach ($formations as $formation)
+                                                    <li>
+                                                       
+                                                        @if ($formation->image)
+                                                        <figure><img src="{{ asset('formations_images/' . $formation->image) }}"
+                                                                alt="{{ $formation->title }}">
+                                                                <span class="tag">Free</span>
+                                                            </figure>
+                                                    @else
                                                     <span class="tag">Free</span>
-                                                </figure>
-                                                <div class="vid-course">
-                                                    <h5><a href="course-detail.html" title="">Wordpress Online video
-                                                            course</a></h5>
-                                                    <ins class="price">$19/M</ins>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <figure>
-                                                    <img src="/frontoffice/images/resources/course-3.jpg" alt="">
-                                                    <span class="tag">Premium</span>
-                                                </figure>
-                                                <div class="vid-course">
-                                                    <h5><a href="course-detail.html" title="">Node JS Online video
-                                                            course</a></h5>
-                                                    <ins class="price">$29/M</ins>
-                                                </div>
-                                            </li>
+                                                    @endif
+                                                        <div class="vid-course">
+                                                            <h5><a href="course-detail.html"
+                                                                    title="">{{ $formation->domain }}</a></h5>
+                                                            {{-- <ins class="price">$19/M</ins> --}}
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+
                                         </ul>
                                     </div><!-- popular courses -->
-                                    <div class="widget">
+                                    {{-- <div class="widget">
                                         <h4 class="widget-title">Recent Blogs <a class="see-all" href="#"
                                                 title="">See
                                                 All</a></h4>
@@ -141,14 +159,14 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                    </div><!-- recent blog -->
+                                    </div><!-- recent blog --> --}}
 
 
 
                                 </aside>
                             </div>
                             <div class="col-lg-6">
-                                <ul class="filtr-tabs">
+                                <ul class="figbltr-tabs">
                                     <li><a class="active" href="#" title="">Home</a></li>
                                     @if (session('success'))
                                         <div class="alert alert-success">
@@ -276,8 +294,7 @@
                                 </div><!-- suggested friends -->
 
                                 @if ($publications->isEmpty())
-                                    <div class="container"
-                                        style="text-align: center; font-size: 30px; font-weight: bold;">
+                                    <div class="container" style="text-align: center; font-size: 30px; font-weight: bold;">
                                         <p>No posts found.</p>
                                     </div>
                                 @else

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\PrivateChannelUser;
 use App\Mail\VerificationCodeMail;
 use App\Models\Commentaire;
+use App\Models\Formation;
 use App\Models\jaime_publications;
 use App\Models\notifications;
 use App\Models\Publication;
@@ -23,6 +24,55 @@ use Monarobase\CountryList\CountryListFacade;
 class ClientController extends Controller
 {
 
+
+    public function formations()
+    {
+
+
+
+        if (auth()->check()) {
+            $formations = Formation::orderBy('created_at', 'desc')->paginate(10); // Change '10' to the number of formations per page you want
+
+            $currentUser = auth()->user();
+
+            $suggestedUsers = User::where('role', 'utilisateur')
+                ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+                ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+                ->where('id', '!=', $currentUser->id)
+                ->get();
+
+            $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+                $query->where('user_id', $currentUser->id);
+            })->with('abonnes');
+
+            // Users who are following the current user
+            $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+                $query->where('abonne_id', $currentUser->id);
+            })->with('abonnements');
+
+            // Combine both queries using union
+            $followingUsers = $followingUsers->union($followers)->get();
+
+            $followingCount = $followingUsers->count();
+            $publications = Publication::orderBy('created_at', 'asc')->get();
+
+            return view('frontoffice.Formations.index', compact('followingCount', 'publications', 'suggestedUsers', 'formations'));
+
+        } else {
+            $formations = Formation::orderBy('created_at', 'desc')->paginate(10); // Change '10' to the number of formations per page you want
+
+            // If user is not logged in, show all users
+            $suggestedUsers = User::where('role', 'utilisateur')->get();
+
+            $publications = Publication::orderBy('created_at', 'asc')->get();
+            return view('frontoffice.Formations.index', compact('publications', 'suggestedUsers', 'formations'));
+
+
+        }
+
+
+
+    }
 
     public function search(Request $request)
     {
@@ -56,18 +106,18 @@ class ClientController extends Controller
             $followingCount = $followingUsers->count();
             $publications = Publication::orderBy('created_at', 'asc')->get();
 
-            return view('frontoffice.Search.index', compact('results', 'domain','followingCount', 'publications' ,'suggestedUsers' ));
+            return view('frontoffice.Search.index', compact('results', 'domain', 'followingCount', 'publications', 'suggestedUsers'));
 
         } else {
             // If user is not logged in, show all users
             $suggestedUsers = User::where('role', 'utilisateur')->get();
 
             $publications = Publication::orderBy('created_at', 'asc')->get();
-        return view('frontoffice.Search.index', compact('results', 'domain', 'publications' ,'suggestedUsers' ));
+            return view('frontoffice.Search.index', compact('results', 'domain', 'publications', 'suggestedUsers'));
 
-          
+
         }
-      
+
 
 
     }
@@ -80,6 +130,8 @@ class ClientController extends Controller
 
     public function index()
     {
+        $formations = Formation::orderBy('created_at', 'desc')->get();
+
         if (auth()->check()) {
             $currentUser = auth()->user();
 
@@ -108,6 +160,8 @@ class ClientController extends Controller
                 'followingCount' => $followingCount,
                 'publications' => $publications,
                 'suggestedUsers' => $suggestedUsers,
+                'formations' => $formations
+
             ]);
         } else {
             // If user is not logged in, show all users
@@ -118,6 +172,8 @@ class ClientController extends Controller
             return view('frontoffice.home.index', [
                 'publications' => $publications,
                 'suggestedUsers' => $suggestedUsers,
+                'formations' => $formations,
+
             ]);
         }
     }
@@ -382,6 +438,32 @@ class ClientController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
+    public function storeFormation(Request $request)
+    {
+        $formation = new Formation();
+        $formation->user_id = auth()->id();
+        $formation->contenu = $request->contenu;
+        $formation->domain = $request->domain;
+        $imageName = null;
+        if ($request->hasFile('image')) {
+            // Check if the 'public/images' folder exists, if not, create it
+            $uploadPath = public_path('formations_images');
+            if (!File::isDirectory($uploadPath)) {
+                File::makeDirectory($uploadPath, 0777, true, true);
+            }
+
+            $imageName = time() . '.' . $request->file('image')->extension();  // Generate unique filename
+            $request->file('image')->move($uploadPath, $imageName);  // Move uploaded file to 'public/images' folder
+            // Save the formation
+
+            $formation->image = $imageName;  // Assign the image name to the publication model
+
+            $formation->save();
+        }
+        return redirect()->back()->with('success', 'Formation created successfully!');
+
+
+    }
     public function storeUserAbonner(Request $request)
     {
         // Validate the form data
@@ -792,13 +874,15 @@ class ClientController extends Controller
 
         $followingCount = $followingUsers->count();
 
-        return view('frontoffice.profile.index', compact(
-            'publications',
-            'suggestedUsers',
-            'followingUsers',
-            'followingCount',
-            'countries'
-        )
+        return view(
+            'frontoffice.profile.index',
+            compact(
+                'publications',
+                'suggestedUsers',
+                'followingUsers',
+                'followingCount',
+                'countries'
+            )
         );
     }
 
@@ -824,10 +908,10 @@ class ClientController extends Controller
     {
         // Find the publication by its ID
         $publication = Publication::findOrFail($publicationId);
-    
+
         // Retrieve the liked users for the publication using the relationship
         $likedUsers = $publication->jaime_publications()->with('user')->get();
-    
+
         // Modify the liked users data to include name, image, institution, and profile link
         $likedUsersData = $likedUsers->map(function ($like) {
             return [
@@ -837,10 +921,10 @@ class ClientController extends Controller
                 'profileLink' => route('profile.show', $like->user) // Construct the profile link
             ];
         });
-    
+
         // Return the list of liked users as JSON response
         return response()->json(['likedUsers' => $likedUsersData]);
     }
-    
-    
+
+
 }
