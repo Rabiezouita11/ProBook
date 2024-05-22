@@ -113,9 +113,11 @@
                     <span>Xchange</span>
                 </div>
                 <div class="searches">
-                    <form method="POST" action="{{ route('search') }}">
+                    <form id="searchForm" method="POST" action="{{ route('search') }}">
                         @csrf
                         <select id="domain" name="domain" class="form-control">
+                            <option value="">Select Domain</option>
+
                             <option value="Computer science">Computer science</option>
                             <option value="Management/economics">Management/economics</option>
                             <option value="Mechanical">Mechanical</option>
@@ -123,14 +125,14 @@
                             <option value="Science">Science</option>
                             <option value="Lettre">Lettre</option>
                         </select>
-                        <button type="submit">
-                            <i class="icofont-search"></i>
-                        </button>
-                        <span class="cancel-search">
-                            <i class="icofont-close"></i>
-                        </span>
+                        
                     </form>
                 </div>
+                <script>
+                    document.getElementById("domain").addEventListener("change", function() {
+                        document.getElementById("searchForm").submit();
+                    });
+                </script>
                 <style>
                     #domain {
                         display: block !important;
