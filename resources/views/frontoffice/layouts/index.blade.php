@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @if (auth()->check())
         <script src="{{ asset('js/app.js') }}"></script>
@@ -42,7 +43,7 @@
         <div class="responsive-header">
             <div class="logo res">
                 <img src="/frontoffice/images/logo.png" alt="">
-                <a href="{{route('home')}}"><span>Xchange</span></a> 
+                <a href="{{ route('home') }}"><span>Xchange</span></a>
             </div>
             @if (Auth::check())
                 <div class="user-avatar mobile">
@@ -125,7 +126,7 @@
                             <option value="Science">Science</option>
                             <option value="Lettre">Lettre</option>
                         </select>
-                        
+
                     </form>
                 </div>
                 <script>
@@ -554,17 +555,85 @@
                     <h4>
                         <i class="icofont-bell-alt"></i> Notifications
                     </h4>
+                    <div class="notification-container">
                     <ul class="notificationz">
                         <!-- Notification items will be appended here -->
                     </ul>
-                    <a href="#" title="" class="main-btn" data-ripple="">View All</a>
+                </div>
+                  
                 </div>
 
             </div>
         </div>
     </div>
     <style>
+        .notification-container {
+            max-height: 550px;
+            /* Adjust the maximum height as needed */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+        }
 
+        .notificationz {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notificationz li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            /* Add a border between notification items */
+        }
+
+        .notificationz li:last-child {
+            border-bottom: none;
+            /* Remove border for the last notification item */
+        }
+
+        .notificationz li figure {
+            margin-right: 10px;
+        }
+
+        .notificationz li img {
+            width: 40px;
+            /* Adjust image size as needed */
+            height: 40px;
+            /* Adjust image size as needed */
+            border-radius: 50%;
+            /* Make the image round */
+        }
+
+        .notificationz li .mesg-info {
+            flex: 1;
+        }
+
+        .notificationz li .mesg-info a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .notificationz li .timestamp {
+            color: #999;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .notificationz li .delete-notification-btn {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .notificationz li .delete-notification-btn:hover {
+            color: #f00;
+            /* Change color on hover */
+        }
     </style>
     <!-- side slide message & popup -->
 
@@ -1204,6 +1273,8 @@
             }
 
             function deleteNotification(notificationId, element) {
+
+                console.log(notificationId);
                 $.ajax({
                     url: "{{ route('notifications.delete') }}",
                     type: "DELETE",

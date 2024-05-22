@@ -97,11 +97,13 @@
 
                                                 @if ($formation->image)
                                                     <figure><img src="{{ asset('formations_images/' . $formation->image) }}"
-                                                            alt="{{ $formation->title }}"></figure>
+                                                            alt="{{ $formation->title }}">
+                                                            <span class="tag">Free</span></figure>
+                                                           
                                                 @else
-                                                    <figure></figure>
-                                                @endif
                                                 <span class="tag">Free</span>
+                                                @endif
+                                               
 
                                                 <div class="blog-post-meta">
                                                     <h4><a href="#" title="">{{ $formation->domain }}</a></h4>
@@ -109,6 +111,7 @@
                                                     <p>
                                                         {{ $formation->contenu }}
                                                     </p>
+                                                    <span><i class="icofont-clock-time"></i> {{ $formation->created_at->format('F d, Y') }}</span>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -168,7 +171,7 @@
                         </div>
 
                         <div class="post-newmeta">
-                            <input type="file" name="image">
+                            <input type="file" name="image" >
                             @error('image')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror

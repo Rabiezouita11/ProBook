@@ -456,10 +456,11 @@ class ClientController extends Controller
             $request->file('image')->move($uploadPath, $imageName);  // Move uploaded file to 'public/images' folder
             // Save the formation
 
-            $formation->image = $imageName;  // Assign the image name to the publication model
-
-            $formation->save();
+          
         }
+        $formation->image = $imageName;  // Assign the image name to the publication model
+
+        $formation->save();
         return redirect()->back()->with('success', 'Formation created successfully!');
 
 
