@@ -296,7 +296,7 @@
                                                                                         @endif
                                                                                     </div>
                                                                                     <ins><a title=""
-                                                                                            href="time-line.html">{{ $publication->user->name }}</a>
+                                                                                            href="{{ route('profile.show', $publication->user) }}">{{ $publication->user->name }}</a>
                                                                                         <span><i class="icofont-globe"></i>
                                                                                             published:
                                                                                             {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}</span>
@@ -863,10 +863,11 @@
 
             // Submit comment form via AJAX
             $('#add-comment-form').submit(function(e) {
+              
                 e.preventDefault();
                 console.log("aaa")
                 var formData = $(this).serialize();
-
+              
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),
@@ -1106,7 +1107,10 @@
                 e.preventDefault();
                 var formData = $(this).serialize();
                 var publicationId = $(this).find('input[name="publication_id"]').val();
-
+                if (!isLoggedIn()) {
+                    showToast('info', 'You must login to like a publication.');
+                    return;
+                }
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),

@@ -22,6 +22,62 @@ use Monarobase\CountryList\CountryListFacade;
 
 class ClientController extends Controller
 {
+
+
+    public function search(Request $request)
+    {
+
+        $domain = $request->input('domain');
+        $perPage = 7; // Number of results per page
+
+        // Logic to retrieve publications based on the search query and domain
+        $results = Publication::where('domain', 'like', '%' . $domain . '%')->paginate($perPage);
+        if (auth()->check()) {
+            $currentUser = auth()->user();
+
+            $suggestedUsers = User::where('role', 'utilisateur')
+                ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))
+                ->whereNotIn('id', $currentUser->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+                ->where('id', '!=', $currentUser->id)
+                ->get();
+
+            $followingUsers = User::whereHas('abonnes', function ($query) use ($currentUser) {
+                $query->where('user_id', $currentUser->id);
+            })->with('abonnes');
+
+            // Users who are following the current user
+            $followers = User::whereHas('abonnements', function ($query) use ($currentUser) {
+                $query->where('abonne_id', $currentUser->id);
+            })->with('abonnements');
+
+            // Combine both queries using union
+            $followingUsers = $followingUsers->union($followers)->get();
+
+            $followingCount = $followingUsers->count();
+            $publications = Publication::orderBy('created_at', 'asc')->get();
+
+            return view('frontoffice.Search.index', compact('results', 'domain','followingCount', 'publications' ,'suggestedUsers' ));
+
+        } else {
+            // If user is not logged in, show all users
+            $suggestedUsers = User::where('role', 'utilisateur')->get();
+
+            $publications = Publication::orderBy('created_at', 'asc')->get();
+        return view('frontoffice.Search.index', compact('results', 'domain', 'publications' ,'suggestedUsers' ));
+
+          
+        }
+      
+
+
+    }
+
+
+
+
+
+
+
     public function index()
     {
         if (auth()->check()) {

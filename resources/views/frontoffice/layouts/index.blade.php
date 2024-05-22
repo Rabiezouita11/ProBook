@@ -113,76 +113,33 @@
                     <span>Xchange</span>
                 </div>
                 <div class="searches">
-                    <form method="post">
-                        <input type="text" placeholder="Search...">
+                    <form method="POST" action="{{ route('search') }}">
+                        @csrf
+                        <select id="domain" name="domain" class="form-control">
+                            <option value="Computer science">Computer science</option>
+                            <option value="Management/economics">Management/economics</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Electric">Electric</option>
+                            <option value="Science">Science</option>
+                            <option value="Lettre">Lettre</option>
+                        </select>
                         <button type="submit">
                             <i class="icofont-search"></i>
                         </button>
                         <span class="cancel-search">
                             <i class="icofont-close"></i>
                         </span>
-                        <div class="recent-search">
-                            <h4 class="recent-searches">Your's Recent Search</h4>
-                            <ul class="so-history">
-                                <li>
-                                    <div class="searched-user">
-                                        <figure>
-                                            <img src="/frontoffice/images/resources/user1.jpg" alt="">
-                                        </figure>
-                                        <span>Danial Carabal</span>
-                                    </div>
-                                    <span class="trash">
-                                        <i class="icofont-close-circled"></i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <div class="searched-user">
-                                        <figure>
-                                            <img src="/frontoffice/images/resources/user2.jpg" alt="">
-                                        </figure>
-                                        <span>Maria K</span>
-                                    </div>
-                                    <span class="trash">
-                                        <i class="icofont-close-circled"></i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <div class="searched-user">
-                                        <figure>
-                                            <img src="/frontoffice/images/resources/user3.jpg" alt="">
-                                        </figure>
-                                        <span>Fawad Khan</span>
-                                    </div>
-                                    <span class="trash">
-                                        <i class="icofont-close-circled"></i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <div class="searched-user">
-                                        <figure>
-                                            <img src="/frontoffice/images/resources/user4.jpg" alt="">
-                                        </figure>
-                                        <span>Danial Sandos</span>
-                                    </div>
-                                    <span class="trash">
-                                        <i class="icofont-close-circled"></i>
-                                    </span>
-                                </li>
-                                <li>
-                                    <div class="searched-user">
-                                        <figure>
-                                            <img src="/frontoffice/images/resources/user5.jpg" alt="">
-                                        </figure>
-                                        <span>Jack Carter</span>
-                                    </div>
-                                    <span class="trash">
-                                        <i class="icofont-close-circled"></i>
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
                     </form>
                 </div>
+                <style>
+                    #domain {
+                        display: block !important;
+                    }
+
+                    .chosen-container-single {
+                        display: none;
+                    }
+                </style>
                 <ul class="web-elements">
                     @if (Auth::check())
                         <li>
@@ -259,7 +216,7 @@
                                         <i class="icofont-user-alt-3"></i> Your Profile
                                     </a>
                                 </li>
-                                
+
                                 <li>
                                     <a class="dark-mod" href="#" title="">
                                         <i class="icofont-moon"></i> Dark Mode
@@ -318,22 +275,22 @@
                         Home
                     </a>
                     <ul class="submenu">
-                       
+
                         <li>
                             <a href="profile-page2.html" title="">User Profile</a>
                         </li>
-                       
-                       
+
+
                         <li>
                             <a href="messages.html" title="">Chat/Messages</a>
                         </li>
                         <li>
                             <a href="notifications.html" title="">Notificatioins</a>
                         </li>
-                       
+
                     </ul>
                 </li>
-               
+
             </ul>
         </nav>
         <!-- nav sidebar -->
@@ -374,7 +331,7 @@
                                             <p>Newsfeed</p>
                                         </a>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                             @if (auth()->check())
@@ -530,7 +487,8 @@
                     <a class="active" href="#messages" data-toggle="tab">Messages</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="" href="#notifications" data-toggle="tab">Notifications <span id="notification-count">(0)</span></a>
+                    <a class="" href="#notifications" data-toggle="tab">Notifications <span
+                            id="notification-count">(0)</span></a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -592,7 +550,7 @@
                 </div>
                 <div class="tab-pane fade" id="notifications">
                     <h4>
-                        <i class="icofont-bell-alt"></i> Notifications 
+                        <i class="icofont-bell-alt"></i> Notifications
                     </h4>
                     <ul class="notificationz">
                         <!-- Notification items will be appended here -->
@@ -795,7 +753,7 @@
             <button type="submit" class="main-btn">Publish</button>
         </div>
     </div>
-   
+
     <!-- chat button -->
     <div class="chat-box">
         <div class="chat-head">
@@ -1215,73 +1173,73 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!-- custom scripts -->
     @if (auth()->check())
-    <script>
-        let notificationCount = 0; // Initialize notification count
-    
-        function showToast(type, message) {
-            toastr.options = {
-                closeButton: true, // Add a close button
-                progressBar: true, // Show a progress bar
-                showMethod: 'slideDown', // Animation in
-                hideMethod: 'slideUp', // Animation out
-                timeOut: 5000, // Time before auto-dismiss
-            };
-    
-            switch (type) {
-                case 'info':
-                    toastr.info(message);
-                    break;
-                case 'success':
-                    toastr.success(message);
-                    break;
-                case 'warning':
-                    toastr.warning(message);
-                    break;
-                case 'error':
-                    toastr.error(message);
-                    break;
-            }
-        }
-    
-        function deleteNotification(notificationId, element) {
-            $.ajax({
-                url: "{{ route('notifications.delete') }}",
-                type: "DELETE",
-                data: {
-                    notification_id: notificationId
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    var audio = new Audio('audio.wav');
-                    audio.play();
-                    // Find the parent li element and remove it
-                    $(element).closest('li').remove();
-                    fetchNotifications();
-                    showToast('success', response.message); // Show success toast
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    showToast('error', "Failed to delete notification"); // Show error toast
+        <script>
+            let notificationCount = 0; // Initialize notification count
+
+            function showToast(type, message) {
+                toastr.options = {
+                    closeButton: true, // Add a close button
+                    progressBar: true, // Show a progress bar
+                    showMethod: 'slideDown', // Animation in
+                    hideMethod: 'slideUp', // Animation out
+                    timeOut: 5000, // Time before auto-dismiss
+                };
+
+                switch (type) {
+                    case 'info':
+                        toastr.info(message);
+                        break;
+                    case 'success':
+                        toastr.success(message);
+                        break;
+                    case 'warning':
+                        toastr.warning(message);
+                        break;
+                    case 'error':
+                        toastr.error(message);
+                        break;
                 }
-            });
-        }
-    
-        // Function to fetch notifications via AJAX
-        function fetchNotifications() {
-            $.ajax({
-                url: "{{ route('notifications.fetch') }}",
-                type: "GET",
-                success: function(response) {
-                    const notifications = response.notifications;
-                    const notificationList = $('.notificationz');
-                    notificationList.empty(); // Clear existing notifications
-                    notificationCount = notifications.length; // Update notification count
-                    $('#notification-count').text(`(${notificationCount})`);
-                    notifications.forEach(function(notification) {
-                        const createdAt = moment(notification.created_at).fromNow();
-                        const notificationItem = `
+            }
+
+            function deleteNotification(notificationId, element) {
+                $.ajax({
+                    url: "{{ route('notifications.delete') }}",
+                    type: "DELETE",
+                    data: {
+                        notification_id: notificationId
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        var audio = new Audio('audio.wav');
+                        audio.play();
+                        // Find the parent li element and remove it
+                        $(element).closest('li').remove();
+                        fetchNotifications();
+                        showToast('success', response.message); // Show success toast
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        showToast('error', "Failed to delete notification"); // Show error toast
+                    }
+                });
+            }
+
+            // Function to fetch notifications via AJAX
+            function fetchNotifications() {
+                $.ajax({
+                    url: "{{ route('notifications.fetch') }}",
+                    type: "GET",
+                    success: function(response) {
+                        const notifications = response.notifications;
+                        const notificationList = $('.notificationz');
+                        notificationList.empty(); // Clear existing notifications
+                        notificationCount = notifications.length; // Update notification count
+                        $('#notification-count').text(`(${notificationCount})`);
+                        notifications.forEach(function(notification) {
+                            const createdAt = moment(notification.created_at).fromNow();
+                            const notificationItem = `
                         <li>
                             <figure>
                                 <img src="${notification.imageurl ? 'users/' + notification.imageurl : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(notification.username) + '&background=104d93&color=fff'}" alt="">
@@ -1296,37 +1254,37 @@
                             </div>
                         </li>
                     `;
-                        notificationList.append(notificationItem);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
+                            notificationList.append(notificationItem);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            // Call fetchNotifications when the page is ready
+            $(document).ready(function() {
+                fetchNotifications();
             });
-        }
-    
-        // Call fetchNotifications when the page is ready
-        $(document).ready(function() {
-            fetchNotifications();
-        });
-    
-        // Listen for PrivateChannelUser event
-        const userId = '{{ Auth::id() }}'; // Get the authenticated user's ID
-        const echo = window.Echo.private(`private-channel.user.${userId}`);
-    
-        echo.listen('.App\\Events\\PrivateChannelUser', (e) => {
-            // Append the received message to the notifications div
-            notificationCount++; // Increment notification count
-            $('#notification-count').text(`(${notificationCount})`);
-            const notificationList = $('.notificationz');
-    
-            // Get current timestamp
-            const createdAt = moment().fromNow();
-    
-            const imageUrl = e.imageUrl ? 'users/' + e.imageUrl : 'https://ui-avatars.com/api/?name=' +
-                encodeURIComponent(e.username) + '&background=104d93&color=fff';
-    
-            const notificationItem = `
+
+            // Listen for PrivateChannelUser event
+            const userId = '{{ Auth::id() }}'; // Get the authenticated user's ID
+            const echo = window.Echo.private(`private-channel.user.${userId}`);
+
+            echo.listen('.App\\Events\\PrivateChannelUser', (e) => {
+                // Append the received message to the notifications div
+                notificationCount++; // Increment notification count
+                $('#notification-count').text(`(${notificationCount})`);
+                const notificationList = $('.notificationz');
+
+                // Get current timestamp
+                const createdAt = moment().fromNow();
+
+                const imageUrl = e.imageUrl ? 'users/' + e.imageUrl : 'https://ui-avatars.com/api/?name=' +
+                    encodeURIComponent(e.username) + '&background=104d93&color=fff';
+
+                const notificationItem = `
             <li>
                 <figure>
                     <img src="${imageUrl}" alt="">
@@ -1341,12 +1299,11 @@
                 </div>
             </li>
         `;
-            notificationList.prepend(notificationItem); // Prepend new notifications
-            var audio = new Audio('audio.wav');
-            audio.play();
-        });
-    </script>
-    
+                notificationList.prepend(notificationItem); // Prepend new notifications
+                var audio = new Audio('audio.wav');
+                audio.play();
+            });
+        </script>
     @endif
 
 </body>

@@ -43,6 +43,12 @@ Route::get('/test-broadcast', function () {
 /* authentification*/
 Auth::routes();
 
+
+/* page search by domain */ 
+
+Route::any('/search', [ClientController::class, 'search'])->name('search');
+
+
 /* page affiche pour valider email*/
 
 Route::get('/enter_verification_code', [App\Http\Controllers\ClientController::class, 'enter_verification_code'])->name('enter_verification_code');
