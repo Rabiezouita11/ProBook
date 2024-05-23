@@ -111,6 +111,9 @@
                                                     <p>
                                                         {{ $formation->contenu }}
                                                     </p>
+                                                    <p  >
+                                                    <a href="{{ route('profile.show', $formation->user) }}"> by : {{ $formation->user->name }}</a>  
+                                                    </p>
                                                     <span><i class="icofont-clock-time"></i> {{ $formation->created_at->format('F d, Y') }}</span>
                                                 </div>
                                             </div>
