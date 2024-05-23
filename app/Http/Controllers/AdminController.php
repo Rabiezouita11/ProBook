@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\UserBlockedNotification;
 use App\Models\abonnements;
 use App\Models\Commentaire;
+use App\Models\Contact;
 use App\Models\jaime_commentaires;
 use App\Models\jaime_publications;
 use App\Models\Publication;
@@ -27,6 +28,14 @@ class AdminController extends Controller
     {
         $this->middleware(['auth', 'role:admin']);
     }
+    public function Contact()
+    {
+        $contacts = Contact::with('user')->paginate(6);
+
+        return view('backoffice.Contact.index', compact('contacts'));
+    }
+
+
 
     public function analytics()
     {

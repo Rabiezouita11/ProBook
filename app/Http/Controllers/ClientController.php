@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\PrivateChannelUser;
 use App\Mail\VerificationCodeMail;
 use App\Models\Commentaire;
+use App\Models\Contact;
 use App\Models\Formation;
 use App\Models\jaime_publications;
 use App\Models\notifications;
@@ -23,6 +24,29 @@ use Monarobase\CountryList\CountryListFacade;
 
 class ClientController extends Controller
 {
+
+
+    public function storeSupport(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        // Create a new contact message
+        Contact::create([
+            'user_id' => Auth::id(),
+            'message' => $request->message,
+        ]);
+
+        // Redirect back with a success message
+        return back()->with('success', 'Your message has been sent successfully.');
+    }
+
+
+
+
+
 
 
     public function formations()

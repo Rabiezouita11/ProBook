@@ -146,6 +146,11 @@ Route::delete('/notifications/delete', [App\Http\Controllers\ClientController::c
 
 
 
+/* button envoyer message to admin support */
+
+Route::post('/contact/support', [ClientController::class, 'storeSupport'])->name('contact.support');
+
+
 /* Show profile frontoffice  */
 
 Route::get('/Profile_User', [App\Http\Controllers\ClientController::class, 'showProfileUser'])->name('Profile_User')->middleware(['auth', 'role:utilisateur']);
@@ -177,6 +182,10 @@ Route::get('/notifications/fetch', [ClientController::class, 'fetch'])->name('no
 
 /* show page dashboard admin*/
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+
+
+/* show page Contact admin*/
+Route::get('/Contact', [App\Http\Controllers\AdminController::class, 'Contact'])->name('Contact');
 
 
 Route::get('/analytics', [App\Http\Controllers\AdminController::class, 'analytics'])->name('analytics');
