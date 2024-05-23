@@ -69,6 +69,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if($contacts->isEmpty())
+                                        <tr>
+                                            <td colspan="5" class="text-center">No contacts available</td>
+                                        </tr>
+                                    @else
                                         @foreach($contacts as $contact)
                                             <tr>
                                                 <td>{{$contact->id}}</td>
@@ -93,6 +98,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
 

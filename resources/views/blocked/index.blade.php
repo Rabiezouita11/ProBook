@@ -19,13 +19,9 @@
 
         </span>
         <span class="support">
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-            <span>go to home?</span>
-            <a href="/login">home</a>
+          
+            <span>go to login?</span>
+            <a href="/login">login</a>
 
         </span>
 
