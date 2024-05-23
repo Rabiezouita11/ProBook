@@ -112,7 +112,7 @@
                                                     <span class="tag">Free</span>
                                                     @endif
                                                         <div class="vid-course">
-                                                            <h5><a href="course-detail.html"
+                                                            <h5><a 
                                                                     title="">{{ $formation->domain }}</a></h5>
                                                             {{-- <ins class="price">$19/M</ins> --}}
                                                         </div>
