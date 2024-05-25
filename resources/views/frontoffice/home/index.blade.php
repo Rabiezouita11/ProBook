@@ -90,13 +90,13 @@
                                         }
                                     </style>
                                     <div class="widget">
-                                        <a href="{{ route('formations') }}" title="View All Formations">
-                                            <h4 class="widget-title"><i class="icofont-flame-torch"></i> Formation</h4>
+                                        <a href="{{ route('formations') }}" title="View All training offer">
+                                            <h4 class="widget-title"><i class="icofont-flame-torch"></i> Training offer</h4>
                                         </a>                                        <ul class="premium-course">
                                             @if ($formations->isEmpty())
                                                 <li>
                                                     <div class="no-formations-message">
-                                                        No formations available
+                                                        No training offer available
                                                     </div>
                                                 </li>
                                             @else

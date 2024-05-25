@@ -485,7 +485,7 @@ class ClientController extends Controller
         $formation->image = $imageName;  // Assign the image name to the publication model
 
         $formation->save();
-        return redirect()->back()->with('success', 'Formation created successfully!');
+        return redirect()->back()->with('success', 'Training offer created successfully!');
 
 
     }

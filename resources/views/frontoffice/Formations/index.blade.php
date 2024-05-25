@@ -17,20 +17,20 @@
                                     @endif
                                     @if (auth()->check())
                                         <div class="main-wraper">
-                                            <span class="new-title">Create New Formation</span>
+                                            <span class="new-title">Create New Training offer</span>
                                             <div class="new-post">
                                                 <form method="post">
                                                     <i class="icofont-pen-alt-1"></i>
-                                                    <input type="text" placeholder="Create New Formation">
+                                                    <input type="text" placeholder="Create New Training offer">
                                                 </form>
                                             </div>
                                         </div><!-- create new formation -->
                                     @else
                                         <div class="main-wrapper" style="text-align: center">
                                             <div class="new-post">
-                                                <span class="new-title">Create New Formation</span>
+                                                <span class="new-title">Create New Training offer</span>
                                                 <div class="login-prompt">
-                                                    <p>To create a new formation, please</p>
+                                                    <p>To create a new training offer, please</p>
                                                     <div class="auth-links">
                                                         <a href="{{ route('login') }}" class="login-link">Log In</a>
                                                         <span class="separator">or</span>
@@ -89,7 +89,7 @@
                                 <div class="main-wraper">
 
                                     @if ($formations->isEmpty())
-                                        <p style="text-align: center; font-size: 16px; font-weight: bold;">No formations
+                                        <p style="text-align: center; font-size: 16px; font-weight: bold;">No training offer
                                             available.</p>
                                     @else
                                         @foreach ($formations as $formation)
@@ -146,7 +146,7 @@
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
-                        </i>Create New Formation
+                        </i>Create New Training offer
                     </h5>
                 </div>
                 <div class="post-new">
@@ -155,7 +155,7 @@
                         @csrf
                         <!-- This is important for Laravel to validate the form submission -->
 
-                        <textarea id="emojionearea1" name="contenu" placeholder="Formation Description" required></textarea>
+                        <textarea id="emojionearea1" name="contenu" placeholder="Training offer Description" required></textarea>
                         @error('contenu')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>
                         @enderror
@@ -180,7 +180,7 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="main-btn">Create Formation</button>
+                        <button type="submit" class="main-btn">Create Training offer</button>
                     </form>
                 </div>
             </div>
