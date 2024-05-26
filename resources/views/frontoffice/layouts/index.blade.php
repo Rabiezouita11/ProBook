@@ -480,6 +480,7 @@
         </div>
     </div>
     <!-- send message popup -->
+    @if (Auth::check())
     <div class="side-slide">
         <span class="popup-closed">
             <i class="icofont-close"></i>
@@ -503,6 +504,7 @@
                         <i class="icofont-edit"></i>
                     </a>
                     <ul class="new-messages">
+                  
                         @foreach ($followingUsers as $user)
                             <li>
                                 @if ($user->image)
@@ -556,6 +558,7 @@
 
         </div>
     </div>
+    @endif
     <style>
         .notification-container {
             max-height: 550px;
