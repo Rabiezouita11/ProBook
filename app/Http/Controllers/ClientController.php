@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\PrivateChannelUser;
+use App\Events\MessageSent;
+
 use App\Mail\VerificationCodeMail;
 use App\Models\Commentaire;
 use App\Models\Contact;
@@ -11,6 +13,7 @@ use App\Models\jaime_publications;
 use App\Models\notifications;
 use App\Models\Publication;
 use App\Models\User;
+use App\Models\chats;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -80,7 +83,7 @@ class ClientController extends Controller
             $followingCount = $followingUsers->count();
             $publications = Publication::orderBy('created_at', 'asc')->get();
 
-            return view('frontoffice.Formations.index', compact('followingCount', 'publications', 'suggestedUsers', 'formations'));
+            return view('frontoffice.Formations.index', compact('followingCount', 'publications', 'suggestedUsers', 'formations','followingUsers'));
 
         } else {
             $formations = Formation::orderBy('created_at', 'desc')->paginate(10); // Change '10' to the number of formations per page you want
@@ -154,6 +157,11 @@ class ClientController extends Controller
 
     public function index()
     {
+
+
+
+
+
         $formations = Formation::orderBy('created_at', 'desc')->get();
 
         if (auth()->check()) {
@@ -180,11 +188,16 @@ class ClientController extends Controller
             $followingCount = $followingUsers->count();
             $publications = Publication::orderBy('created_at', 'asc')->get();
 
+
+
+
+            
             return view('frontoffice.home.index', [
                 'followingCount' => $followingCount,
                 'publications' => $publications,
                 'suggestedUsers' => $suggestedUsers,
-                'formations' => $formations
+                'formations' => $formations,
+                'followingUsers' => $followingUsers
 
             ]);
         } else {
@@ -764,6 +777,31 @@ class ClientController extends Controller
         return response()->json(['message' => 'You followed the user successfully'], 200);
     }
 
+
+    public function sendMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:1000',
+            'to_user_id' => 'required|exists:users,id',
+        ]);
+    
+        $message = chats::create([
+            'sender_id' => Auth::id(),
+            'receiver_id' => $request->to_user_id,
+            'message' => $request->message,
+        ]);
+    
+        event(new MessageSent($request->message, Auth::id(), $request->to_user_id));
+    
+        return response()->json(['success' => true, 'message' => 'Message sent successfully!']);
+    }
+    
+
+
+  
+  
+
+
     public function unfollow(Request $request, $userId)
     {
         // Get the ID of the authenticated user
@@ -858,6 +896,98 @@ class ClientController extends Controller
             'publications' => $publications,
         ]);
     }
+
+
+    public function showMessage(User $user)
+    {
+
+        $user = User::findOrFail($user->id);
+        $authUserId = Auth::id();
+        $user_id = $user->id;
+        $messages = chats::where(function($query) use ($authUserId, $user_id) {
+            $query->where('sender_id', $authUserId)
+                  ->where('receiver_id', $user_id);
+        })->orWhere(function($query) use ($authUserId, $user_id) {
+            $query->where('sender_id', $user_id)
+                  ->where('receiver_id', $authUserId);
+        })->orderBy('created_at', 'asc')->get();
+
+
+        $currentUserId = $user->id;
+
+        $followingUsers = User::whereHas('abonnes', function ($query) use ($user) {
+            $query->where('user_id', auth()->id());
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers = User::whereHas('abonnements', function ($query) use ($user) {
+            $query->where('abonne_id', auth()->id());
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers = $followingUsers->union($followers)->get();
+
+        $followingCount = $followingUsers->count();
+        $mostLikedPost = Publication::withCount('jaime_publications')
+            ->where('user_id', $user->id)  // Filter by user ID
+            ->orderByDesc('jaime_publications_count')
+            ->first();
+
+        if (auth()->check()) {
+            $suggestedUsers = User::where('role', 'utilisateur')
+                ->whereNotIn('id', auth()->user()->abonnements()->pluck('abonne_id'))
+                ->whereNotIn('id', auth()->user()->abonnes()->pluck('user_id'))  // Exclude users whom the current user is following
+                ->where('id', '!=', auth()->id())
+                ->get();
+        } else {
+            // If user is not logged in, show all users
+            $suggestedUsers = User::where('role', 'utilisateur')->get();
+        }
+
+        $publications = Publication::with('user', 'user_abonner')
+            ->where(function ($query) use ($user) {
+                $query
+                    ->where('user_id', $user->id)
+                    ->orWhere('user_abonner_id', $user->id);
+            })
+            ->where('Activity_Feed', true)
+            ->orderBy('created_at')
+            ->get();
+
+
+
+
+
+
+        $followingUsers2 = User::whereHas('abonnes', function ($query) use ($currentUserId) {
+            $query->where('user_id', $currentUserId);
+        })->with('abonnes');
+
+        // Users who are following the current user
+        $followers2 = User::whereHas('abonnements', function ($query) use ($currentUserId) {
+            $query->where('abonne_id', $currentUserId);
+        })->with('abonnements');
+
+        // Combine both queries using union
+        $followingUsers2 = $followingUsers2->union($followers2)->get();
+
+        $followingCount2 = $followingUsers2->count();
+
+
+        return view('frontoffice.chat.index',[
+            'user' => $user,
+            'followingUsers2' => $followingUsers2,
+            'followingCount' => $followingCount,
+            'followingCount2' => $followingCount2,
+            'mostLikedPost' => $mostLikedPost,
+            'suggestedUsers' => $suggestedUsers,
+            'publications' => $publications,
+            'messages' => $messages ,
+            'followingUsers' => $followingUsers
+        ]);
+    }
+
+
 
     public function showProfileUser()
     {

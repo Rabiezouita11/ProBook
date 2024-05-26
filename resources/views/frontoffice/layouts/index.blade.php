@@ -497,73 +497,63 @@
             <div class="tab-content">
                 <div class="tab-pane active fade show" id="messages">
                     <h4>
-                        <i class="icofont-envelope"></i> messages
+                        <i class="icofont-envelope"></i> Messages
                     </h4>
                     <a href="#" class="send-mesg" title="New Message" data-toggle="tooltip">
                         <i class="icofont-edit"></i>
                     </a>
                     <ul class="new-messages">
-                        <li>
-                            <figure>
-                                <img src="/frontoffice/images/resources/user1.jpg" alt="">
-                            </figure>
-                            <div class="mesg-info">
-                                <span>Ibrahim Ahmed</span>
-                                <a href="#" title="">Helo dear i wanna talk to you</a>
-                            </div>
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="/frontoffice/images/resources/user2.jpg" alt="">
-                            </figure>
-                            <div class="mesg-info">
-                                <span>Fatima J.</span>
-                                <a href="#" title="">Helo dear i wanna talk to you</a>
-                            </div>
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="/frontoffice/images/resources/user3.jpg" alt="">
-                            </figure>
-                            <div class="mesg-info">
-                                <span>Fawad Ahmed</span>
-                                <a href="#" title="">Helo dear i wanna talk to you</a>
-                            </div>
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="/frontoffice/images/resources/user4.jpg" alt="">
-                            </figure>
-                            <div class="mesg-info">
-                                <span>Saim Turan</span>
-                                <a href="#" title="">Helo dear i wanna talk to you</a>
-                            </div>
-                        </li>
-                        <li>
-                            <figure>
-                                <img src="/frontoffice/images/resources/user5.jpg" alt="">
-                            </figure>
-                            <div class="mesg-info">
-                                <span>Alis wells</span>
-                                <a href="#" title="">Helo dear i wanna talk to you</a>
-                            </div>
-                        </li>
+                        @foreach ($followingUsers as $user)
+                            <li>
+                                @if ($user->image)
+                                    <figure>
+                                        <a href="{{ route('Chat', $user) }}">
+                                            <img src="{{ asset('users/' . $user->image) }}" alt="">
+                                        </a>
+                                    </figure>
+                                @else
+                                    <figure>
+                                        <a href="{{ route('Chat', $user) }}">
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
+                                                height="25px" width="25px" alt="" class="mr-2"
+                                                style="border-radius: 50%;">
+                                        </a>
+                                    </figure>
+                                @endif
+                                <div class="mesg-info">
+                                    <span>{{ $user->name }}</span>
+                                    @php
+                                        $lastMessage = \App\Models\Chats::where('sender_id', $user->id)
+                                            ->orWhere('receiver_id', $user->id)
+                                            ->orderBy('created_at', 'desc')
+                                            ->first();
+                                    @endphp
+                                    @if ($lastMessage)
+                                        <a href="{{ route('Chat', $user) }}"
+                                            title="">{{ $lastMessage->message }}</a>
+                                    @else
+                                        <span>No messages yet</span>
+                                    @endif
+                                </div>
+                            </li>
+                        @endforeach
+
                     </ul>
-                    <a href="#" title="" class="main-btn" data-ripple="">view all</a>
+
+
                 </div>
                 <div class="tab-pane fade" id="notifications">
                     <h4>
                         <i class="icofont-bell-alt"></i> Notifications
                     </h4>
                     <div class="notification-container">
-                    <ul class="notificationz">
-                        <!-- Notification items will be appended here -->
-                    </ul>
+                        <ul class="notificationz">
+                            <!-- Notification items will be appended here -->
+                        </ul>
+                    </div>
                 </div>
-                  
-                </div>
-
             </div>
+
         </div>
     </div>
     <style>

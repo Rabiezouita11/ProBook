@@ -130,6 +130,13 @@ Route::put('/publications', [App\Http\Controllers\ClientController::class, 'upda
 
 Route::get('/profile/{user}', [App\Http\Controllers\ClientController::class, 'show'])->name('profile.show');
 
+// show page  chat 
+
+Route::get('/Chat_{user}', [App\Http\Controllers\ClientController::class, 'showMessage'])->name('Chat');
+// button send message chat 
+Route::post('/send-message', [App\Http\Controllers\ClientController::class, 'sendMessage'])->middleware('auth');
+
+
 // delete comment 
 Route::delete('/publication/{publicationId}/comment/{commentId}', [App\Http\Controllers\ClientController::class, 'destroy'])->middleware(['auth', 'role:utilisateur']);
 

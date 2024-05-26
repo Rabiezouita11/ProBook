@@ -890,7 +890,7 @@
                     },
                     success: function(response) {
                         // Handle success response
-                        showToast('success', response.message);
+                        4('success', response.message);
                         $.ajax({
                             url: location.href,
                             type: 'GET',
