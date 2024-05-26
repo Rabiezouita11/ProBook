@@ -21,6 +21,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/template_Authentification/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
 </head>
 
 <body>
@@ -161,16 +163,10 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="fxt-transformY-50 fxt-transition-delay-1">
+
+                                        <label for="inputField" class="btn btn-info">uploid Document</label>
+                                        <input type="file" name="image" id="inputField" style="display:none">
                                        
-
-                                        <label for="choose-file" class="custom-file-upload" id="choose-file-label">
-                                            Upload Document
-                                        </label>
-                                        <input name="uploadDocument" name="image" type="file" id="choose-file"
-                                            accept=".jpg,.jpeg,.pdf,doc,docx,application/msword,.png"
-                                            style="display: none;" />
-
-
                                         @error('image')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -247,31 +243,27 @@
             }
         }
     </script>
-    <script>
-        document.getElementById('institut').addEventListener('change', function() {
-            var institut = this.value;
-            var diplomaSelect = document.getElementById('diploma');
-            // Clear existing options
-            diplomaSelect.innerHTML = '<option value="">Select Diploma</option>';
+<script>
+    document.getElementById('institut').addEventListener('change', function() {
+        var institut = this.value;
+        var diplomaSelect = document.getElementById('diploma');
+        // Clear existing options
+        diplomaSelect.innerHTML = '<option value="">Select Diploma</option>';
 
-            if (institut === 'isi_kef') {
-                var option1 = new Option("Cette Licence Intitulé 'Computer Science' Comprend Deux Spécialités",
-                    "computer_science");
-                var option2 = new Option("Mastère de Recherche en Systèmes d'Informations et Web",
-                "mastere_si_web");
-                diplomaSelect.add(option1);
-                diplomaSelect.add(option2);
-            } else if (institut === 'isi_ariana') {
-                var option1 = new Option(
-                    "Mastère Co-Construite en Nouvelles Technologies de l’Information et de la Communication dédiées à l'Innovation de l'Agriculture",
-                    "mastere_agriculture");
-                var option2 = new Option("Mastère Professionnel en Application Web Intelligente", "mastere_web");
-                diplomaSelect.add(option1);
-                diplomaSelect.add(option2);
-            }
-            // Add more conditions/options as needed
-        });
-    </script>
+        if (institut === 'isi_kef') {
+            var option1 = new Option("Cette Licence Intitulé 'Computer Science' Comprend Deux Spécialités", "computer_science");
+            var option2 = new Option("Mastère de Recherche en Systèmes d'Informations et Web", "mastere_si_web");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        } else if (institut === 'isi_ariana') {
+            var option1 = new Option("Mastère Co-Construite en Nouvelles Technologies de l’Information et de la Communication dédiées à l'Innovation de l'Agriculture", "mastere_agriculture");
+            var option2 = new Option("Mastère Professionnel en Application Web Intelligente", "mastere_web");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        }
+        // Add more conditions/options as needed
+    });
+</script>
 
 </body>
 
