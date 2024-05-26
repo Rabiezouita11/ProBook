@@ -13,7 +13,7 @@
                                 <div class="message-box">
                                     <div class="message-content">
                                         <div class="chat-content">
-                                            <div class="date">Wednesday 25, March</div>
+                                           
                                             <ul class="chatting-area" id="chatting-area">
                                                 <!-- Check if messages are available -->
                                                 @if(count($messages) > 0)
@@ -95,7 +95,6 @@
                                         </li>
                                     </ul>
                                     <a class="button primary circle" href="{{ route('profile.show', $user) }}" title="">view Profile</a>
-                                    <a class="button primary circle danger" href="#" title="">Block Chat</a>
                                 </div>
                             </div>
                         </div>
