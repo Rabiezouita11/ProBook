@@ -500,9 +500,7 @@
                     <h4>
                         <i class="icofont-envelope"></i> Messages
                     </h4>
-                    <a href="#" class="send-mesg" title="New Message" data-toggle="tooltip">
-                        <i class="icofont-edit"></i>
-                    </a>
+                   
                     <ul class="new-messages">
                   
                         @foreach ($followingUsers as $user)
