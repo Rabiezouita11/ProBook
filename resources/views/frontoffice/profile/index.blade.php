@@ -37,7 +37,7 @@
                                 <li class="nav-item"><a class="" href="#follow" data-toggle="tab">Follow</a><span
                                         id="following-count">{{ $followingCount }}</span>
                                 </li>
-                                <li class="nav-item"><a class="" href="#about" data-toggle="tab">About</a></li>
+                                
                                 <li class="nav-item"><a class="" href="#profile" data-toggle="tab">Profile</a></li>
                                 <li class="nav-item"><a class="" href="#Changerpassword" data-toggle="tab">Change
                                         Password
@@ -487,132 +487,7 @@
                                     </div>
 
 
-                                    <div class="tab-pane fade " id="about">
-                                        <div class="main-wraper">
-                                            <h3 class="main-title">About Engin</h3>
-                                            <div class="lang">
-                                                <h6>Languages</h6>
-                                                <span>English, Turkish</span>
-                                            </div>
-
-                                            <div class="dis-n-exp">
-                                                <h6>Discipliens</h6>
-                                                <span>educational leadership</span>
-                                                <span>educational assesment</span>
-                                                <span>educational management</span>
-                                                <span>Social Psychology</span>
-                                                <span>organizational Psychology</span>
-                                                <span>Qualitative social research</span>
-                                                <span>Qualitative Psychology</span>
-                                            </div>
-                                            <div class="dis-n-exp">
-                                                <h6>Skills & Experties </h6>
-                                                <span>educational leadership</span>
-                                                <span>educational assesment</span>
-                                                <span>educational management</span>
-                                                <span>Social Psychology</span>
-                                                <span>organizational Psychology</span>
-                                                <span>Qualitative social research</span>
-                                                <span>Qualitative Psychology</span>
-                                            </div>
-                                        </div>
-                                        <div class="main-wraper">
-                                            <h3 class="main-title">Professional Experience</h3>
-                                            <div class="exp-col">
-                                                <div class="exp-meta">
-                                                    <h5><i class="icofont-university"></i> Oxford university</h5>
-                                                    <p>Sep-2012 Sep-2013</p>
-                                                    <span>Position</span>
-                                                    <ins>Professor Associate</ins>
-                                                </div>
-                                                <img src="/frontoffice/images/resources/uni1.jpg" alt="">
-                                            </div>
-                                            <div class="exp-col">
-                                                <div class="exp-meta">
-                                                    <h5><i class="icofont-university"></i> university of cambridge</h5>
-                                                    <p>Sep-2012 Sep-2013</p>
-                                                    <span>Position</span>
-                                                    <ins>Professor Associate</ins>
-                                                </div>
-                                                <img src="/frontoffice/images/resources/uni3.jpg" alt="">
-                                            </div>
-                                            <div class="exp-col">
-                                                <div class="exp-meta">
-                                                    <h5><i class="icofont-university"></i> university of cambridge</h5>
-                                                    <p>Sep-2012 Sep-2013</p>
-                                                    <span>Position</span>
-                                                    <ins>Professor Associate</ins>
-                                                </div>
-                                                <img src="/frontoffice/images/resources/uni4.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="main-wraper">
-                                            <h3 class="main-title">Researches Image & PDF</h3>
-                                            <div class="row merged-10">
-                                                <div class="col-lg-4">
-                                                    <figure class="research-avatar">
-                                                        <a class="uk-inline"
-                                                            href="/frontoffice/images/resources/image1.jpg"
-                                                            data-fancybox="">
-                                                            <img src="/frontoffice/images/resources/image1.jpg"
-                                                                alt="">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <figure class="research-avatar">
-                                                        <a class="uk-inline"
-                                                            href="/frontoffice/images/resources/image1.jpg"
-                                                            data-fancybox="">
-                                                            <img src="/frontoffice/images/resources/image2.jpg"
-                                                                alt="">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <figure class="research-avatar">
-                                                        <a class="uk-inline"
-                                                            href="/frontoffice/images/resources/image1.jpg"
-                                                            data-fancybox="">
-                                                            <img src="/frontoffice/images/resources/image3.jpg"
-                                                                alt="">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <figure class="research-avatar">
-                                                        <a class="uk-inline"
-                                                            href="/frontoffice/images/resources/image1.jpg"
-                                                            data-fancybox="">
-                                                            <img src="/frontoffice/images/resources/image4.jpg"
-                                                                alt="">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <figure class="research-avatar">
-                                                        <a class="uk-inline"
-                                                            href="/frontoffice/images/resources/image1.jpg"
-                                                            data-fancybox="">
-                                                            <img src="/frontoffice/images/resources/image5.jpg"
-                                                                alt="">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <figure class="research-avatar">
-                                                        <a class="uk-inline"
-                                                            href="/frontoffice/images/resources/image1.jpg"
-                                                            data-fancybox="">
-                                                            <img src="/frontoffice/images/resources/image6.jpg"
-                                                                alt="">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                   
                                     <div class="tab-pane" id="profile">
                                         <form id="updateProfileForm" enctype="multipart/form-data">
                                             @csrf
@@ -862,62 +737,7 @@
                                     </div>
                                 </div><!-- suggested friends --> --}}
                             </div>
-                            <div class="col-lg-4">
-                                <aside class="sidebar static right">
-                                    <div class="widget">
-                                        <h4 class="widget-title">Post Analytics</h4>
-                                        <ul class="widget-analytics">
-                                            <li>Reads <span>56</span></li>
-                                            <li>Recommendations <span>3</span></li>
-                                            <li>Shares <span>22</span></li>
-                                            <li>References <span>17</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="widget">
-                                        <h4 class="widget-title">Ask Research Question?</h4>
-                                        <div class="ask-question">
-                                            <i class="icofont-question-circle"></i>
-                                            <h6>Ask questions in Q&A to get help from experts in your field.</h6>
-                                            <a class="ask-qst" href="#" title="">Ask a question</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget stick-widget" id="following-widget">
-                                        <h4 class="widget-title">Who's following</h4>
-                                        <ul class="followers">
-                                            @if ($suggestedUsers->isEmpty())
-                                                <p>No suggested users to display.</p>
-                                            @else
-                                                @foreach ($suggestedUsers as $user)
-                                                    <li>
-                                                        @if ($user->image)
-                                                            <figure><img src="{{ asset('users/' . $user->image) }}"
-                                                                    alt=""></figure>
-                                                        @else
-                                                            <figure><img
-                                                                    src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
-                                                                    alt=""></figure>
-                                                        @endif
-                                                        <div class="friend-meta">
-                                                            <h4>
-                                                                <a
-                                                                    href="{{ route('profile.show', $user) }}">{{ $user->name }}</a>
-
-                                                                <span>{{ $user->institut }}</span>
-                                                            </h4>
-                                                            <a class="underline follow-link" title=""
-                                                                href="#"
-                                                                data-user-id="{{ $user->id }}">Follow</a>
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            @endif
-                                        </ul>
-
-                                    </div>
-
-                                </aside>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
