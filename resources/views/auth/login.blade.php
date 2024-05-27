@@ -48,7 +48,7 @@
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">
                         <div class="fxt-header">
-                            <a href="login-29.html" class="fxt-logo"><img
+                            <a href="{{route('home')}}" class="fxt-logo"><img
                                     src="/template_Authentification/img/xchange.png" alt="Logo"></a>
                         </div>
                         <div class="fxt-form">

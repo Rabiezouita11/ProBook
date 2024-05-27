@@ -78,7 +78,7 @@
         <p>Your Application Team</p>
     </div>
     <div class="footer">
-        &copy; {{ date('Y') }} PROBOOK. All rights reserved.
+        &copy; {{ date('Y') }} Xchange. All rights reserved.
     </div>
 </body>
 

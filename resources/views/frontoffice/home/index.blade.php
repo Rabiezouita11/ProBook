@@ -92,7 +92,8 @@
                                     <div class="widget">
                                         <a href="{{ route('formations') }}" title="View All training offer">
                                             <h4 class="widget-title"><i class="icofont-flame-torch"></i> Training offer</h4>
-                                        </a>                                        <ul class="premium-course">
+                                        </a>
+                                        <ul class="premium-course">
                                             @if ($formations->isEmpty())
                                                 <li>
                                                     <div class="no-formations-message">
@@ -102,18 +103,18 @@
                                             @else
                                                 @foreach ($formations as $formation)
                                                     <li>
-                                                       
+
                                                         @if ($formation->image)
-                                                        <figure><img src="{{ asset('formations_images/' . $formation->image) }}"
-                                                                alt="{{ $formation->title }}">
+                                                            <figure><img
+                                                                    src="{{ asset('formations_images/' . $formation->image) }}"
+                                                                    alt="{{ $formation->title }}">
                                                                 <span class="tag">Free</span>
                                                             </figure>
-                                                    @else
-                                                    <span class="tag">Free</span>
-                                                    @endif
+                                                        @else
+                                                            <span class="tag">Free</span>
+                                                        @endif
                                                         <div class="vid-course">
-                                                            <h5><a 
-                                                                    title="">{{ $formation->domain }}</a></h5>
+                                                            <h5><a title="">{{ $formation->domain }}</a></h5>
                                                             {{-- <ins class="price">$19/M</ins> --}}
                                                         </div>
                                                     </li>
@@ -500,7 +501,7 @@
                                 <aside class="sidebar static right">
 
 
-                                   
+
 
 
                                     <div class="widget stick-widget" id="following-widget">
@@ -1001,6 +1002,7 @@
                                     followersCount);
                                 $('#suggested-users li[data-user-id="' + userId +
                                     '"]').remove();
+                                    $('.slide-meta').load(location.href + ' .slide-meta > *');
 
                                 // Update suggested users list
 
@@ -1587,77 +1589,81 @@
 
 
     <script>
-        $(document).ready(function() {
-            // Event listener for the like button
-            $('.like-button').click(function() {
-                var publicationId = $(this).data('publication-id');
-                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-                if (!isAuthenticated) {
-                    showToast('error', 'You need to log in to follow users.');
-                    // Optionally, redirect to the login page
-                    setTimeout(function() {
-                        window.location.href = '{{ route('login') }}';
-                    }, 2000); // Redirect after 2 seconds
-                    return;
-                }
-                // Send AJAX request to fetch liked users
-                $.ajax({
-                    url: '/getLikedUsers/' + publicationId,
-                    type: 'GET',
-                    success: function(response) {
-                        // Populate the modal with the list of liked users
-                        $('#likedUsersList').empty();
-                        response.likedUsers.forEach(function(user) {
-                            $('#likedUsersList').append(
-                                '<li class="list-group-item">' +
-                                '<div class="d-flex justify-content-between align-items-center">' +
-                                '<div class="d-flex align-items-center">' +
-                                '<img src="' + user.image +
-                                '" class="rounded-circle me-3" alt="User Image" width="50">' +
-                                '<div>' +
-                                '<h5 class="mb-0"><a href="' + user.profileLink +
-                                '">' + user.name + '</a></h5>' +
-                                '<p class="mb-0">Institution: ' + user.institut +
-                                '</p>' +
-                                '</div>' +
-                                '</div>' +
-                                // '<a href="#" class="btn btn-primary ms-auto">Follow</a>' +
-                                '</div>' +
-                                '</li>'
-                            );
-                        });
+ $(document).ready(function() {
+    // Event listener for the like button
+    $('.like-button').click(function() {
+        var publicationId = $(this).data('publication-id');
+        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+        if (!isAuthenticated) {
+            showToast('error', 'You need to log in to follow users.');
+            // Optionally, redirect to the login page
+            setTimeout(function() {
+                window.location.href = '{{ route('login') }}';
+            }, 2000); // Redirect after 2 seconds
+            return;
+        }
+        // Send AJAX request to fetch liked users
+        $.ajax({
+            url: '/getLikedUsers/' + publicationId,
+            type: 'GET',
+            success: function(response) {
+                // Populate the modal with the list of liked users
+                $('#likedUsersList').empty();
+                response.likedUsers.forEach(function(user) {
+                    console.log('User ID:', user.id);
+                    console.log('Auth ID:', {{ auth()->id() }});
+                    console.log('Profile Link:', user.profileLink);
 
-                        // Show the modal
-                        $('#likeModal').css('display', 'block');
-                    },
-
-
-
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert('Failed to fetch liked users.');
-                    }
+                    var profileLink = (user.id !== {{ auth()->id() }}) ? '<a href="' + user.profileLink + '">' + user.name + '</a>' : user.name;
+                    $('#likedUsersList').append(
+                        '<li class="list-group-item">' +
+                        '<div class="d-flex justify-content-between align-items-center">' +
+                        '<div class="d-flex align-items-center">' +
+                        '<img src="' + user.image +
+                        '" class="rounded-circle me-3" alt="User Image" width="50">' +
+                        '<div>' +
+                        '<h5 class="mb-0">' + profileLink + '</h5>' +
+                        '<p class="mb-0">Institution: ' + user.institut +
+                        '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        // '<a href="#" class="btn btn-primary ms-auto">Follow</a>' +
+                        '</div>' +
+                        '</li>'
+                    );
                 });
-            });
 
-            // Close the modal when the close button is clicked
-            $('.close').click(function() {
-                $('#likeModal').css('display', 'none');
-            });
+                // Show the modal
+                $('#likeModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('Failed to fetch liked users.');
+            }
         });
+    });
+
+    // Event listener for closing the modal
+    $(document).on('click', '.btn-close', function() {
+        $('#likeModal').modal('hide');
+    });
+});
+
+
     </script>
+
     <div id="likeModal" class="modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Liked Users</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <ul id="likedUsersList"></ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn-close btn-secondary" data-bs-dismiss="modal">Close</button>
+
                 </div>
             </div>
         </div>

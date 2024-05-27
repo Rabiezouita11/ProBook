@@ -84,7 +84,7 @@ class RegisterController extends Controller
             'institut' => ['required', 'string', 'max:255'],
 
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'max:8', 'confirmed'],
             // 'role' => ['required', 'string', 'max:255'],
             'image' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'], // Add validation rules for the image
 

@@ -1071,6 +1071,7 @@ class ClientController extends Controller
         // Modify the liked users data to include name, image, institution, and profile link
         $likedUsersData = $likedUsers->map(function ($like) {
             return [
+                'id'  => $like->user->id,
                 'name' => $like->user->name,
                 'image' => $like->user->image ? asset('users/' . $like->user->image) : 'https://ui-avatars.com/api/?name=' . urlencode($like->user->name) . '&background=104d93&color=fff',
                 'institut' => $like->user->institut,

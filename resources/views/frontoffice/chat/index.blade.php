@@ -33,9 +33,7 @@
                                             </ul>
 
                                             <div class="message-text-container">
-                                                <div class="more-attachments">
-                                                    <i class="icofont-plus"></i>
-                                                </div>
+                                               
                                                 <div class="attach-options">
                                                     <a href="#" title=""><i class="icofont-camera"></i> Open Camera</a>
                                                     <a href="#" title=""><i class="icofont-video-cam"></i> Photo & video Library</a>

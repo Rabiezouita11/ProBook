@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Xmee | Login and Register Form Html Templates</title>
+    <title>Reset Password
+</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -47,8 +48,8 @@
                 <div class="col-md-6 col-12 fxt-bg-color">
                     <div class="fxt-content">
                         <div class="fxt-header">
-                            <a href="{{ route('login') }}" class="fxt-logo"><img
-                                    src="/template_Authentification/img/logo-29.png" alt="Logo"></a>
+                            <a href="{{ route('home') }}" class="fxt-logo"><img
+                                    src="{{asset('template_Authentification/img/xchange.png')}}" alt="Logo"></a>
                         </div>
                         <div class="fxt-form">
                             <div class="fxt-transformY-50 fxt-transition-delay-1">

@@ -21,7 +21,6 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/template_Authentification/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
 </head>
 

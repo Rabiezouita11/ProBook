@@ -1348,6 +1348,8 @@
             // Event listener for the "Follow" link
             $(document).on('click', '.follow-link', function(e) {
                 e.preventDefault();
+                var button = $(this);
+
                 var userId = $(this).data('user-id');
                 var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
                 if (!isAuthenticated) {
@@ -1374,6 +1376,7 @@
                             success: function(response) {
 
 
+                                $('.group-avatar').load(location.href + ' .group-avatar > *');
 
                                 $('#new-post-container').load(location.href +
                                     ' #new-post-container > *');
