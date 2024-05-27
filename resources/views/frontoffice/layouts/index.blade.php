@@ -404,7 +404,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <span class="">&copy; copyright All rights reserved by socimo 2020</span>
+                    <span class=""></span>
                 </div>
             </div>
         </div>
