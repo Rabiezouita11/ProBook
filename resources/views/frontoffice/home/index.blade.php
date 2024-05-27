@@ -619,27 +619,14 @@
                         @csrf
                         <!-- This is important for Laravel to validate the form submission -->
 
-
+                        <div class="post-newmeta">
                         <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
                         @error('contenu')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>
                         @enderror
-
-
-                        <div class="activity-post">
-                            <div class="checkbox">
-                                <input type="checkbox" id="checkbox" name="Activity_Feed" checked>
-                                <label for="checkbox">
-                                    <span>Activity Feed</span>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <input type="checkbox" id="checkbox2" name="story" checked>
-                                <label for="checkbox2">
-                                    <span>My Story</span>
-                                </label>
-                            </div>
                         </div>
+
+                       
                         <div class="form-group">
                             <label for="domain">Domain</label>
                             <select id="domain" name="domain" class="form-control" required>
@@ -661,9 +648,25 @@
                             .chosen-container-single {
                                 display: none;
                             }
+
+                            .post-new {
+                                                                width: 202%;
+                                                            }
+
+                                                            .btn-info {
+                                                                width: 364px
+                                                            }
+
+                                                            .post-newmeta {
+                                                                width: 109%;
+
+                                                            }
                         </style>
                         <div class="post-newmeta">
-                            <input type="file" name="image">
+                            <label for="inputField" class="btn btn-info">uploid
+                                Document</label>
+                            <input type="file" name="image" id="inputField"
+                                style="display:none">
                             @error('image')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror

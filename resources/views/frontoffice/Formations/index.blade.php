@@ -70,6 +70,19 @@
                                         .register-link:hover {
                                             background-color: #2980b9;
                                         }
+
+                                        .post-new {
+                                                                width: 202%;
+                                                            }
+
+                                                            .btn-info {
+                                                                width: 364px
+                                                            }
+
+                                                            .post-newmeta {
+                                                                width: 109%;
+
+                                                            }
                                     </style>
                                 </div>
                             </div>
@@ -154,12 +167,12 @@
                         enctype="multipart/form-data">
                         @csrf
                         <!-- This is important for Laravel to validate the form submission -->
-
+                        <div class="post-newmeta">
                         <textarea id="emojionearea1" name="contenu" placeholder="Training offer Description" required></textarea>
                         @error('contenu')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>
                         @enderror
-
+                                                        </div>
                         <div class="form-group">
                             <label for="domain">Domain</label>
                             <select id="domain" name="domain" class="form-control" required>
@@ -174,7 +187,10 @@
                         </div>
 
                         <div class="post-newmeta">
-                            <input type="file" name="image" >
+                        <label for="inputField" class="btn btn-info">uploid
+                                Document</label>
+                            <input type="file" name="image" id="inputField"
+                                style="display:none">
                             @error('image')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror
