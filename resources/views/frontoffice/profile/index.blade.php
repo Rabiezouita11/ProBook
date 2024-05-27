@@ -37,7 +37,7 @@
                                 <li class="nav-item"><a class="" href="#follow" data-toggle="tab">Follow</a><span
                                         id="following-count">{{ $followingCount }}</span>
                                 </li>
-                                
+
                                 <li class="nav-item"><a class="" href="#profile" data-toggle="tab">Profile</a></li>
                                 <li class="nav-item"><a class="" href="#Changerpassword" data-toggle="tab">Change
                                         Password
@@ -487,7 +487,7 @@
                                     </div>
 
 
-                                   
+
                                     <div class="tab-pane" id="profile">
                                         <form id="updateProfileForm" enctype="multipart/form-data">
                                             @csrf
@@ -618,29 +618,14 @@
                                                         @csrf
                                                         <!-- This is important for Laravel to validate the form submission -->
 
-
-                                                        <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
-                                                        @error('contenu')
-                                                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                                                        @enderror
-
-
-                                                        <div class="activity-post">
-                                                            <div class="checkbox">
-                                                                <input type="checkbox" id="checkbox"
-                                                                    name="Activity_Feed" checked>
-                                                                <label for="checkbox">
-                                                                    <span>Activity Feed</span>
-                                                                </label>
-                                                            </div>
-                                                            <div class="checkbox">
-                                                                <input type="checkbox" id="checkbox2" name="story"
-                                                                    checked>
-                                                                <label for="checkbox2">
-                                                                    <span>My Story</span>
-                                                                </label>
-                                                            </div>
+                                                        <div class="post-newmeta">
+                                                            <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
+                                                            @error('contenu')
+                                                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                                                            @enderror
                                                         </div>
+
+
                                                         <div class="form-group">
                                                             <label for="domain">Domain</label>
                                                             <select id="domain" name="domain" class="form-control"
@@ -648,7 +633,8 @@
 
                                                                 <option value="">Select Domain</option>
                                                                 <option value="Computer science">Computer science</option>
-                                                                <option value="Management/economics">Management/economics</option>
+                                                                <option value="Management/economics">Management/economics
+                                                                </option>
                                                                 <option value="Mechanical">Mechanical</option>
                                                                 <option value="Electric">Electric</option>
                                                                 <option value="Science">Science</option>
@@ -663,9 +649,25 @@
                                                             .chosen-container-single {
                                                                 display: none;
                                                             }
+
+                                                            .post-new {
+                                                                width: 202%;
+                                                            }
+
+                                                            .btn-info {
+                                                                width: 364px
+                                                            }
+
+                                                            .post-newmeta {
+                                                                width: 109%;
+
+                                                            }
                                                         </style>
                                                         <div class="post-newmeta">
-                                                            <input type="file" name="image">
+                                                            <label for="inputField" class="btn btn-info">uploid
+                                                                Document</label>
+                                                            <input type="file" name="image" id="inputField"
+                                                                style="display:none">
                                                             @error('image')
                                                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                                                             @enderror
@@ -737,7 +739,7 @@
                                     </div>
                                 </div><!-- suggested friends --> --}}
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -1460,7 +1462,7 @@
                 // Update the hidden field value with the retrieved publication ID
                 $('#updatePublicationModal input[name="publication_id"]').val(publicationId);
                 console.log("Updated publicationId in input field:", $('input[name="publication_id"]')
-                .val());
+                    .val());
 
                 // Update the textarea value with the retrieved post content
                 $('#updatePublicationModal #updatedContent').val(postContent);
@@ -1499,12 +1501,12 @@
                         <div class="form-group">
                             <label for="updatedDomain">Domain:</label>
                             <select class="form-control" id="updatedDomain" name="domaine">
-                            <option value="Computer science">Computer science</option>
-                            <option value="Management/economics">Management/economics</option>
-                            <option value="Mechanical">Mechanical</option>
-                            <option value="Electric">Electric</option>
-                            <option value="Science">Science</option>
-                            <option value="Lettre">Lettre</option>
+                                <option value="Computer science">Computer science</option>
+                                <option value="Management/economics">Management/economics</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Science">Science</option>
+                                <option value="Lettre">Lettre</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>
@@ -1596,14 +1598,24 @@
 
 
 
-{{-- follow link  --}}
+    {{-- follow link  --}}
     <script>
         $(document).ready(function() {
+
             // Event listener for the "Follow" link
             $(document).on('click', '.follow-link', function(e) {
+
                 e.preventDefault();
                 var userId = $(this).data('user-id');
-
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
                 // Send AJAX request to follow the user
                 $.ajax({
                     url: '/follow/' + userId,

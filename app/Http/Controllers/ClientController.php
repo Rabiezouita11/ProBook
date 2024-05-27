@@ -863,7 +863,7 @@ class ClientController extends Controller
                     ->where('user_id', $user->id)
                     ->orWhere('user_abonner_id', $user->id);
             })
-            ->where('Activity_Feed', true)
+           
             ->orderBy('created_at')
             ->get();
 
@@ -894,6 +894,7 @@ class ClientController extends Controller
             'mostLikedPost' => $mostLikedPost,
             'suggestedUsers' => $suggestedUsers,
             'publications' => $publications,
+            'followingUsers' => $followingUsers
         ]);
     }
 
@@ -996,19 +997,19 @@ class ClientController extends Controller
         $currentUser = auth()->user();
         $userId = auth()->id();
 
-        $publications = Publication::where('Activity_Feed', true)
-            ->where(function ($query) use ($userId) {
-                $query
-                    ->where('user_id', $userId)
-                    ->whereNull('user_abonner_id');
-            })
-            ->orWhere(function ($query) use ($userId) {
-                $query
-                    ->where('user_abonner_id', $userId)
-                    ->whereNotNull('user_id');
-            })
-            ->latest()
-            ->get();
+        $publications = Publication::where(function ($query) use ($userId) {
+            $query
+                ->where('user_id', $userId)
+                ->whereNull('user_abonner_id');
+        })
+        ->orWhere(function ($query) use ($userId) {
+            $query
+                ->where('user_abonner_id', $userId)
+                ->whereNotNull('user_id');
+        })
+        ->latest()
+        ->get();
+    
 
         $suggestedUsers = User::where('role', 'utilisateur')
             ->whereNotIn('id', $currentUser->abonnements()->pluck('abonne_id'))

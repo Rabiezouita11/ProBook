@@ -13,8 +13,6 @@ class Publication extends Model
         'user_id',
         'contenu',
         'image',
-        'Activity_Feed',
-        'story',
         'user_abonner_id',  // Add the user_abonner_id column here
         'domain'
     ];

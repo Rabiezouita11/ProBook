@@ -441,7 +441,7 @@
                                                         </div>
                                                         @if (auth()->check())
                                                             <div class="post-new-popup">
-                                                                <div class="popup" style="width: 800px;">
+                                                                <div class="popup">
                                                                     <span class="popup-closed">
                                                                         <i class="icofont-close"></i>
                                                                     </span>
@@ -480,31 +480,14 @@
                                                                                     value="{{ $user->id }}"
                                                                                     id="">
                                                                                 <div class="post-newmeta">
-                                                                                    <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?"></textarea>
+                                                                                    <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
                                                                                     @error('contenu')
                                                                                         <p class="text-red-500 text-xs italic">
                                                                                             {{ $message }}</p>
                                                                                     @enderror
                                                                                 </div>
 
-                                                                                <div class="activity-post">
-                                                                                    <div class="checkbox">
-                                                                                        <input type="checkbox"
-                                                                                            id="checkbox"
-                                                                                            name="Activity_Feed" checked>
-                                                                                        <label for="checkbox">
-                                                                                            <span>Activity Feed</span>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="checkbox">
-                                                                                        <input type="checkbox"
-                                                                                            id="checkbox2" name="story"
-                                                                                            checked>
-                                                                                        <label for="checkbox2">
-                                                                                            <span>My Story</span>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
+
                                                                                 <div class="form-group">
                                                                                     <label for="domain">Domain</label>
                                                                                     <select id="domain" name="domain"
@@ -513,13 +496,15 @@
                                                                                         <option value="">Select
                                                                                             Domain</option>
                                                                                         <option value="Computer science">
-                                                                                        Computer science</option>
-                                                                                        <option value="Management/economics">
+                                                                                            Computer science</option>
+                                                                                        <option
+                                                                                            value="Management/economics">
                                                                                             Management/economics</option>
-                                                                                        <option value="Mechanical">Mechanical
+                                                                                        <option value="Mechanical">
+                                                                                            Mechanical
                                                                                         </option>
                                                                                         <option value="Electric">
-                                                                                        Electric</option>
+                                                                                            Electric</option>
                                                                                         <option value="Science">Science
                                                                                         </option>
                                                                                         <option value="Lettre">Lettre
@@ -533,10 +518,28 @@
                                                                                         .chosen-container-single {
                                                                                             display: none;
                                                                                         }
+
+                                                                                        .post-new {
+                                                                                            width: 202%;
+                                                                                        }
+
+                                                                                        .btn-info {
+                                                                                            width: 364px
+                                                                                        }
+
+                                                                                        .post-newmeta {
+                                                                                            width: 109%;
+
+                                                                                        }
                                                                                     </style>
                                                                                 </div>
                                                                                 <div class="post-newmeta">
-                                                                                    <input type="file" name="image">
+                                                                                    <label for="inputField"
+                                                                                        class="btn btn-info">uploid
+                                                                                        Document</label>
+                                                                                    <input type="file" name="image"
+                                                                                        id="inputField"
+                                                                                        style="display:none">
                                                                                     @error('image')
                                                                                         <p class="text-red-500 text-xs italic">
                                                                                             {{ $message }}</p>
@@ -734,8 +737,13 @@
                 e.preventDefault();
 
                 // Check if user is logged in
-                if (!isLoggedIn()) {
-                    showToast('info', 'You must login to like a publication.');
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
                     return;
                 }
 
@@ -863,11 +871,11 @@
 
             // Submit comment form via AJAX
             $('#add-comment-form').submit(function(e) {
-              
+
                 e.preventDefault();
                 console.log("aaa")
                 var formData = $(this).serialize();
-              
+
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),
@@ -1259,13 +1267,13 @@
                         <div class="form-group">
                             <label for="updatedDomain">Domain:</label>
                             <select class="form-control" id="updatedDomain" name="domaine">
-                            <option value="">Select Domain</option>
-                            <option value="Computer science">Computer science</option>
-                            <option value="Management/economics">Management/economics</option>
-                            <option value="Mechanical">Mechanical</option>
-                            <option value="lectric">Electric</option>
-                            <option value="Science">Science</option>
-                            <option value="Lettre">Letter</option>
+                                <option value="">Select Domain</option>
+                                <option value="Computer science">Computer science</option>
+                                <option value="Management/economics">Management/economics</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="lectric">Electric</option>
+                                <option value="Science">Science</option>
+                                <option value="Lettre">Letter</option>
                                 <!-- Add more options as needed -->
                             </select>
                         </div>
@@ -1318,11 +1326,11 @@
                             ' #new-post-container > *');
                         $('#listamis').load(location.href +
                             ' #listamis > *');
-                            // $('#follow-count').load(location.href +
-                            // ' #follow-count > *');
+                        // $('#follow-count').load(location.href +
+                        // ' #follow-count > *');
 
 
-                  
+
                         $('#suggested-users').load(location.href + ' #suggested-users > *');
 
                     },
@@ -1341,7 +1349,15 @@
             $(document).on('click', '.follow-link', function(e) {
                 e.preventDefault();
                 var userId = $(this).data('user-id');
-
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
                 // Send AJAX request to follow the user
                 $.ajax({
                     url: '/follow/' + userId,
@@ -1420,7 +1436,15 @@
 
                 var button = $(this);
                 var userId = button.data('user-id');
-
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
                 // Send AJAX request to follow the user
                 $.ajax({
                     url: '/follow/' + userId,
