@@ -1328,7 +1328,7 @@
                             ' #listamis > *');
                         // $('#follow-count').load(location.href +
                         // ' #follow-count > *');
-
+                        $('.group-avatar').load(location.href + ' .group-avatar > *');
 
 
                         $('#suggested-users').load(location.href + ' #suggested-users > *');

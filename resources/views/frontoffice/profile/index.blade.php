@@ -685,7 +685,7 @@
                                     <!-- New post popup -->
                                 @endif
                                 <br>
-                                {{-- <div class="main-wraper">
+                                <div class="main-wraper">
                                     <div class="user-post">
                                         <div class="friend-info">
                                             <figure>
@@ -737,7 +737,7 @@
 
                                         </div>
                                     </div>
-                                </div><!-- suggested friends --> --}}
+                                </div><!-- suggested friends -->
                             </div>
 
                         </div>
@@ -1560,6 +1560,7 @@
                             type: 'GET',
                             success: function(response) {
                                 // Update following widget
+                                $('.group-avatar').load(location.href + ' .group-avatar > *');
                                 var followingWidgetHtml = $(response).find(
                                     '#following-widget').html();
                                 $('#following-widget').html(followingWidgetHtml);
@@ -1574,6 +1575,7 @@
 
                                 $('#suggested-users li[data-user-id="' + userId +
                                     '"]').remove();
+                                
 
                                 // Update suggested users list
 

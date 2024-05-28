@@ -104,6 +104,8 @@
 </section>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <style>
     .post {
         display: none;
@@ -136,6 +138,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+
+
         const messageForm = document.getElementById('message-form');
         const messageInput = document.getElementById('message-input');
         const chattingArea = document.getElementById('chatting-area');
@@ -163,6 +167,25 @@
                 messageInput.value = '';
                 showToast('success', 'Message sent successfully!');
                 appendMessage(message, 'me');
+                $.ajax({
+                            url: location.href,
+                            type: 'GET',
+                            success: function(response) {
+
+
+                                $('.group-avatar').load(location.href + ' .group-avatar > *');
+
+                               
+
+                                // Update suggested users list
+
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors if needed
+                                console.error(xhr.responseText);
+                            }
+                        });
+
             }).catch(error => {
                 console.error(error);
                 showToast('error', 'Failed to send the message.');
