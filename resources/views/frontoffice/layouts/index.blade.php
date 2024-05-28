@@ -175,12 +175,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mesg-notif" href="#" title="Messages" data-toggle="tooltip">
+                            <a class="mesg-notif" href="#" id="messageLink" title="Messages" data-toggle="tooltip">
                                 <i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-message-square">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square">
                                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                     </svg>
                                 </i>
@@ -188,19 +185,17 @@
                             <span></span>
                         </li>
                         <li>
-                            <a class="mesg-notif" href="#" title="Notifications" data-toggle="tooltip">
+                            <a class="mesg-notif" href="#" id="notificationLink" title="Notifications" data-toggle="tooltip">
                                 <i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
                                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                                     </svg>
                                 </i>
                             </a>
                             <span></span>
-
-                        <li>
+                        </li>
+                        
                             <a href="#" title="">
                                 <i>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -488,38 +483,27 @@
         <div class="slide-meta">
             <ul class="nav nav-tabs slide-btns">
                 <li class="nav-item">
-                    <a class="active" href="#messages" data-toggle="tab">Messages</a>
+                    <a class="nav-link active" href="#messages" data-toggle="tab">Messages</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="" href="#notifications" data-toggle="tab">Notifications <span
-                            id="notification-count">(0)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#notifications" data-toggle="tab">Notifications <span id="notification-count">(0)</span></a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active fade show" id="messages">
-                    <h4>
-                        <i class="icofont-envelope"></i> Messages
-                    </h4>
-                   
+                <div class="tab-pane fade show active" id="messages">
+                    <h4><i class="icofont-envelope"></i> Messages</h4>
                     <ul class="new-messages">
-                  
                         @foreach ($followingUsers as $user)
                             <li>
-                                @if ($user->image)
-                                    <figure>
-                                        <a href="{{ route('Chat', $user) }}">
+                                <figure>
+                                    <a href="{{ route('Chat', $user) }}">
+                                        @if ($user->image)
                                             <img src="{{ asset('users/' . $user->image) }}" alt="">
-                                        </a>
-                                    </figure>
-                                @else
-                                    <figure>
-                                        <a href="{{ route('Chat', $user) }}">
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
-                                                height="25px" width="25px" alt="" class="mr-2"
-                                                style="border-radius: 50%;">
-                                        </a>
-                                    </figure>
-                                @endif
+                                        @else
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff" height="50px" width="50px" alt="" class="mr-2" style="border-radius: 50%;">
+                                        @endif
+                                    </a>
+                                </figure>
                                 <div class="mesg-info">
                                     <span>{{ $user->name }}</span>
                                     @php
@@ -529,23 +513,17 @@
                                             ->first();
                                     @endphp
                                     @if ($lastMessage)
-                                        <a href="{{ route('Chat', $user) }}"
-                                            title="">{{ $lastMessage->message }}</a>
+                                        <a href="{{ route('Chat', $user) }}" title="">{{ $lastMessage->message }}</a>
                                     @else
                                         <span>No messages yet</span>
                                     @endif
                                 </div>
                             </li>
                         @endforeach
-
                     </ul>
-
-
                 </div>
                 <div class="tab-pane fade" id="notifications">
-                    <h4>
-                        <i class="icofont-bell-alt"></i> Notifications
-                    </h4>
+                    <h4><i class="icofont-bell-alt"></i> Notifications</h4>
                     <div class="notification-container">
                         <ul class="notificationz">
                             <!-- Notification items will be appended here -->
@@ -553,10 +531,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     @endif
+    
     <style>
         .notification-container {
             max-height: 550px;
@@ -1369,7 +1347,26 @@
             });
         </script>
     @endif
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#messageLink').click(function(e) {
+                e.preventDefault();
+                // Switch to the Messages tab
+                $('.nav-tabs a[href="#messages"]').tab('show');
+            });
+        
+            $('#notificationLink').click(function(e) {
+                e.preventDefault();
+                // Switch to the Notifications tab
+                $('.nav-tabs a[href="#notifications"]').tab('show');
+            });
+        });
+        </script>
+        
 </body>
 
 </html>
