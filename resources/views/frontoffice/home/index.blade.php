@@ -1033,15 +1033,15 @@
                 e.preventDefault();
                 var publicationId = $(this).closest('.box').data('publication-id');
                 var csrfToken = $('meta[name="csrf-token"]').attr('content'); // Récupérer le jeton CSRF
-                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-                if (!isAuthenticated) {
-                    showToast('error', 'You need to log in to follow users.');
-                    // Optionally, redirect to the login page
-                    setTimeout(function() {
-                        window.location.href = '{{ route('login') }}';
-                    }, 2000); // Redirect after 2 seconds
-                    return;
-                }
+                // var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                // if (!isAuthenticated) {
+                //     showToast('error', 'You need to log in to follow users.');
+                //     // Optionally, redirect to the login page
+                //     setTimeout(function() {
+                //         window.location.href = '{{ route('login') }}';
+                //     }, 2000); // Redirect after 2 seconds
+                //     return;
+                // }
                 $.ajax({
                     type: 'POST',
                     url: '/jaime-publication',

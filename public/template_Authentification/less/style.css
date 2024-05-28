@@ -6953,7 +6953,7 @@ ul {
   border: 0;
   color: #fff;
   border-radius: 3px;
-  background-color: #e9b102;
+  background-color: blue;
   padding: 10px 36px;
   margin-bottom: 10px;
   -webkit-transition: all 0.3s ease-in-out;
@@ -12505,7 +12505,7 @@ ul {
   border: 0;
   color: #fff;
   border-radius: 5px;
-  background-color: #e9b102;
+  background-color: blue;
   padding: 10px 36px;
   margin-bottom: 10px;
   -webkit-transition: all 0.3s ease-in-out;
@@ -12554,7 +12554,7 @@ ul {
 .fxt-template-layout27 .fxt-switcher-wrap li a.switcher-text {
   padding: 10px 30px;
   display: block;
-  background-color: #e9b102;
+  background-color: blue;
   color: #ffffff;
   font-size: 15px;
   -webkit-transition: all 0.3s ease-in-out;
@@ -12770,7 +12770,7 @@ ul {
   top: 4px;
 }
 .fxt-template-layout27 .checkbox input[type="checkbox"]:checked + label::before {
-  background-color: #e9b102;
+  background-color: blue;
   border-color: #e9b102;
 }
 /*========================================================================
@@ -13594,7 +13594,7 @@ ul {
   border: 0;
   color: #fff;
   border-radius: 3px;
-  background-color: #e9b102;
+  background-color: blue;
   padding: 10px 36px;
   margin-bottom: 10px;
   -webkit-transition: all 0.3s ease-in-out;
