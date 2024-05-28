@@ -470,9 +470,9 @@ class ClientController extends Controller
         //} else {
           //  $message = 'Publication created successfully!';
        // }
-
+         $message = 'Publication created successfully!';
         // Redirect to a success page or back to the creation form with success message
-        return redirect()->back()->with('success');//, $message
+        return redirect()->back()->with('success', $message);
     }
 
     public function storeFormation(Request $request)
@@ -559,9 +559,9 @@ class ClientController extends Controller
         //} else {
           //  $message = 'Publication created successfully!';
       //  }
-
+        $message = 'Publication created successfully!';
         // Redirect to a success page or back to the creation form with success message
-        return redirect()->back()->with('success' );//,$message);
+        return redirect()->back()->with('success', $message);
     }
 
     public function likePublication(Request $request)
