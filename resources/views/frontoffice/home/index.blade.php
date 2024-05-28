@@ -620,13 +620,13 @@
                         <!-- This is important for Laravel to validate the form submission -->
 
                         <div class="post-newmeta">
-                        <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
-                        @error('contenu')
-                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
+                            <textarea id="emojionearea1" name="contenu" placeholder="What's On Your Mind?" required></textarea>
+                            @error('contenu')
+                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                            @enderror
                         </div>
 
-                       
+
                         <div class="form-group">
                             <label for="domain">Domain</label>
                             <select id="domain" name="domain" class="form-control" required>
@@ -650,23 +650,22 @@
                             }
 
                             .post-new {
-                                                                width: 202%;
-                                                            }
+                                width: 202%;
+                            }
 
-                                                            .btn-info {
-                                                                width: 364px
-                                                            }
+                            .btn-info {
+                                width: 364px
+                            }
 
-                                                            .post-newmeta {
-                                                                width: 109%;
+                            .post-newmeta {
+                                width: 109%;
 
-                                                            }
+                            }
                         </style>
                         <div class="post-newmeta">
                             <label for="inputField" class="btn btn-info">uploid
                                 Document</label>
-                            <input type="file" name="image" id="inputField"
-                                style="display:none">
+                            <input type="file" name="image" id="inputField" style="display:none">
                             @error('image')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror
@@ -1005,7 +1004,8 @@
                                     followersCount);
                                 $('#suggested-users li[data-user-id="' + userId +
                                     '"]').remove();
-                                    $('.slide-meta').load(location.href + ' .slide-meta > *');
+                                $('.slide-meta').load(location.href +
+                                    ' .slide-meta > *');
 
                                 // Update suggested users list
 
@@ -1033,21 +1033,20 @@
                 e.preventDefault();
                 var publicationId = $(this).closest('.box').data('publication-id');
                 var csrfToken = $('meta[name="csrf-token"]').attr('content'); // Récupérer le jeton CSRF
-                // var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-                // if (!isAuthenticated) {
-                //     showToast('error', 'You need to log in to follow users.');
-                //     // Optionally, redirect to the login page
-                //     setTimeout(function() {
-                //         window.location.href = '{{ route('login') }}';
-                //     }, 2000); // Redirect after 2 seconds
-                //     return;
-                // }
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
                 $.ajax({
                     type: 'POST',
                     url: '/jaime-publication',
                     data: {
                         _token: csrfToken, // Ajouter le jeton CSRF à la demande
-
                         publication_id: publicationId
                     },
                     success: function(response) {
@@ -1592,67 +1591,95 @@
 
 
     <script>
- $(document).ready(function() {
-    // Event listener for the like button
-    $('.like-button').click(function() {
-        var publicationId = $(this).data('publication-id');
-        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-        if (!isAuthenticated) {
-            showToast('error', 'You need to log in to follow users.');
-            // Optionally, redirect to the login page
-            setTimeout(function() {
-                window.location.href = '{{ route('login') }}';
-            }, 2000); // Redirect after 2 seconds
-            return;
-        }
-        // Send AJAX request to fetch liked users
-        $.ajax({
-            url: '/getLikedUsers/' + publicationId,
-            type: 'GET',
-            success: function(response) {
-                // Populate the modal with the list of liked users
-                $('#likedUsersList').empty();
-                response.likedUsers.forEach(function(user) {
-                    console.log('User ID:', user.id);
-                    console.log('Auth ID:', {{ auth()->id() }});
-                    console.log('Profile Link:', user.profileLink);
+        $(document).ready(function() {
+            $('.like-button').click(function() {
+                var publicationId = $(this).data('publication-id');
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
 
-                    var profileLink = (user.id !== {{ auth()->id() }}) ? '<a href="' + user.profileLink + '">' + user.name + '</a>' : user.name;
-                    $('#likedUsersList').append(
-                        '<li class="list-group-item">' +
-                        '<div class="d-flex justify-content-between align-items-center">' +
-                        '<div class="d-flex align-items-center">' +
-                        '<img src="' + user.image +
-                        '" class="rounded-circle me-3" alt="User Image" width="50">' +
-                        '<div>' +
-                        '<h5 class="mb-0">' + profileLink + '</h5>' +
-                        '<p class="mb-0">Institution: ' + user.institut +
-                        '</p>' +
-                        '</div>' +
-                        '</div>' +
-                        // '<a href="#" class="btn btn-primary ms-auto">Follow</a>' +
-                        '</div>' +
-                        '</li>'
-                    );
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
+
+                // Send AJAX request to fetch liked users
+                $.ajax({
+                    url: '/getLikedUsers/' + publicationId,
+                    type: 'GET',
+                    success: function(response) {
+                        // Populate the modal with the list of liked users
+                        $('#likedUsersList').empty();
+
+                        response.likedUsers.forEach(function(user) {
+                            var profileLink = '';
+                            if (isAuthenticated && user.id !==
+                                {{ auth()->id() ? auth()->id() : 'null' }}) {
+                                profileLink = '<a href="' + user.profileLink + '">' +
+                                    user.name + '</a>';
+                            } else {
+                                profileLink = user.name;
+                            }
+
+                            $('#likedUsersList').append(
+                                '<li class="list-group-item">' +
+                                '<div class="d-flex justify-content-between align-items-center">' +
+                                '<div class="d-flex align-items-center">' +
+                                '<img src="' + user.image +
+                                '" class="rounded-circle me-3" alt="User Image" width="50">' +
+                                '<div>' +
+                                '<h5 class="mb-0">' + profileLink + '</h5>' +
+                                '<p class="mb-0">Institution: ' + user.institut +
+                                '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</li>'
+                            );
+                        });
+
+                        // Show the modal
+                        $('#likeModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('Failed to fetch liked users.');
+                    }
                 });
+            });
 
-                // Show the modal
-                $('#likeModal').modal('show');
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                alert('Failed to fetch liked users.');
-            }
+            // Event listener for closing the modal
+            $(document).on('click', '.btn-close', function() {
+                $('#likeModal').modal('hide');
+            });
         });
-    });
 
-    // Event listener for closing the modal
-    $(document).on('click', '.btn-close', function() {
-        $('#likeModal').modal('hide');
-    });
-});
+        function showToast(type, message) {
+            toastr.options = {
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                showMethod: 'slideDown', // Animation in
+                hideMethod: 'slideUp', // Animation out
+                timeOut: 5000, // Time before auto-dismiss
+            };
 
-
+            switch (type) {
+                case 'info':
+                    toastr.info(message);
+                    break;
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+            }
+        }
     </script>
 
     <div id="likeModal" class="modal" tabindex="-1">
