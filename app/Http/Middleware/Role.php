@@ -23,10 +23,10 @@ class Role
             }
 
             // Check if the user's email is verified
-            if (!$user->email_verified && $user->role == 'utilisateur') {
-                // If email is not verified, redirect to a view to enter the verification code
-                return redirect()->route('enter_verification_code');
-            }
+            // if (!$user->email_verified && $user->role == 'utilisateur') {
+            //     // If email is not verified, redirect to a view to enter the verification code
+            //     return redirect()->route('enter_verification_code');
+            // }
 
             // If the user's role matches the specified role, proceed
             if ($user->role == $role) {

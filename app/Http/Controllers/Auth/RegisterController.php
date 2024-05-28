@@ -86,7 +86,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'max:8', 'confirmed'],
             // 'role' => ['required', 'string', 'max:255'],
-            'image' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'], // Add validation rules for the image
+            'image' => ['image'], // Add validation rules for the image
 
 
         ]);
