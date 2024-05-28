@@ -440,8 +440,8 @@ class ClientController extends Controller
         $publication->user_id = auth()->id();
         $publication->contenu = $request['contenu'];
         $publication->domain = $request['domain'];
-        $publication->story = $request->has('story') ? true : false;
-        $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
+       // $publication->story = $request->has('story') ? true : false;
+       // $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
 
         // Handle image upload if provided
         $imageName = null;
@@ -461,18 +461,18 @@ class ClientController extends Controller
         $publication->save();
 
         // Determine the success message based on the scenario
-        if ($publication->story && $publication->Activity_Feed) {
-            $message = 'Publication and story created successfully!';
-        } elseif ($publication->story) {
-            $message = 'Story created successfully!';
-        } elseif ($publication->Activity_Feed) {
-            $message = 'Publication created successfully!';
-        } else {
-            $message = 'Publication created successfully!';
-        }
+        //if ($publication->story && $publication->Activity_Feed) {
+           // $message = 'Publication and story created successfully!';
+       // } elseif ($publication->story) {
+         //   $message = 'Story created successfully!';
+       // } elseif ($publication->Activity_Feed) {
+          //  $message = 'Publication created successfully!';
+        //} else {
+          //  $message = 'Publication created successfully!';
+       // }
 
         // Redirect to a success page or back to the creation form with success message
-        return redirect()->back()->with('success', $message);
+        return redirect()->back()->with('success');//, $message
     }
 
     public function storeFormation(Request $request)
@@ -514,8 +514,8 @@ class ClientController extends Controller
 
         $publication->user_abonner_id = $request['userprofile'];
 
-        $publication->story = $request->has('story') ? true : false;
-        $publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
+        //$publication->story = $request->has('story') ? true : false;
+        //$publication->Activity_Feed = $request->has('Activity_Feed') ? true : false;
 
         // Handle image upload if provided
         $imageName = null;
@@ -550,18 +550,18 @@ class ClientController extends Controller
         }
 
         // Determine the success message based on the scenario
-        if ($publication->story && $publication->Activity_Feed) {
-            $message = 'Publication and story created successfully!';
-        } elseif ($publication->story) {
-            $message = 'Story created successfully!';
-        } elseif ($publication->Activity_Feed) {
-            $message = 'Publication created successfully!';
-        } else {
-            $message = 'Publication created successfully!';
-        }
+        //if ($publication->story && $publication->Activity_Feed) {
+            //$message = 'Publication and story created successfully!';
+        //} elseif ($publication->story) {
+           // $message = 'Story created successfully!';
+        //} elseif ($publication->Activity_Feed) {
+          //  $message = 'Publication created successfully!';
+        //} else {
+          //  $message = 'Publication created successfully!';
+      //  }
 
         // Redirect to a success page or back to the creation form with success message
-        return redirect()->back()->with('success', $message);
+        return redirect()->back()->with('success' );//,$message);
     }
 
     public function likePublication(Request $request)
@@ -951,7 +951,7 @@ class ClientController extends Controller
                     ->where('user_id', $user->id)
                     ->orWhere('user_abonner_id', $user->id);
             })
-            ->where('Activity_Feed', true)
+            //->where('Activity_Feed', true)
             ->orderBy('created_at')
             ->get();
 
