@@ -6599,7 +6599,7 @@ ul {
   transition: all 0.3s ease-in-out;
 }
 .fxt-template-layout15 .fxt-btn-fill:hover {
-  background-color: #ecb719;
+  background-color: blue;
   border-color: #ecb719;
 }
 .fxt-template-layout15 .fxt-btn-fill:focus {
@@ -12164,7 +12164,7 @@ ul {
   transition: all 0.3s ease-in-out;
 }
 .fxt-template-layout27 .fxt-btn-fill:hover {
-  background-color: #ecb719;
+  background-color: blue;
 }
 .fxt-template-layout27 .fxt-btn-fill:focus {
   outline: none;
@@ -13262,7 +13262,7 @@ ul {
   }
 }
 .fxt-template-layout29 .fxt-btn-fill:hover {
-  background-color: #ecb719;
+  background-color: blue;
   border-color: #ecb719;
 }
 .fxt-template-layout29 .fxt-btn-fill:focus {

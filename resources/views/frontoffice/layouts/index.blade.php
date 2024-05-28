@@ -175,9 +175,13 @@
                             </a>
                         </li>
                         <li>
-                            <a class="mesg-notif" href="#" id="messageLink" title="Messages" data-toggle="tooltip">
+                            <a class="mesg-notif" href="#" id="messageLink" title="Messages"
+                                data-toggle="tooltip">
                                 <i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-message-square">
                                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                     </svg>
                                 </i>
@@ -185,9 +189,12 @@
                             <span></span>
                         </li>
                         <li>
-                            <a class="mesg-notif" href="#" id="notificationLink" title="Notifications" data-toggle="tooltip">
+                            <a class="mesg-notif" href="#" id="notificationLink" title="Notifications"
+                                data-toggle="tooltip">
                                 <i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
                                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                                     </svg>
@@ -195,45 +202,45 @@
                             </a>
                             <span></span>
                         </li>
-                        
-                            <a href="#" title="">
-                                <i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
-                                        <rect x="3" y="3" width="7" height="7"></rect>
-                                        <rect x="14" y="3" width="7" height="7"></rect>
-                                        <rect x="14" y="14" width="7" height="7"></rect>
-                                        <rect x="3" y="14" width="7" height="7"></rect>
-                                    </svg>
-                                </i>
-                            </a>
-                            <ul class="dropdown">
-                                <li>
-                                    <a href="{{ route('Profile_User') }}" title="">
-                                        <i class="icofont-user-alt-3"></i> Your Profile
-                                    </a>
-                                </li>
+                        <li>
+                        <a href="#" title="">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </i>
+                        </a>
+                        <ul class="dropdown">
+                            <li>
+                                <a href="{{ route('Profile_User') }}" title="">
+                                    <i class="icofont-user-alt-3"></i> Your Profile
+                                </a>
+                            </li>
 
-                                <li>
-                                    <a class="dark-mod" href="#" title="">
-                                        <i class="icofont-moon"></i> Dark Mode
-                                    </a>
-                                </li>
-                                <li class="logout">
-                                    <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
+                            <li>
+                                <a class="dark-mod" href="#" title="">
+                                    <i class="icofont-moon"></i> Dark Mode
+                                </a>
+                            </li>
+                            <li class="logout">
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();"
-                                        title="">
-                                        <i class="icofont-power"></i>
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                style="display: none;">
-                                @csrf
-                            </form>
+                                    title="">
+                                    <i class="icofont-power"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                        </form>
                         </li>
                     @else
                         <li>
@@ -476,65 +483,69 @@
     </div>
     <!-- send message popup -->
     @if (Auth::check())
-    <div class="side-slide">
-        <span class="popup-closed">
-            <i class="icofont-close"></i>
-        </span>
-        <div class="slide-meta">
-            <ul class="nav nav-tabs slide-btns">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#messages" data-toggle="tab">Messages</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#notifications" data-toggle="tab">Notifications <span id="notification-count">(0)</span></a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="messages">
-                    <h4><i class="icofont-envelope"></i> Messages</h4>
-                    <ul class="new-messages">
-                        @foreach ($followingUsers as $user)
-                            <li>
-                                <figure>
-                                    <a href="{{ route('Chat', $user) }}">
-                                        @if ($user->image)
-                                            <img src="{{ asset('users/' . $user->image) }}" alt="">
+        <div class="side-slide">
+            <span class="popup-closed">
+                <i class="icofont-close"></i>
+            </span>
+            <div class="slide-meta">
+                <ul class="nav nav-tabs slide-btns">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#messages" data-toggle="tab">Messages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#notifications" data-toggle="tab">Notifications <span
+                                id="notification-count">(0)</span></a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="messages">
+                        <h4><i class="icofont-envelope"></i> Messages</h4>
+                        <ul class="new-messages">
+                            @foreach ($followingUsers as $user)
+                                <li>
+                                    <figure>
+                                        <a href="{{ route('Chat', $user) }}">
+                                            @if ($user->image)
+                                                <img src="{{ asset('users/' . $user->image) }}" alt="">
+                                            @else
+                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff"
+                                                    height="50px" width="50px" alt="" class="mr-2"
+                                                    style="border-radius: 50%;">
+                                            @endif
+                                        </a>
+                                    </figure>
+                                    <div class="mesg-info">
+                                        <span>{{ $user->name }}</span>
+                                        @php
+                                            $lastMessage = \App\Models\Chats::where('sender_id', $user->id)
+                                                ->orWhere('receiver_id', $user->id)
+                                                ->orderBy('created_at', 'desc')
+                                                ->first();
+                                        @endphp
+                                        @if ($lastMessage)
+                                            <a href="{{ route('Chat', $user) }}"
+                                                title="">{{ $lastMessage->message }}</a>
                                         @else
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=104d93&color=fff" height="50px" width="50px" alt="" class="mr-2" style="border-radius: 50%;">
+                                            <span>No messages yet</span>
                                         @endif
-                                    </a>
-                                </figure>
-                                <div class="mesg-info">
-                                    <span>{{ $user->name }}</span>
-                                    @php
-                                        $lastMessage = \App\Models\Chats::where('sender_id', $user->id)
-                                            ->orWhere('receiver_id', $user->id)
-                                            ->orderBy('created_at', 'desc')
-                                            ->first();
-                                    @endphp
-                                    @if ($lastMessage)
-                                        <a href="{{ route('Chat', $user) }}" title="">{{ $lastMessage->message }}</a>
-                                    @else
-                                        <span>No messages yet</span>
-                                    @endif
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-                <div class="tab-pane fade" id="notifications">
-                    <h4><i class="icofont-bell-alt"></i> Notifications</h4>
-                    <div class="notification-container">
-                        <ul class="notificationz">
-                            <!-- Notification items will be appended here -->
+                                    </div>
+                                </li>
+                            @endforeach
                         </ul>
+                    </div>
+                    <div class="tab-pane fade" id="notifications">
+                        <h4><i class="icofont-bell-alt"></i> Notifications</h4>
+                        <div class="notification-container">
+                            <ul class="notificationz">
+                                <!-- Notification items will be appended here -->
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
-    
+
     <style>
         .notification-container {
             max-height: 550px;
@@ -1358,15 +1369,15 @@
                 // Switch to the Messages tab
                 $('.nav-tabs a[href="#messages"]').tab('show');
             });
-        
+
             $('#notificationLink').click(function(e) {
                 e.preventDefault();
                 // Switch to the Notifications tab
                 $('.nav-tabs a[href="#notifications"]').tab('show');
             });
         });
-        </script>
-        
+    </script>
+
 </body>
 
 </html>
