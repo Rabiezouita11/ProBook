@@ -133,14 +133,14 @@ class ClientController extends Controller
             $followingCount = $followingUsers->count();
             $publications = Publication::orderBy('created_at', 'asc')->get();
 
-            return view('frontoffice.Search.index', compact('results', 'domain', 'followingCount', 'publications', 'suggestedUsers'));
+            return view('frontoffice.Search.index', compact('results', 'domain', 'followingCount', 'publications', 'suggestedUsers','followingUsers'));
 
         } else {
             // If user is not logged in, show all users
             $suggestedUsers = User::where('role', 'utilisateur')->get();
 
             $publications = Publication::orderBy('created_at', 'asc')->get();
-            return view('frontoffice.Search.index', compact('results', 'domain', 'publications', 'suggestedUsers'));
+            return view('frontoffice.Search.index', compact('results', 'domain', 'publications', 'suggestedUsers','followingUsers'));
 
 
         }
