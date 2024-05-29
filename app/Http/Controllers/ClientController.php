@@ -140,7 +140,7 @@ class ClientController extends Controller
             $suggestedUsers = User::where('role', 'utilisateur')->get();
 
             $publications = Publication::orderBy('created_at', 'asc')->get();
-            return view('frontoffice.Search.index', compact('results', 'domain', 'publications', 'suggestedUsers','followingUsers'));
+            return view('frontoffice.Search.index', compact('results', 'domain', 'publications', 'suggestedUsers'));
 
 
         }
