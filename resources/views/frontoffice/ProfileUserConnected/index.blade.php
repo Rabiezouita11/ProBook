@@ -15,32 +15,7 @@
 
 
 
-                                    <div class="widget">
-                                        <h4 class="widget-title">Ask Research Question?</h4>
-                                        <div class="ask-question">
-                                            <i class="icofont-question-circle"></i>
-                                            <h6>Ask questions in Q&A to get help from experts in your field.</h6>
-                                            <a class="ask-qst" href="#" title="">Ask a question</a>
-                                        </div>
-                                    </div>
-                                    <div class="widget">
-                                        <h4 class="widget-title">Explor Events <a class="see-all" href="#"
-                                                title="">See All</a></h4>
-                                        <div class="rec-events bg-purple">
-                                            <i class="icofont-gift"></i>
-                                            <h6><a title="" href="">BZ University good night event in
-                                                    columbia</a></h6>
-                                            <img alt="" src="/frontoffice/images/clock.png">
-                                        </div>
-                                        <div class="rec-events bg-blue">
-                                            <i class="icofont-microphone"></i>
-                                            <h6><a title="" href="">The 3rd International Conference
-                                                    2020</a></h6>
-                                            <img alt="" src="/frontoffice/images/clock.png">
-                                        </div>
-                                    </div>
-
-
+                                 
                                 </aside>
                             </div>
                             <div class="col-lg-9">
@@ -93,15 +68,7 @@
                                                     data-toggle="tab">About</a></li>
                                         </ul>
                                         <ul class="more-grp-info">
-                                            <li>
-                                                <form class="c-form" method="post">
-                                                    <input type="text" placeholder="Search...">
-                                                    <i class="icofont-search-1"></i>
-                                                </form>
-                                            </li>
-                                            <li>
-
-                                            </li>
+                                            
                                         </ul>
                                     </div>
                                     <div class="main-wraper">
@@ -115,9 +82,7 @@
                                                         </li>
                                                         <li><img src="/frontoffice/images/badges/badge3.png" alt="">
                                                         </li>
-                                                        <li><img src="/frontoffice/images/badges/badge4.png"
-                                                                alt="">
-                                                        </li>
+                                                       
                                                         <li><img src="/frontoffice/images/badges/badge5.png"
                                                                 alt="">
                                                         </li>

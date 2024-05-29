@@ -15,15 +15,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Add the container for the user publication chart -->
-                        <div class="col-lg-4 col-md-4 col-sm-4">
-                            <div>
-                                <div class="d-widget-title">
-                                    <h5>Publications by Users</h5>
-                                    <canvas id="userPublicationChart" width="400" height="400"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
