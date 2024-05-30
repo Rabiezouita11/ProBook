@@ -35,12 +35,7 @@
                                             <div class="message-text-container">
                                                
                                                 <div class="attach-options">
-                                                    <a href="#" title=""><i class="icofont-camera"></i> Open Camera</a>
-                                                    <a href="#" title=""><i class="icofont-video-cam"></i> Photo & video Library</a>
-                                                    <a href="#" title=""><i class="icofont-paper-clip"></i> Attach Document</a>
-                                                    <a href="#" title=""><i class="icofont-location-pin"></i> Share Location</a>
-                                                    <a href="#" title=""><i class="icofont-contact-add"></i> Share Contact</a>
-                                                </div>
+                                                    </div>
                                                 <form id="message-form">
                                                 
                                                     <textarea rows="1" placeholder="say something..." id="message-input"></textarea>
