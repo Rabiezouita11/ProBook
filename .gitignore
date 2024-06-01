@@ -8,6 +8,7 @@
 /public/uploads
 /public/images
 /public/formations_images
+/public/cover_photos
 /vendor
 .env
 .env.backup
