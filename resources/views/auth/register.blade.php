@@ -130,7 +130,11 @@
                                             name="institut" required autocomplete="institut" autofocus>
                                             <option value="">Select Institut</option>
                                             <option value="isi_kef">ISI Kef</option>
+                                            <option value="iset_kef">ISET kef</option>
+                                            <option value="iset_beja">ISET Beja</option>
                                             <option value="isi_ariana">ISI Ariana</option>
+                                            <option value="iseah_kef">ISEAH kef</option>
+                                            <option value="fseg_tunis">FSEG Tunis</option>
                                             <!-- Add more options if needed -->
                                         </select>
 
@@ -250,18 +254,37 @@
         diplomaSelect.innerHTML = '<option value="">Select Diploma</option>';
 
         if (institut === 'isi_kef') {
-            var option1 = new Option("Cette Licence Intitulé 'Computer Science' Comprend Deux Spécialités", "computer_science");
-            var option2 = new Option("Mastère de Recherche en Systèmes d'Informations et Web", "mastere_si_web");
+            var option1 = new Option("computer_science");
+            var option2 = new Option("mastere_si_web");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        }else if (institut === 'iset_kef') {
+            var option1 = new Option("computer_science");
+            var option2 = new Option("mastere_si_web");
             diplomaSelect.add(option1);
             diplomaSelect.add(option2);
         } else if (institut === 'isi_ariana') {
-            var option1 = new Option("Mastère Co-Construite en Nouvelles Technologies de l’Information et de la Communication dédiées à l'Innovation de l'Agriculture", "mastere_agriculture");
-            var option2 = new Option("Mastère Professionnel en Application Web Intelligente", "mastere_web");
+            var option1 = new Option("mastere_agriculture");
+            var option2 = new Option("mastere_web");
             diplomaSelect.add(option1);
             diplomaSelect.add(option2);
-        }
+        }else if (institut === 'iset_beja') {
+            var option1 = new Option("computer_science");
+            var option2 = new Option("mastere_si_web");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        }else if (institut === 'iseah_kef') {
+            var option1 = new Option("Education and teaching");
+            var option2 = new Option("Frensh");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
+        }else if (institut === 'fseg_tunis') {
+            var option1 = new Option("Economy/Management");
+            var option2 = new Option("Business Computing");
+            diplomaSelect.add(option1);
+            diplomaSelect.add(option2);
         // Add more conditions/options as needed
-    });
+   } });
 </script>
 
 </body>
