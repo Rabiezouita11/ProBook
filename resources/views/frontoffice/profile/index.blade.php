@@ -220,7 +220,7 @@
                                                                 <div class="we-video-info">
                                                                     <ul>
                                                                         <li>
-                                                                            <span title="Comments" class="liked">
+                                                                            <span title="Comments" class="liked  like-button"  data-publication-id="{{ $publication->id }}">
                                                                                 <i>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                                         width="16" height="16"
@@ -355,14 +355,14 @@
                                                                                     </h4>
                                                                                     <span><i class="icofont-globe"></i>
                                                                                         <span
-                                                                                            id="modal-time"></span></span>
+                                                                                             id="modal-time"></span></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="we-video-info">
                                                                                 <ul>
                                                                                     <li>
                                                                                         <span title="Comments"
-                                                                                            class="liked">
+                                                                                            class="liked like-button"  data-publication-id="{{ $publication->id }}">
                                                                                             <i>
                                                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                                                     width="16"
@@ -1749,5 +1749,111 @@
         });
     </script>
 
+<script>
+        $(document).ready(function() {
+            $('.like-button').click(function() {
+                var publicationId = $(this).data('publication-id');
+                var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
 
+                if (!isAuthenticated) {
+                    showToast('error', 'You need to log in to follow users.');
+                    // Optionally, redirect to the login page
+                    setTimeout(function() {
+                        window.location.href = '{{ route('login') }}';
+                    }, 2000); // Redirect after 2 seconds
+                    return;
+                }
+
+                // Send AJAX request to fetch liked users
+                $.ajax({
+                    url: '/getLikedUsers/' + publicationId,
+                    type: 'GET',
+                    success: function(response) {
+                        // Populate the modal with the list of liked users
+                        $('#likedUsersList').empty();
+
+                        response.likedUsers.forEach(function(user) {
+                            var profileLink = '';
+                            if (isAuthenticated && user.id !==
+                                {{ auth()->id() ? auth()->id() : 'null' }}) {
+                                profileLink = '<a href="' + user.profileLink + '">' +
+                                    user.name + '</a>';
+                            } else {
+                                profileLink = user.name;
+                            }
+
+                            $('#likedUsersList').append(
+                                '<li class="list-group-item">' +
+                                '<div class="d-flex justify-content-between align-items-center">' +
+                                '<div class="d-flex align-items-center">' +
+                                '<img src="' + user.image +
+                                '" class="rounded-circle me-3" alt="User Image" width="50">' +
+                                '<div>' +
+                                '<h5 class="mb-0">' + profileLink + '</h5>' +
+                                '<p class="mb-0">Institution: ' + user.institut +
+                                '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</li>'
+                            );
+                        });
+
+                        // Show the modal
+                        $('#likeModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('Failed to fetch liked users.');
+                    }
+                });
+            });
+
+            // Event listener for closing the modal
+            $(document).on('click', '.btn-close', function() {
+                $('#likeModal').modal('hide');
+            });
+        });
+
+        function showToast(type, message) {
+            toastr.options = {
+                closeButton: true, // Add a close button
+                progressBar: true, // Show a progress bar
+                showMethod: 'slideDown', // Animation in
+                hideMethod: 'slideUp', // Animation out
+                timeOut: 5000, // Time before auto-dismiss
+            };
+
+            switch (type) {
+                case 'info':
+                    toastr.info(message);
+                    break;
+                case 'success':
+                    toastr.success(message);
+                    break;
+                case 'warning':
+                    toastr.warning(message);
+                    break;
+                case 'error':
+                    toastr.error(message);
+                    break;
+            }
+        }
+    </script>
+    <div id="likeModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Liked Users</h5>
+                </div>
+                <div class="modal-body">
+                    <ul id="likedUsersList"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-close btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
