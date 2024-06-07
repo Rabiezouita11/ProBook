@@ -575,14 +575,18 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="uploadCoverPhotoModalLabel">Upload Your Cover Photo</h5>
+                   
+                         
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form id="uploadCoverPhotoForm" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <input type="file" name="cover_photo" id="cover_photo" accept="image/*">
+                        <label for="cover_photo" class="btn btn-info">uploid
+                                Document</label>
+                        <input type="file" name="cover_photo" id="cover_photo" style="display:none">
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
