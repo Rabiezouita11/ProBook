@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -27,17 +25,17 @@ Route::get('/blocked', [App\Http\Controllers\BlokedController::class, 'index']);
 use App\Events\AdminChannel;
 use App\Http\Controllers\ClientController;
 
-Route::get('/test-broadcast', function () {
-    // Prepare the data you want to broadcast
-    $data = [
-        'message' => 'Hello from Admin!',
-    ];
+// Route::get('/test-broadcast', function () {
+//     // Prepare the data you want to broadcast
+//     $data = [
+//         'message' => 'Hello from Admin!',
+//     ];
 
-    // Trigger the event and broadcast the data
-    event(new AdminChannel($data));
+//     // Trigger the event and broadcast the data
+//     event(new AdminChannel($data));
 
-    return 'Event triggered successfully!';
-});
+//     return 'Event triggered successfully!';
+// });
 
 
 /* authentification*/
