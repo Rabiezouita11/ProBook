@@ -269,7 +269,7 @@
 
                                                                                 @if ($publication->image)
                                                                                     <img src="{{ asset('images/' . $publication->image) }}"
-                                                                                        height="400px" width="600px"
+                                                                                        height="200px" width="350px"
                                                                                         alt="">
                                                                                 @endif
 

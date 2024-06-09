@@ -207,7 +207,7 @@
                                                                     data-publication-id="{{ $publication->id }}">
 
                                                                     <img src="{{ asset('images/' . $publication->image) }}"
-                                                                        height="400px" width="600px" alt="">
+                                                                        height="200px" width="350px" alt="">
                                                                 </a>
                                                             @endif
 
