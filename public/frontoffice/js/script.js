@@ -397,7 +397,7 @@ if ($.isFunction($.fn.owlCarousel)) {
 		items: 3,
 		loop: true,
 		margin: 30,
-		autoplay: false,
+		autoplay: true,
 		autoplayTimeout: 1500,
 		smartSpeed: 1000,
 		autoplayHoverPause: true,

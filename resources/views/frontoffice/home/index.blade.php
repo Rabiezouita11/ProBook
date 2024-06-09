@@ -245,7 +245,7 @@
                                                 <i class="icofont-learn"></i>
                                             </figure>
                                             <div class="friend-name">
-                                                <ins><a title="" href="time-line.html">Suggested</a></ins>
+                                                <ins><a title="" href="#">Suggested</a></ins>
                                                 <span><i class="icofont-runner-alt-1"></i> Follow similar Research
                                                     People</span>
                                             </div>
