@@ -544,14 +544,21 @@
                                                     name="diploma">
                                             </div>
                                             <div class="form-group">
-                                                <label for="profile_image">Profile Image</label>
-                                                <input type="file" class="form-control-file" id="profile_image"
-                                                    name="profile_image">
+                                                
+
+                                                <label for="profile_image" class="btn btn-info">uploid
+                                                    Profile Image</label>
+                                                <input type="file" class="form-control-file" name="profile_image" id="profile_image"
+                                                    style="display:none">
+
+                                               
                                             </div>
                                             <div class="form-group">
-                                                <label for="cover_photo">Cover Photo</label>
-                                                <input type="file" class="form-control-file" id="cover_photo"
-                                                    name="cover_photo">
+                                               
+                                                    <label for="cover_photo" class="btn btn-info">uploid
+                                                        Cover Photo</label>
+                                                    <input type="file" class="form-control-file" name="cover_photo" id="cover_photo"
+                                                        style="display:none">
                                             </div>
                                             <button type="submit" class="btn btn-primary">Save Changes </button>
                                         </form>
