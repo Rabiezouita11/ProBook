@@ -26,7 +26,7 @@
                                         </div>
                                     </div>
                                     @if (auth()->check())
-                                        <div class="widget">
+                                        <div class="widget" id="spinner">
                                             <h4 class="widget-title">Complete Your Profile</h4>
                                             @php
                                                 $completionPercentage = 1; // Default completion percentage
@@ -43,7 +43,7 @@
                                                 }
                                             @endphp
 
-                                            <div data-progress="tip" class="progress__outer"
+                                            <div data-progress="tip"  class="progress__outer"
                                                 data-value="{{ $completionPercentage }}">
                                                 <div class="progress__inner">{{ $completionPercentage * 100 }}%
                                                 </div>
@@ -558,7 +558,13 @@
                 <form id="imageUploadForm" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
-                        <input type="file" name="image" id="image" accept="image/*">
+                     
+
+                        <label for="image" class="btn btn-info">uploid
+                                your photo</label>
+                        <input type="file" name="image" id="image" style="display:none">
+                        
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -576,7 +582,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                    
-                         
+                <h5 class="modal-title" id="uploadCoverPhotoModalLabel">Upload Cover Photo</h5>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -718,7 +725,9 @@
                         // Show success toast message
                         showToast('success', response.message);
                         $('#uploadCoverPhotoModal').modal('hide'); // Hide the modal
-                        reloadCompletionProgress(); // Reload completion progress
+                        $('.modal-backdrop').remove();
+
+                        location.reload();
                     },
                     error: function(xhr, status, error) {
                         // Show error toast message
@@ -806,7 +815,11 @@
                     success: function(response) {
                         showToast('success', response.message);
                         $('#uploadImageModal').modal('hide');
-                        reloadCompletionProgress(); // Reload completion progress
+                        $('.modal-backdrop').remove();
+                        location.reload();
+
+                        
+
 
                     },
                     error: function(xhr, status, error) {
@@ -821,16 +834,12 @@
                     url: location.href, // Reload the current URL
                     type: 'GET', // Use GET method
                     success: function(response) {
-                        // Find the elements in the response and update the existing ones
-                        var progressOuter = $(response).find('.progress__outer');
-                        var progressInner = $(response).find('.progress__inner');
-                        var profComplete = $(response).find('.prof-complete');
-                        $('.prof-complete').replaceWith(profComplete);
-
+                 
+                        var progress__outer = $(response).find(
+                            '#spinner').html();
+                        $('#spinner').html(progress__outer);
                         // Update the existing elements with the new ones
-                        $('.progress__outer').replaceWith(progressOuter);
-                        $('.progress__inner').replaceWith(progressInner);
-
+                      
                         // Update the user-dp element
                         var userDp = $(response).find('.user-dp');
                         $('.user-dp').replaceWith(userDp);

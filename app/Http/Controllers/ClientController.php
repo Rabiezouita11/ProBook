@@ -385,12 +385,12 @@ class ClientController extends Controller
     public function uploadCoverPhoto(Request $request)
     {
         $request->validate([
-            'cover_photo' => 'required|image|max:2048',  // Maximum file size of 2MB
+            'cover_photo' => 'required|image',  // Maximum file size of 2MB
         ]);
 
         $imageName = null;
         if ($request->file('cover_photo')) {
-            // Check if the 'public/users' folder exists, if not, create it
+            
             $uploadPath = public_path('cover_photos');
             if (!File::isDirectory($uploadPath)) {
                 File::makeDirectory($uploadPath, 0777, true, true);
