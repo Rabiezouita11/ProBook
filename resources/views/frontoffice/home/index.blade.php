@@ -1017,9 +1017,8 @@
                                     followersCount);
                                 $('#suggested-users li[data-user-id="' + userId +
                                     '"]').remove();
-                                $('.slide-meta').load(location.href +
-                                    ' .slide-meta > *');
-
+                          
+                                    $('#messages').load(location.href + ' #messages > *');
                                 // Update suggested users list
 
 
