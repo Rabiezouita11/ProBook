@@ -261,7 +261,11 @@
                                                                                         @endif
                                                                                     </div>
                                                                                     <ins><a title=""
-                                                                                            href="{{ route('profile.show', $publication->user) }}">{{ $publication->user->name }}</a>
+                                                                        @if (auth()->check() && auth()->user()->name == $publication->user->name) {{-- If user is logged in and their name matches the publication user's name --}}
+                                                                {{ $publication->user->name }}
+                                                            @else
+                                                                {{-- If user is not logged in or their name doesn't match --}}
+                                                                href="{{ route('profile.show', $publication->user) }}" @endif>{{ $publication->user->name }}</a>
                                                                                         <span><i class="icofont-globe"></i>
                                                                                             published:
                                                                                             {{ \Carbon\Carbon::parse($publication->created_at)->isoFormat('MMM, DD YYYY, h:mm A') }}</span>

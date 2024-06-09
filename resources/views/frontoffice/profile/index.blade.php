@@ -161,7 +161,11 @@
                                                                     @endif
                                                                 </div>
                                                                 <ins><a title=""
-                                                                        href="time-line.html">{{ $publication->user->name }}</a>
+                                                                        @if (auth()->check() && auth()->user()->name == $publication->user->name) {{-- If user is logged in and their name matches the publication user's name --}}
+                                                                {{ $publication->user->name }}
+                                                            @else
+                                                                {{-- If user is not logged in or their name doesn't match --}}
+                                                                href="{{ route('profile.show', $publication->user) }}" @endif>{{ $publication->user->name }}</a>
                                                                     <span>
                                                                         <i class="icofont-globe"></i>
                                                                         published:
@@ -220,7 +224,9 @@
                                                                 <div class="we-video-info">
                                                                     <ul>
                                                                         <li>
-                                                                            <span title="Comments" class="liked  like-button"  data-publication-id="{{ $publication->id }}">
+                                                                            <span title="Comments"
+                                                                                class="liked  like-button"
+                                                                                data-publication-id="{{ $publication->id }}">
                                                                                 <i>
                                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                                         width="16" height="16"
@@ -355,14 +361,15 @@
                                                                                     </h4>
                                                                                     <span><i class="icofont-globe"></i>
                                                                                         <span
-                                                                                             id="modal-time"></span></span>
+                                                                                            id="modal-time"></span></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="we-video-info">
                                                                                 <ul>
                                                                                     <li>
                                                                                         <span title="Comments"
-                                                                                            class="liked like-button"  data-publication-id="{{ $publication->id }}">
+                                                                                            class="liked like-button"
+                                                                                            data-publication-id="{{ $publication->id }}">
                                                                                             <i>
                                                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                                                     width="16"
@@ -544,21 +551,21 @@
                                                     name="diploma">
                                             </div>
                                             <div class="form-group">
-                                                
+
 
                                                 <label for="profile_image" class="btn btn-info">uploid
                                                     Profile Image</label>
-                                                <input type="file" class="form-control-file" name="profile_image" id="profile_image"
-                                                    style="display:none">
+                                                <input type="file" class="form-control-file" name="profile_image"
+                                                    id="profile_image" style="display:none">
 
-                                               
+
                                             </div>
                                             <div class="form-group">
-                                               
-                                                    <label for="cover_photo" class="btn btn-info">uploid
-                                                        Cover Photo</label>
-                                                    <input type="file" class="form-control-file" name="cover_photo" id="cover_photo"
-                                                        style="display:none">
+
+                                                <label for="cover_photo" class="btn btn-info">uploid
+                                                    Cover Photo</label>
+                                                <input type="file" class="form-control-file" name="cover_photo"
+                                                    id="cover_photo" style="display:none">
                                             </div>
                                             <button type="submit" class="btn btn-primary">Save Changes </button>
                                         </form>
@@ -1567,7 +1574,8 @@
                             type: 'GET',
                             success: function(response) {
                                 // Update following widget
-                                $('.group-avatar').load(location.href + ' .group-avatar > *');
+                                $('.group-avatar').load(location.href +
+                                    ' .group-avatar > *');
                                 var followingWidgetHtml = $(response).find(
                                     '#following-widget').html();
                                 $('#following-widget').html(followingWidgetHtml);
@@ -1582,7 +1590,7 @@
 
                                 $('#suggested-users li[data-user-id="' + userId +
                                     '"]').remove();
-                                
+
 
                                 // Update suggested users list
 
@@ -1756,7 +1764,7 @@
         });
     </script>
 
-<script>
+    <script>
         $(document).ready(function() {
             $('.like-button').click(function() {
                 var publicationId = $(this).data('publication-id');

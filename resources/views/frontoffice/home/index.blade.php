@@ -1016,6 +1016,7 @@
                                 console.log("followersCount fi follow" +
                                     followersCount);
                                 $('#suggested-users li[data-user-id="' + userId +
+                
                                     '"]').remove();
                           
                                     $('#messages').load(location.href + ' #messages > *');
