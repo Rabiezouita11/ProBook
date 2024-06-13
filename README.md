@@ -1,44 +1,62 @@
 # ProBook - Description du Projet
 
 <p align="center">
-  <a href="https://laravel.com" target="_blank">
-    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg"
-      width="400" alt="Laravel Logo">
-  </a>
+  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
 </p>
 
 ## Utilisateur (Valdier) :
 
-- <img src="https://img.icons8.com/ios/20/000000/plus.png"/> Ajout bouton "Renvoyer code de vérification".
-- <img src="https://img.icons8.com/ios/20/000000/website-error.png"/> Affichage page bloquée/erreur login.
-- <img src="https://img.icons8.com/ios/20/000000/edit-user.png"/> Gestion profil (modif. infos).
-- <img src="https://img.icons8.com/ios/20/000000/edit-property.png"/> Gestion publications (créer, modif., suppr.).
-- <img src="https://img.icons8.com/ios/20/000000/facebook-like.png"/> Gestion interactions (likes, commentaires).
-- <img src="https://img.icons8.com/ios/20/000000/user-group-man-man.png"/> Liste utilisateurs non abonnés.
-- <img src="https://img.icons8.com/ios/20/000000/subscription.png"/> Gestion abonnements (suivre/arrêter).
-- <img src="https://img.icons8.com/ios/20/000000/visible.png"/> Publications seulement pour abonnés.
-- <img src="https://img.icons8.com/ios/20/000000/conference-background-selected.png"/> Affichage profils autres utilisateurs.
-- <img src="https://img.icons8.com/ios/20/000000/phone-message.png"/> Contacter admin.
-- <img src="https://img.icons8.com/ios/20/000000/course.png"/> Publier offres formations.
-- <img src="https://img.icons8.com/ios/20/000000/visible.png"/> Afficher toutes publications page accueil.
-- <img src="https://img.icons8.com/ios/20/000000/pencil.png"/> Améliorer création publications.
-- <img src="https://img.icons8.com/ios/20/000000/add-database.png"/> Ajouter tables formations et commentaires.
+- Ajout bouton "Renvoyer code de vérification". <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/password-reset.png"/> 
+- Affichage page bloquée/erreur login. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/error.png"/>
+- Gestion profil (modif. infos). <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/user.png"/>
+- Gestion publications (créer, modif., suppr.). <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/article.png"/>
+- Gestion interactions (likes, commentaires). <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/like.png"/>
+- Liste utilisateurs non abonnés. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/user-group-man-woman.png"/>
+- Gestion abonnements (suivre/arrêter). <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/add-user-group-man-man.png"/>
+- Publications seulement pour abonnés. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/visible.png"/>
+- Affichage profils autres utilisateurs. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/user-menu-male.png"/>
+- Contacter admin. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/contacts.png"/>
+- Publier offres formations. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/online-class.png"/>
+- Afficher toutes publications page accueil. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/home.png"/>
+- Améliorer création publications. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/idea.png"/>
+- Ajouter tables formations et commentaires. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/database.png"/>
 
 ## Admin :
 
-- <img src="https://img.icons8.com/ios/20/000000/user-male-circle.png"/> Gestion profils utilisateurs.
-- <img src="https://img.icons8.com/ios/20/000000/ringing-phone.png"/> Gestion contacts.
-- <img src="https://img.icons8.com/ios/20/000000/statistics.png"/> Gestion statistiques.
-- <img src="https://img.icons8.com/ios/20/000000/manage-users.png"/> Gestion utilisateurs.
-- <img src="https://img.icons8.com/ios/20/000000/notification.png"/> Ajout notifications (toast).
-- <img src="https://img.icons8.com/ios/20/000000/email-send.png"/> Envoyer emails blocage/déblocage.
+- Gestion profils utilisateurs. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/administrator-male.png"/>
+- Gestion contacts. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/contacts.png"/>
+- Gestion statistiques. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/statistics.png"/>
+- Gestion utilisateurs. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/user-group-man-woman.png"/>
+- Ajout notifications (toast). <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/notification.png"/>
+- Envoyer emails blocage/déblocage. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/email-send.png"/>
 
 ## Technologies/Fonctionnalités :
 
-- <img src="https://img.icons8.com/color/20/000000/laravel.png"/> Laravel 10.
-- <img src="https://img.icons8.com/ios/20/000000/database-restore.png"/> Base de données, SQL.
-- <img src="https://img.icons8.com/ios/20/000000/user-shield.png"/> Authentification, gestion rôles.
-- <img src="https://img.icons8.com/ios/20/000000/chat-message.png"/> Chat websockets.
-
-## Contact
-For inquiries, please email rabiezouita82@gmail.com.
+- Laravel 10. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/laravel.png"/>
+- Base de données, SQL. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/database.png"/>
+- Authentification, gestion rôles. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/authentication.png"/>
+- Chat websockets. <br>
+  <img src="https://img.icons8.com/material-rounded/24/000000/chat.png"/>
