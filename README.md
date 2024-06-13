@@ -6,57 +6,33 @@
 
 ## Utilisateur (Valdier) :
 
-- Ajout bouton "Renvoyer code de vérification". <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/password-reset.png"/> 
-- Affichage page bloquée/erreur login. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/error.png"/>
-- Gestion profil (modif. infos). <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/user.png"/>
-- Gestion publications (créer, modif., suppr.). <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/article.png"/>
-- Gestion interactions (likes, commentaires). <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/like.png"/>
-- Liste utilisateurs non abonnés. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/user-group-man-woman.png"/>
-- Gestion abonnements (suivre/arrêter). <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/add-user-group-man-man.png"/>
-- Publications seulement pour abonnés. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/visible.png"/>
-- Affichage profils autres utilisateurs. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/user-menu-male.png"/>
-- Contacter admin. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/contacts.png"/>
-- Publier offres formations. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/online-class.png"/>
-- Afficher toutes publications page accueil. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/home.png"/>
-- Améliorer création publications. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/idea.png"/>
-- Ajouter tables formations et commentaires. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/database.png"/>
+- :repeat: Ajout bouton "Renvoyer code de vérification".
+- :no_entry_sign: Affichage page bloquée/erreur login.
+- :bust_in_silhouette: Gestion profil (modif. infos).
+- :pencil: Gestion publications (créer, modif., suppr.).
+- :thumbsup: Gestion interactions (likes, commentaires).
+- :busts_in_silhouette: Liste utilisateurs non abonnés.
+- :busts_in_silhouette: Gestion abonnements (suivre/arrêter).
+- :eye: Publications seulement pour abonnés.
+- :busts_in_silhouette: Affichage profils autres utilisateurs.
+- :mailbox: Contacter admin.
+- :bookmark: Publier offres formations.
+- :newspaper: Afficher toutes publications page accueil.
+- :hammer_and_wrench: Améliorer création publications.
+- :card_index: Ajouter tables formations et commentaires.
 
 ## Admin :
 
-- Gestion profils utilisateurs. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/administrator-male.png"/>
-- Gestion contacts. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/contacts.png"/>
-- Gestion statistiques. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/statistics.png"/>
-- Gestion utilisateurs. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/user-group-man-woman.png"/>
-- Ajout notifications (toast). <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/notification.png"/>
-- Envoyer emails blocage/déblocage. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/email-send.png"/>
+- :busts_in_silhouette: Gestion profils utilisateurs.
+- :mailbox_with_mail: Gestion contacts.
+- :bar_chart: Gestion statistiques.
+- :busts_in_silhouette: Gestion utilisateurs.
+- :bell: Ajout notifications (toast).
+- :envelope: Envoyer emails blocage/déblocage.
 
 ## Technologies/Fonctionnalités :
 
-- Laravel 10. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/laravel.png"/>
-- Base de données, SQL. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/database.png"/>
-- Authentification, gestion rôles. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/authentication.png"/>
-- Chat websockets. <br>
-  <img src="https://img.icons8.com/material-rounded/24/000000/chat.png"/>
+- :gear: Laravel 10.
+- :file_folder: Base de données, SQL.
+- :lock: Authentification, gestion rôles.
+- :speech_balloon: Chat websockets.
