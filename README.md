@@ -36,3 +36,4 @@
 - :file_folder: Base de données, SQL.
 - :lock: Authentification, gestion rôles.
 - :speech_balloon: Chat websockets.
+- :bell: Notification en temps réel.
